@@ -25,5 +25,6 @@
 - C 正式资产固定接入 `skills/ecommerce-poster-design/assets/classification/`；
 - 未满足正式接入条件前，必须保持 `c_library.status=not_connected`；
 - 只有项目负责人确认后，才能发布最终 `1.0.0`。
+- 相关提交和 PR 会自动运行分类资产、规则选择、发布状态和测试素材检查。
 
 开始修改前请先阅读 [项目状态](PROJECT_STATUS.md) 和 [协作规则](CONTRIBUTING.md)。

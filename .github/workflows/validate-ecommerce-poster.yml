@@ -1,0 +1,74 @@
+name: Validate ecommerce poster skill
+
+on:
+  push:
+    paths:
+      - "skills/ecommerce-poster-design/**"
+      - "tests/ecommerce-poster-design/**"
+      - "PROJECT_STATUS.md"
+      - "RELEASE_MANIFEST.json"
+      - ".github/workflows/validate-ecommerce-poster.yml"
+  pull_request:
+    paths:
+      - "skills/ecommerce-poster-design/**"
+      - "tests/ecommerce-poster-design/**"
+      - "PROJECT_STATUS.md"
+      - "RELEASE_MANIFEST.json"
+      - ".github/workflows/validate-ecommerce-poster.yml"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate classification assets
+        run: >-
+          python skills/ecommerce-poster-design/scripts/validate_classification.py
+          skills/ecommerce-poster-design/assets/classification
+
+      - name: Exercise deterministic rule selection
+        run: >-
+          python skills/ecommerce-poster-design/scripts/select_style.py
+          skills/ecommerce-poster-design/assets/classification
+          P01 M01 S01 --request-id CI-SMOKE
+
+      - name: Validate pre-release and C-library state
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+
+          version = json.loads(
+              Path("skills/ecommerce-poster-design/assets/config/version.json")
+              .read_text(encoding="utf-8")
+          )
+          manifest = json.loads(
+              Path("RELEASE_MANIFEST.json").read_text(encoding="utf-8")
+          )
+
+          assert version["skill_version"] == manifest["version"]
+          assert version["release_channel"] == "pre-release"
+          assert version["final_1_0"] is False
+          assert version["production_ready"] is False
+          assert version["c_library"]["status"] == "not_connected"
+          assert version["c_library"]["asset_mode"] == "demo_only"
+
+      - name: Reject user product images in tests
+        shell: python
+        run: |
+          from pathlib import Path
+
+          forbidden = {".png", ".jpg", ".jpeg", ".webp"}
+          found = [
+              str(path)
+              for path in Path("tests/ecommerce-poster-design").rglob("*")
+              if path.is_file() and path.suffix.lower() in forbidden
+          ]
+          assert not found, "Do not commit user product images: " + ", ".join(found)

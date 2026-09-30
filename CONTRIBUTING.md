@@ -14,6 +14,8 @@
 4. 新增或更新能够证明行为变化的测试记录；
 5. 确认没有把用户私有商品素材、密钥、账号信息或未经授权资产提交到仓库。
 
+GitHub Actions 的 `Validate ecommerce poster skill` 必须通过后才能合并；失败时先修复资产引用、版本状态或测试素材问题，不得通过删除检查来绕过。
+
 ## C 库接入纪律
 
 - 正式 C 资产只进入 `skill/zh/ecommerce-poster-design/assets/classification/`。
