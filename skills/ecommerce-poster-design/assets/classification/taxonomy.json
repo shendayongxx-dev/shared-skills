@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "taxonomy_version": "demo-1.0",
+  "asset_status": "demo_only",
+  "audiences": [
+    {"id": "P01", "name": "年轻价格敏感人群", "description": "重视实用价值、价格和清晰表达", "status": "active"},
+    {"id": "P02", "name": "品质效率人群", "description": "重视效率、品质和体面表达", "status": "active"}
+  ],
+  "purchase_motivations": [
+    {"id": "M01", "name": "性价比", "description": "优先考虑价格与实用价值", "status": "active"},
+    {"id": "M02", "name": "颜值悦己", "description": "优先考虑外观和个性表达", "status": "active"}
+  ],
+  "scenarios": [
+    {"id": "S01", "name": "日常通勤", "description": "上下班或上下课的日常使用与移动浏览", "status": "active"},
+    {"id": "S02", "name": "节日送礼", "description": "节日或纪念日的礼物选择场景", "status": "active"}
+  ]
+}

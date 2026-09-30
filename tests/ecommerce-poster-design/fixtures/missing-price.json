@@ -1,0 +1,34 @@
+{
+  "request_id": "TEST-MISSING-PRICE-001",
+  "product": {
+    "image_refs": ["fixtures/product-placeholder.svg"],
+    "name": "便携保温杯",
+    "category": "日用饮具",
+    "selling_points": ["轻量", "防漏杯盖"],
+    "quantity": 1
+  },
+  "brand": {
+    "name": "示例品牌",
+    "logo_ref": "",
+    "required_elements": [],
+    "forbidden_elements": []
+  },
+  "commerce": {
+    "price_text": "",
+    "promotion_text": "",
+    "promotion_period": "",
+    "legal_text": ""
+  },
+  "marketing": {
+    "goal": "新品转化",
+    "channel": "电商详情页首屏",
+    "usage_context": "日常通勤",
+    "cta": "立即购买"
+  },
+  "canvas": {
+    "width": 1080,
+    "height": 1440,
+    "format": "png",
+    "language": "zh-CN"
+  }
+}

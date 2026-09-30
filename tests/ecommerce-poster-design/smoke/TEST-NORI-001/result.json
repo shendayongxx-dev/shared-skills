@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "request_id": "TEST-NORI-001",
+  "final_poster": "poster-final.jpg",
+  "hard_check_report": "hard-check-round-1.json",
+  "style_guide": "style-guide.json",
+  "protected_content": "protected-content.json",
+  "run_log": "run-log.json",
+  "generation_prompt": "generation-prompt.txt",
+  "tags": {"audience_id": "P02", "motivation_id": "M01", "scenario_id": "S01"},
+  "rule_ids": ["R-DEFAULT"],
+  "case_ids": [],
+  "output": {
+    "format": "JPEG",
+    "width": 1080,
+    "height": 1440,
+    "color_space": "sRGB",
+    "has_alpha": false
+  },
+  "warnings": [
+    "该结果为 0.9.0-alpha.1 预发布冒烟测试，使用 demo 分类资产；不代表最终 1.0",
+    "目标人群未明确，因此未把受众推断写成画面事实",
+    "价格按用户原文显示为 39.9，未添加货币符号"
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0",
+  "rules_version": "demo-1.0",
+  "taxonomy_version": "demo-1.0",
+  "asset_status": "demo_only",
+  "rules": [
+    {
+      "rule_id": "R-001",
+      "priority": 100,
+      "match": {"audience_id": "P01", "motivation_id": "M01", "scenario_id": "S01"},
+      "style": {
+        "palette": [
+          {"role": "background", "name": "浅灰白", "hex": "#F5F6F8"},
+          {"role": "accent", "name": "明黄", "hex": "#FFC928"},
+          {"role": "text", "name": "深灰", "hex": "#222222"}
+        ],
+        "headline_character": "直接醒目",
+        "body_character": "简洁易读",
+        "composition": "商品居中，价格与卖点分层排列",
+        "product_ratio": 0.6,
+        "information_hierarchy": ["商品", "核心卖点", "价格", "行动提示"],
+        "info_density": 3,
+        "promotion_intensity": 4,
+        "cta_guidance": "行动提示清晰但不过度夸张",
+        "prohibited_styles": ["文字密集堆叠", "低对比度价格", "装饰遮挡商品"]
+      },
+      "recommended_case_ids": ["C-DEMO-001"],
+      "status": "active"
+    },
+    {
+      "rule_id": "R-010",
+      "priority": 50,
+      "match": {"audience_id": "P01", "motivation_id": "M01", "scenario_id": "*"},
+      "style": {
+        "palette": [
+          {"role": "background", "name": "白色", "hex": "#FFFFFF"},
+          {"role": "accent", "name": "橙黄", "hex": "#FFB020"},
+          {"role": "text", "name": "黑色", "hex": "#111111"}
+        ],
+        "headline_character": "清楚有力",
+        "body_character": "高可读性",
+        "composition": "突出商品与购买价值",
+        "product_ratio": 0.58,
+        "information_hierarchy": ["商品", "购买价值", "价格", "行动提示"],
+        "info_density": 3,
+        "promotion_intensity": 4,
+        "cta_guidance": "使用明确购买动词",
+        "prohibited_styles": ["价格信息模糊", "复杂装饰背景"]
+      },
+      "recommended_case_ids": [],
+      "status": "active"
+    },
+    {
+      "rule_id": "R-DEFAULT",
+      "priority": 0,
+      "match": {"audience_id": "*", "motivation_id": "*", "scenario_id": "*"},
+      "style": {
+        "palette": [
+          {"role": "background", "name": "白色", "hex": "#FFFFFF"},
+          {"role": "text", "name": "深灰", "hex": "#222222"}
+        ],
+        "headline_character": "清晰醒目",
+        "body_character": "简洁易读",
+        "composition": "商品主体突出并保持清晰信息层级",
+        "product_ratio": 0.55,
+        "information_hierarchy": ["商品", "商品名或卖点", "价格促销", "行动提示"],
+        "info_density": 3,
+        "promotion_intensity": 3,
+        "cta_guidance": "使用清晰且可核实的行动提示",
+        "prohibited_styles": ["文字遮挡商品", "低对比度正文", "捏造促销", "装饰性假 Logo"]
+      },
+      "recommended_case_ids": [],
+      "status": "active"
+    }
+  ]
+}

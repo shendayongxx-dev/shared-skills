@@ -1,0 +1,14 @@
+Use case: ads-marketing
+Asset type: portrait ecommerce product main visual smoke test, 3:4 composition
+Primary request: Create a polished Chinese ecommerce marketing poster for the supplied NORI portable insulated bottle.
+Input images: Image 1 is the exact product reference and must remain faithful. Image 2 is the exact NORI double-leaf logo reference and must be used without changing its shape, proportions, orientation, or dark-green color.
+Scene/backdrop: clean warm-white studio background with restrained dark-green accents and subtle natural light; no unrelated props.
+Subject: exactly one NORI bottle. Preserve the cream-white cylindrical body, the dark forest-green lid, the right-side handle, the proportions, the surface texture, and the small double-leaf mark near the lower front.
+Style/medium: refined commercial product photography, minimal, trustworthy, modern, functional.
+Composition/framing: portrait; bottle centered and dominant, about 60% of the visual area; brand at the top; selling points and price arranged clearly around the product without overlap; generous whitespace.
+Lighting/mood: soft natural studio lighting, crisp product edges, calm and premium but accessible.
+Color palette: warm white #F5F3EC, NORI dark green #294226, deep gray #222222.
+Text (verbatim): "NORI"; "便携保温杯"; "保温 7 小时"; "智能控温"; "价格 39.9"; "DEMO 测试海报".
+Typography: clean, highly readable Chinese sans-serif; restrained hierarchy; price visible but not exaggerated.
+Constraints: all supplied text must be spelled exactly; exactly one bottle; preserve product identity and logo faithfully; no extra promotion, discount, currency symbol, unit, dates, gifts, CTA, legal claim, slogan, or feature; no invented logo; no cropped text; no text over the bottle; include the explicit small footer "DEMO 测试海报".
+Avoid: fake logo, logo deformation, extra products, extra text, invented currency, dense layout, low contrast, red promotional style, watermark other than the explicit DEMO footer.

@@ -1,0 +1,34 @@
+{
+  "request_id": "TEST-NORI-001",
+  "product": {
+    "image_refs": ["input-assets/NORI_front.png"],
+    "name": "便携保温杯",
+    "category": "日用饮具",
+    "selling_points": ["保温 7 小时", "智能控温"],
+    "quantity": 1
+  },
+  "brand": {
+    "name": "NORI",
+    "logo_ref": "input-assets/NORI_LOGO.svg",
+    "required_elements": ["保持 NORI 双叶 Logo 的形状、比例和深绿色"],
+    "forbidden_elements": ["不得重绘、拉伸、旋转或替换 Logo"]
+  },
+  "commerce": {
+    "price_text": "39.9",
+    "promotion_text": "",
+    "promotion_period": "",
+    "legal_text": ""
+  },
+  "marketing": {
+    "goal": "测试商品营销主视觉",
+    "channel": "未指定",
+    "usage_context": "便携使用场景",
+    "cta": ""
+  },
+  "canvas": {
+    "width": 1080,
+    "height": 1440,
+    "format": "jpg",
+    "language": "zh-CN"
+  }
+}

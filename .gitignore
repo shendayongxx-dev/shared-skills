@@ -1,0 +1,10 @@
+# Local runtime artifacts
+work/
+outputs/
+*.tmp
+*.log
+
+# Generated poster binaries and user-provided product assets are not committed by default
+tests/**/poster-*.png
+tests/**/poster-*.jpg
+tests/**/input-assets/

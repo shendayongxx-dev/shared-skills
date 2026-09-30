@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "taxonomy_version": "demo-1.0",
+  "asset_version": "demo-1.0",
+  "request_id": "TEST-NORI-001",
+  "tags": {
+    "audience_id": "P02",
+    "motivation_id": "M01",
+    "scenario_id": "S01"
+  },
+  "classification_evidence": [
+    "智能控温属于品质与效率型功能诉求",
+    "39.9 的价格与功能卖点共同体现购买价值",
+    "便携属性支持日常随行场景"
+  ],
+  "confidence": {
+    "audience": 0.58,
+    "motivation": 0.82,
+    "scenario": 0.76
+  },
+  "source_rule_ids": ["R-DEFAULT"],
+  "source_case_ids": [],
+  "fallback_level": "global",
+  "palette": [
+    {"role": "background", "name": "暖白", "hex": "#F5F3EC"},
+    {"role": "brand", "name": "NORI 深绿", "hex": "#294226"},
+    {"role": "text", "name": "深灰", "hex": "#222222"}
+  ],
+  "typography": {
+    "headline_character": "清晰克制",
+    "body_character": "简洁易读"
+  },
+  "layout": {
+    "composition": "单个商品居中突出，品牌和卖点分层排列",
+    "product_ratio": 0.6,
+    "information_hierarchy": ["品牌与商品", "卖点", "价格"]
+  },
+  "info_density": 2,
+  "promotion_intensity": 2,
+  "cta_guidance": "用户未提供 CTA，不显示行动提示",
+  "prohibited_styles": ["额外促销", "虚构货币单位", "假 Logo", "文字遮挡商品"],
+  "warnings": ["目标人群未明确，使用低置信度分类", "当前 C 分类资产为 demo-only", "无精确规则，已回退 R-DEFAULT"]
+}

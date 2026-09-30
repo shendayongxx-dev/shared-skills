@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "round": 2,
+  "candidate": "poster-final-v2.png",
+  "problem_list": [],
+  "checks": [
+    {"check_id": "HC-01", "result": "pass", "evidence": "保留单个浅蓝色保温杯主体，类别和主要外观未被替换"},
+    {"check_id": "HC-02", "result": "pass", "evidence": "画面仅包含 1 个商品"},
+    {"check_id": "HC-03", "result": "pass", "evidence": "价格完整显示为 79 元"},
+    {"check_id": "HC-04", "result": "pass", "evidence": "促销文字为首发价 79 元，未增加折扣、赠品或时间"},
+    {"check_id": "HC-05", "result": "pass", "evidence": "未提供 Logo，画面未生成图形 Logo；仅使用普通品牌文字"},
+    {"check_id": "HC-06", "result": "pass", "evidence": "商品名称、轻量、保温 6 小时、防漏杯盖均完整展示"},
+    {"check_id": "HC-07", "result": "pass", "evidence": "指定中文文案拼写正确，无乱码或错误翻译"},
+    {"check_id": "HC-08", "result": "pass", "evidence": "文字对比度高，无文字覆盖商品"},
+    {"check_id": "HC-09", "result": "pass", "evidence": "商品、标题、价格、CTA 和测试标识均未越界或裁切"},
+    {"check_id": "HC-10", "result": "pass", "evidence": "最终文件为 PNG，尺寸 1080×1440"},
+    {"check_id": "HC-11", "result": "pass", "evidence": "未出现低对比度价格、假 Logo、额外商品或捏造促销"},
+    {"check_id": "HC-12", "result": "pass", "evidence": "第二轮完整继承并展示需要呈现的 protected content"}
+  ],
+  "next_step": "output"
+}

@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "round": 1,
+  "candidate": "poster-final.jpg",
+  "problem_list": [],
+  "checks": [
+    {"check_id": "HC-01", "result": "pass", "evidence": "保留米白色圆柱杯身、深绿色杯盖及右侧把手，商品类别和主体外观未被替换"},
+    {"check_id": "HC-02", "result": "pass", "evidence": "画面仅包含 1 个保温杯商品主体"},
+    {"check_id": "HC-03", "result": "pass", "evidence": "价格准确显示为 39.9，未擅自增加货币符号或单位"},
+    {"check_id": "HC-04", "result": "pass", "evidence": "用户未提供促销信息；画面未增加折扣、赠品、日期或促销承诺"},
+    {"check_id": "HC-05", "result": "pass", "evidence": "顶部和杯身使用 NORI 深绿色双叶标识，未出现替换、旋转或明显变形"},
+    {"check_id": "HC-06", "result": "pass", "evidence": "商品名称、保温 7 小时、智能控温均完整展示"},
+    {"check_id": "HC-07", "result": "pass", "evidence": "指定中文文案及数字拼写正确，无乱码或错误翻译"},
+    {"check_id": "HC-08", "result": "pass", "evidence": "文字对比度和字号充足，未覆盖商品关键结构"},
+    {"check_id": "HC-09", "result": "pass", "evidence": "商品、标题、卖点、价格和 DEMO 标识均未越界或裁切"},
+    {"check_id": "HC-10", "result": "pass", "evidence": "最终文件为 JPEG，尺寸精确为 1080×1440，sRGB、无透明通道"},
+    {"check_id": "HC-11", "result": "pass", "evidence": "未出现假 Logo、额外商品、货币符号、CTA 或捏造促销"},
+    {"check_id": "HC-12", "result": "pass", "evidence": "首轮完整继承并展示 protected content，无需重绘"}
+  ],
+  "next_step": "output"
+}
