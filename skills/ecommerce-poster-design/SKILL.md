@@ -5,7 +5,7 @@ description: "根据商品图、商品信息、卖点、价格促销、营销目
 
 # 电商商品营销主视觉设计 Skill 1.0 预备版
 
-> 当前发布标识为 `0.9.0-alpha.1`。C 正式分类库尚未接入，随包 `C-DEMO-*` 只验证接口和流程。本版本不得标记、描述或传播为最终 1.0。
+> 当前发布标识为 `0.9.0-alpha.2`。A 已具备 C 候选包适配能力，但 C 正式分类库尚未接入；随包 `C-DEMO-*` 只验证接口和流程。本版本不得标记、描述或传播为最终 1.0。
 
 ## 版本边界
 
@@ -47,18 +47,24 @@ Skill 1.0 不运行消费者 Agent、美学 Agent、LLM/VLM-as-a-Judge 或主观
 python scripts/validate_classification.py assets/classification
 ```
 
-若运行环境不能执行脚本，按 [references/c-assets.md](references/c-assets.md) 中的同等规则人工校验。C 库损坏、缺文件或版本不兼容时，不中断主流程；使用文档中的全局默认风格，同时记录 `warning`、失败文件和回退原因。
+若运行环境不能执行脚本，按 [references/c-assets.md](references/c-assets.md) 中的同等规则人工校验。`valid=true` 仅表示可联调，只有 `production_ready=true` 才具备正式接入条件。C 库损坏、缺文件或版本不兼容时，不中断主流程；使用文档中的全局默认风格，同时记录 `warning`、失败文件和回退原因。
 
 ### 3 分类与检索
 
-仅根据已提供信息，从 taxonomy 中各选择一个主要 `audience_id`、`motivation_id` 和 `scenario_id`，并保存判断依据与置信度。不得生成 taxonomy 中不存在的标签。
+仅根据已提供信息判断 `audience_id`、`motivation_id` 和 `scenario_id`，并保存判断依据与置信度。证据不足的维度必须为 null，不得用常识或默认类别补位，也不得生成 taxonomy 中不存在的标签。
 
-规则检索顺序固定为：精确三维 → 二维通配 → 单维通配 → `R-DEFAULT`。同层级选择 `priority` 最大的 active 规则。将命中的规则和案例组装成结构化 `style_guide`；生成模块只能消费 `style_guide`，不能绕过契约直接猜测 C 库含义。
+规则检索顺序固定为：精确三维 → 二维通配 → 单维通配 → `R-DEFAULT`。未知维度只允许匹配 `*`；同层级选择 `priority` 最大的 active 规则。按 C 资产契约编译继承并选择一个完整色板，案例必须通过审核、权利和种子门禁。将命中的规则和案例组装成结构化 `style_guide`；生成模块只能消费 `style_guide`，不能绕过契约直接猜测 C 库含义。
 
 完成标签识别后，优先运行以下确定性选择器；将三个 ID 替换为本次识别结果：
 
 ```text
 python scripts/select_style.py assets/classification P01 M01 S01 --request-id REQ-001
+```
+
+缺少某维证据时用 `null` 传入，例如：
+
+```text
+python scripts/select_style.py assets/classification null M04 S04 --request-id REQ-002
 ```
 
 ### 4 生成计划
