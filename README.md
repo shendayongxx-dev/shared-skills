@@ -6,9 +6,9 @@
 
 | Skill | 版本 | 状态 | C 正式库 | 最终 1.0 |
 |---|---|---|---|---|
-| `ecommerce-poster-design` | `0.9.0-alpha.1` | PRE-RELEASE | 未接入 | 否 |
+| `ecommerce-poster-design` | `0.9.0-alpha.2` | PRE-RELEASE | 未接入 | 否 |
 
-> **重要：这不是 Skill 1.0 最终版。** 当前版本只完成了主流程、接口、硬性合规和 demo 分类资产下的冒烟测试。`C-DEMO-*` 不能作为真实市场依据，也不能被标记成 C 正式库。
+> **重要：这不是 Skill 1.0 最终版。** 当前版本完成了主流程、硬性合规、demo 冒烟测试及 C 候选接口适配，但 C 正式库仍未接入。`C-DEMO-*` 和外部 integration candidate 都不能作为已审核市场依据，也不能被标记成 C 正式库。
 
 ## 仓库结构
 

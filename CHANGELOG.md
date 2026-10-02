@@ -1,5 +1,17 @@
 # 变更记录
 
+## 0.9.0-alpha.2
+
+发布状态：A 已实现 C 候选接口适配；C 正式库仍未接入；不可标记为最终 1.0。
+
+- 校验器兼容根目录与 `cases/case-index.csv` 两种索引位置，并校验候选 manifest。
+- 支持 `extends_rule_id` 深层样式合并、循环检测和 active 父规则门禁。
+- 支持 `palette_sets` 完整色板选择，同时保留旧 demo palette 兼容输出。
+- 支持分类维度为 null；未知维度只匹配通配规则并强制人工确认。
+- 增加 approved、权利状态、`is_seed` 与用途四重案例门禁，draft 案例不进入正式推荐。
+- 将结构可联调的 `valid` 与可正式接入的 `production_ready` 分开报告。
+- 保持仓库 C 状态为 `not_connected / demo_only`，未复制 C 候选包或第三方图片。
+
 ## 0.9.0-alpha.1
 
 发布状态：1.0 前置测试版；C 正式库未接入；不可标记为最终 1.0。

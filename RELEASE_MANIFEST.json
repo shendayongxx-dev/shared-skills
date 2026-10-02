@@ -1,7 +1,7 @@
 {
   "repository": "shendayongxx-dev/shared-skills",
   "skill": "ecommerce-poster-design",
-  "version": "0.9.0-alpha.1",
+  "version": "0.9.0-alpha.2",
   "release_channel": "pre-release",
   "final_1_0": false,
   "production_ready": false,
@@ -11,6 +11,7 @@
   },
   "included": [
     "Skill source and interface references",
+    "C candidate validation, inheritance, nullable classification, and approval-gate adapter",
     "Demo classification assets",
     "Non-sensitive fixtures and structured smoke-test records",
     "Contribution rules, CODEOWNERS, and PR checklist"
@@ -18,6 +19,7 @@
   "excluded": [
     "User-provided NORI product and logo image files",
     "Generated poster binaries",
-    "Local runtime artifacts"
+    "Local runtime artifacts",
+    "C integration-candidate package and unapproved third-party case assets"
   ]
 }
