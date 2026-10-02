@@ -1,0 +1,13 @@
+{
+  "schema_version": "2.0.0-rc.1",
+  "taxonomy_version": "fixture-1.0",
+  "audiences": [
+    {"id": "P01", "name": "测试人群", "description": "仅用于接口回归", "status": "active"}
+  ],
+  "purchase_motivations": [
+    {"id": "M01", "name": "测试动机", "description": "仅用于接口回归", "status": "active"}
+  ],
+  "scenarios": [
+    {"id": "S01", "name": "测试场景", "description": "仅用于接口回归", "status": "active"}
+  ]
+}
