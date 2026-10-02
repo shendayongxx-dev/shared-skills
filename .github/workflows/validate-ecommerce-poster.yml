@@ -39,6 +39,45 @@ jobs:
           skills/ecommerce-poster-design/assets/classification
           P01 M01 S01 --request-id CI-SMOKE
 
+      - name: Exercise C candidate adapter
+        shell: python
+        run: |
+          import json
+          import subprocess
+          import sys
+
+          validator = "skills/ecommerce-poster-design/scripts/validate_classification.py"
+          selector = "skills/ecommerce-poster-design/scripts/select_style.py"
+          fixture = "tests/ecommerce-poster-design/fixtures/classification-v2-candidate"
+
+          validation = json.loads(subprocess.check_output([sys.executable, validator, fixture]))
+          assert validation["valid"] is True
+          assert validation["production_ready"] is False
+          assert "DRAFT_MARKED_SEED" in validation["production_blockers"]
+
+          inherited = json.loads(subprocess.check_output([
+              sys.executable, selector, fixture, "P01", "M01", "S01",
+              "--request-id", "CI-INHERIT",
+          ]))
+          assert inherited["source_rule_ids"] == ["R-001"]
+          assert inherited["inheritance_chain"] == ["R-100", "R-001"]
+          assert inherited["selected_palette_set"]["palette_id"] == "R-100-P1"
+          assert inherited["source_case_ids"] == []
+
+          partial = json.loads(subprocess.check_output([
+              sys.executable, selector, fixture, "null", "M01", "S01",
+              "--request-id", "CI-PARTIAL-NULL",
+          ]))
+          assert partial["source_rule_ids"] == ["R-100"]
+          assert partial["needs_human_review"] is True
+
+          empty = json.loads(subprocess.check_output([
+              sys.executable, selector, fixture, "null", "null", "null",
+              "--request-id", "CI-ALL-NULL",
+          ]))
+          assert empty["source_rule_ids"] == ["R-DEFAULT"]
+          assert empty["fallback_level"] == "global"
+
       - name: Validate pre-release and C-library state
         shell: python
         run: |
