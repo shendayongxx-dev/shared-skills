@@ -11,7 +11,7 @@ from typing import Any
 
 HEX = re.compile(r"^#[0-9A-Fa-f]{6}$")
 VALID_STATUS = {"active", "draft", "deprecated", "demo_only"}
-SUPPORTED_SCHEMA_VERSIONS = {"1.0", "1.0-rc.1", "2.0.0-rc.1"}
+SUPPORTED_SCHEMA_VERSIONS = {"1.0", "1.0-rc.1", "2.0.0-rc.1", "2.0.0"}
 PROVISIONAL_SCHEMA_VERSIONS = {"1.0-rc.1", "2.0.0-rc.1"}
 APPROVED_RIGHTS = {
     "owned",
@@ -19,8 +19,10 @@ APPROVED_RIGHTS = {
     "permission_granted",
     "public_domain",
     "internal_authorized",
+    "internal_reference_authorized",
 }
 REQUIRED_PALETTE_ROLES = {"background", "support", "accent", "text"}
+SHA256 = re.compile(r"^(?:sha256:)?[0-9a-fA-F]{64}$")
 
 
 def fail(errors: list[str], message: str) -> None:
@@ -321,6 +323,7 @@ def main() -> int:
     case_ids: set[str] = set()
     approved_cases = 0
     eligible_seed_cases = 0
+    eligible_seed_scenarios: set[str] = set()
     draft_marked_seed = 0
     case_status_by_id: dict[str, str] = {}
     for row_number, row in enumerate(index_rows, 2):
@@ -363,8 +366,16 @@ def main() -> int:
         is_seed = str(row.get("is_seed", "")).lower() == "true"
         rights = metadata.get("rights") if isinstance(metadata.get("rights"), dict) else {}
         source = metadata.get("source") if isinstance(metadata.get("source"), dict) else {}
+        asset = metadata.get("asset") if isinstance(metadata.get("asset"), dict) else {}
         rights_status = row.get("rights_status") or rights.get("rights_status", "")
         usage_status = row.get("usage_status") or source.get("usage_status", "")
+        checksum = row.get("checksum_sha256") or asset.get("checksum", "")
+        asset_reference = (
+            row.get("asset_location")
+            or asset.get("internal_asset_uri")
+            or asset.get("external_image_url")
+            or ""
+        )
         if review_status == "approved":
             approved_cases += 1
         elif is_seed and review_status != "demo_only":
@@ -374,8 +385,13 @@ def main() -> int:
             and is_seed
             and rights_status in APPROVED_RIGHTS
             and usage_status != "research_reference_only"
+            and isinstance(checksum, str)
+            and SHA256.fullmatch(checksum) is not None
+            and isinstance(asset_reference, str)
+            and bool(asset_reference)
         ):
             eligible_seed_cases += 1
+            eligible_seed_scenarios.add(row.get("scenario_id", ""))
 
     for case_id in sorted(referenced_case_ids - case_ids):
         fail(errors, f"rule references unknown case_id {case_id}")
@@ -401,6 +417,21 @@ def main() -> int:
             "NO_APPROVED_CASES",
             "the package has no approved cases",
         )
+    if taxonomy.get("asset_status") != "demo_only" and eligible_seed_cases < 6:
+        warn(
+            warnings,
+            production_blockers,
+            "INSUFFICIENT_SEEDS",
+            f"need at least 6 eligible seeds, found {eligible_seed_cases}",
+        )
+    missing_seed_scenarios = sorted(scenarios - eligible_seed_scenarios)
+    if taxonomy.get("asset_status") != "demo_only" and missing_seed_scenarios:
+        warn(
+            warnings,
+            production_blockers,
+            "SEED_SCENARIO_COVERAGE",
+            "eligible seeds do not cover: " + ", ".join(missing_seed_scenarios),
+        )
     if taxonomy.get("asset_status") == "demo_only" or rules_doc.get("asset_status") == "demo_only":
         warn(
             warnings,
@@ -418,7 +449,7 @@ def main() -> int:
 
     result = {
         "valid": not errors,
-        "production_ready": not errors and not production_blockers and eligible_seed_cases > 0,
+        "production_ready": not errors and not production_blockers and eligible_seed_cases >= 6,
         "base": str(base),
         "case_index": str(index_path) if index_path else None,
         "schema_version": taxonomy_schema,
@@ -430,6 +461,7 @@ def main() -> int:
             "cases": len(case_ids),
             "approved_cases": approved_cases,
             "eligible_seed_cases": eligible_seed_cases,
+            "eligible_seed_scenarios": len(eligible_seed_scenarios),
         },
         "production_blockers": sorted(production_blockers),
         "warnings": warnings,

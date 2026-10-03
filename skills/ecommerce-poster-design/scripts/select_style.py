@@ -15,6 +15,7 @@ APPROVED_RIGHTS = {
     "permission_granted",
     "public_domain",
     "internal_authorized",
+    "internal_reference_authorized",
 }
 HIERARCHY_LABELS = {
     "product": "商品主体",
@@ -110,9 +111,11 @@ def filter_cases(
     case_ids: list[str],
     case_rows: dict[str, dict[str, str]],
     demo_mode: bool,
-) -> tuple[list[str], list[dict[str, str]], int]:
+    requested: dict[str, str | None],
+) -> tuple[list[str], list[dict[str, str]], list[dict[str, Any]], int]:
     eligible: list[str] = []
     statuses: list[dict[str, str]] = []
+    references: list[dict[str, Any]] = []
     filtered = 0
     for case_id in case_ids:
         row = case_rows.get(case_id)
@@ -120,7 +123,14 @@ def filter_cases(
             filtered += 1
             continue
         review_status = row.get("review_status") or row.get("status") or "unknown"
-        statuses.append({"case_id": case_id, "review_status": review_status})
+        statuses.append(
+            {
+                "case_id": case_id,
+                "review_status": review_status,
+                "rights_status": row.get("rights_status", ""),
+                "usage_status": row.get("usage_status", ""),
+            }
+        )
         if demo_mode and review_status == "demo_only":
             eligible.append(case_id)
             continue
@@ -134,9 +144,38 @@ def filter_cases(
             and usage_status != "research_reference_only"
         ):
             eligible.append(case_id)
+            references.append(
+                {
+                    "case_id": case_id,
+                    "title": row.get("title", ""),
+                    "external_image_url": row.get("external_image_url", ""),
+                    "source_url": row.get("source_url", ""),
+                    "checksum_sha256": row.get("checksum_sha256", ""),
+                    "tags": {
+                        "audience_id": row.get("audience_id", ""),
+                        "motivation_id": row.get("motivation_id", ""),
+                        "scenario_id": row.get("scenario_id", ""),
+                    },
+                    "usage_scope": "internal_reference_only",
+                    "public_repository_allowed": False,
+                    "_match_score": sum(
+                        value is not None and row.get(key) == value
+                        for key, value in requested.items()
+                    ),
+                }
+            )
         else:
             filtered += 1
-    return eligible, statuses, filtered
+    if references:
+        best_score = max(item["_match_score"] for item in references)
+        best_ids = {
+            item["case_id"] for item in references if item["_match_score"] == best_score
+        }
+        eligible = [case_id for case_id in eligible if case_id in best_ids]
+        references = [item for item in references if item["case_id"] in best_ids]
+        for item in references:
+            item.pop("_match_score", None)
+    return eligible, statuses, references, filtered
 
 
 def main() -> int:
@@ -199,7 +238,9 @@ def main() -> int:
 
     if not candidates:
         raise SystemExit("no compatible active rule and no default rule")
-    specificity, _, _, selected = max(candidates, key=lambda item: (item[0], item[1], item[2]))
+    specificity, _, _, selected = sorted(
+        candidates, key=lambda item: (-item[0], -item[1], item[2])
+    )[0]
     style, inheritance_chain = compile_style(selected["rule_id"], rules_by_id)
     selected_palette = choose_palette(style, selected["rule_id"], args.palette_id)
 
@@ -213,8 +254,8 @@ def main() -> int:
         warnings.append("One or more classification dimensions lack evidence; human review is required")
 
     raw_case_ids = [str(value) for value in selected.get("recommended_case_ids", [])]
-    source_case_ids, source_case_statuses, filtered_count = filter_cases(
-        raw_case_ids, load_case_rows(base), demo_mode
+    source_case_ids, source_case_statuses, source_case_references, filtered_count = filter_cases(
+        raw_case_ids, load_case_rows(base), demo_mode, requested
     )
     if filtered_count:
         warnings.append(
@@ -235,6 +276,7 @@ def main() -> int:
         "inheritance_chain": inheritance_chain,
         "source_case_ids": source_case_ids,
         "source_case_statuses": source_case_statuses,
+        "source_case_references": source_case_references,
         "fallback_level": LEVELS[specificity],
         "selected_palette_set": selected_palette,
         "palette": selected_palette["colors"],

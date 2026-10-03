@@ -6,9 +6,9 @@
 
 | Skill | 版本 | 状态 | C 正式库 | 最终 1.0 |
 |---|---|---|---|---|
-| `ecommerce-poster-design` | `0.9.0-alpha.2` | PRE-RELEASE | 未接入 | 否 |
+| `ecommerce-poster-design` | `1.0.0-rc.1` | RELEASE CANDIDATE | 已接入 2.0.1 | 待最终确认 |
 
-> **重要：这不是 Skill 1.0 最终版。** 当前版本完成了主流程、硬性合规、demo 冒烟测试及 C 候选接口适配，但 C 正式库仍未接入。`C-DEMO-*` 和外部 integration candidate 都不能作为已审核市场依据，也不能被标记成 C 正式库。
+> **当前已完成 Skill 1.0 候选版搭建。** C 2.0.1 分类库已接入，6 个内部参考种子覆盖 S01–S06，分类资产校验达到 `production_ready=true`。第三方参考图片不进入公开仓库；最终 `1.0.0` 仍需项目负责人确认发布。
 
 ## 仓库结构
 
@@ -23,7 +23,7 @@
 - 1.0 预备流程顺序不随个人测试临时调整；
 - 已定义的输入输出字段不得在普通功能 PR 中直接删除或改义；
 - C 正式资产固定接入 `skills/ecommerce-poster-design/assets/classification/`；
-- 未满足正式接入条件前，必须保持 `c_library.status=not_connected`；
+- C 库状态、种子数量和生产门禁必须由自动校验结果支持；
 - 只有项目负责人确认后，才能发布最终 `1.0.0`。
 - 相关提交和 PR 会自动运行分类资产、规则选择、发布状态和测试素材检查。
 

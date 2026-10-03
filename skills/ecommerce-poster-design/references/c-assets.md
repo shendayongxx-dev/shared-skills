@@ -1,11 +1,11 @@
-# C 分类资产读取与候选接入规则
+# C 分类资产读取与生产接入规则
 
-> **当前状态：正式 C 库未接入。** 仓库内只有 `C-DEMO-*` 演示资产。外部 `classification-0.1-integration-test` 仅作为接口候选包，不复制到正式资产目录，不得据此宣称完成 C 接入。
+> **当前状态：C 2.0.1 已接入。** 正式资产位于 `assets/classification/`；6 个内部参考种子覆盖 S01–S06。第三方图片二进制不进入公开仓库，运行时使用来源 URL，并用固定 SHA-256 校验内容。
 
 ## A 组接口裁定
 
 1. A 的 style guide schema 继续保持 `1.0`，C 源资产 schema 单独记录为 `source_schema_version`。
-2. C 当前 `1.0-rc.1` 只作为过渡候选格式读取。由于 nullable ID、规则继承、`palette_sets` 和案例目录均为破坏性变化，下一份冻结候选应标为 `2.0.0-rc.1`；正式冻结后再使用 `2.0.0`。
+2. C 源 schema 已冻结为 `2.0.0`，规则版本为 `2.0.1`；旧 demo 和 rc 格式只保留兼容能力，不作为当前生产资产。
 3. `taxonomy_version=1.0` 可继续保持，因为标签 ID 集合没有因接口升级而改号。
 4. A 同时兼容旧 demo 的根目录 `case-index.csv` 和候选包的 `cases/case-index.csv`；正式 C 2.0 固定使用后者。
 5. A 负责规则编译、案例门禁、动态信息层级和安全回退；C 负责 taxonomy、规则源数据、案例元数据、来源权利和测试证据。
@@ -18,7 +18,8 @@
 - `rules.json`：标签组合到视觉规则；
 - `cases/case-index.csv`：案例索引；
 - `cases/metadata/*.json`：案例元数据；
-- `cases/assets/`：可选且必须已获授权的案例图；
+- `cases/assets/`：可选本地案例图；当前第三方参考种子不在公开仓库保存原图；
+- `authorization/`：内部参考使用批准记录；
 - `manifest.json`：文件大小与 SHA-256 清单。
 
 候选包可在外部目录运行校验器和选择器；通过前不得覆盖仓库内 demo 资产。
@@ -68,9 +69,10 @@
 
 1. `review_status=approved`；
 2. `is_seed=true`；
-3. 权利状态为 owned、licensed、permission_granted、public_domain 或 internal_authorized；
+3. 权利状态为 owned、licensed、permission_granted、public_domain、internal_authorized 或 internal_reference_authorized；
 4. 不得是 `research_reference_only`；
-5. case ID、metadata、资产 URI 和 checksum 可追溯。
+5. case ID、metadata、来源 URL 和 checksum 可追溯；
+6. 第三方内部参考种子必须为 `public_repository_allowed=false`，不得把原图作为项目资产公开再分发。
 
 draft 案例即使被规则引用，也必须从 `source_case_ids` 中过滤，只能在 `source_case_statuses` 和 warning 中留下审计记录。`is_seed=true` 不得绕过 draft 或权利门禁。
 
@@ -87,7 +89,7 @@ draft 案例即使被规则引用，也必须从 `source_case_ids` 中过滤，�
 1. C 组交付冻结 schema、taxonomy、rules、case index 和案例元数据；
 2. `validate_classification.py` 返回 `valid=true` 与 `production_ready=true`；
 3. 完成 exact、继承规则、部分 null 和全 null 的端到端回归；
-4. 至少存在 1 个 approved、权利清晰且可读取的种子案例；
+4. 至少存在 6 个 approved 内部参考种子，完整覆盖 S01–S06，并具有来源 URL 与固定 checksum；
 5. 更新版本号、变更记录和 `PROJECT_STATUS.md`；
 6. 经项目负责人审核合并。
 
@@ -105,6 +107,6 @@ draft 案例即使被规则引用，也必须从 `source_case_ids` 中过滤，�
 
 此时 `fallback_level=asset_failure_default`，必须记录 warning 和失败原因。
 
-## Demo 资产限制
+## 第三方参考种子边界
 
-当前随 Skill 提供的 `C-DEMO-*` 为管道演示数据，不是市场验证案例，不得在报告中作为真实调研证据。正式联调候选也不能自动升级为正式资产。
+当前 6 个种子由项目负责人批准用于内部分类、检索、风格分析、生成参考和测试。批准不等于取得图片版权；仓库不得包含第三方原图，输出也不得把参考图片直接当作最终设计成果交付。

@@ -1,17 +1,20 @@
 {
-  "skill_version": "0.9.0-alpha.2",
-  "release_channel": "pre-release",
-  "production_ready": false,
+  "skill_version": "1.0.0-rc.1",
+  "release_channel": "release-candidate",
+  "production_ready": true,
   "final_1_0": false,
   "c_library": {
-    "status": "not_connected",
-    "asset_mode": "demo_only",
-    "official_asset_version": null
+    "status": "connected",
+    "asset_mode": "production_internal_reference",
+    "official_asset_version": "2.0.1-a.1",
+    "source_schema_version": "2.0.0",
+    "eligible_seed_cases": 6,
+    "seed_scenario_coverage": 6
   },
   "c_candidate_adapter": {
     "status": "implemented",
-    "formal_integration": false,
-    "supported_source_schemas": ["1.0", "1.0-rc.1", "2.0.0-rc.1"]
+    "formal_integration": true,
+    "supported_source_schemas": ["1.0", "1.0-rc.1", "2.0.0-rc.1", "2.0.0"]
   },
   "workflow_version": "1.0",
   "schema_version": "1.0",

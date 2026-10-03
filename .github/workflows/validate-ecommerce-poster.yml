@@ -37,7 +37,32 @@ jobs:
         run: >-
           python skills/ecommerce-poster-design/scripts/select_style.py
           skills/ecommerce-poster-design/assets/classification
-          P01 M01 S01 --request-id CI-SMOKE
+          P02 M03 S03 --request-id CI-SMOKE
+
+      - name: Verify connected C library and six seed scenarios
+        shell: python
+        run: |
+          import json
+          import subprocess
+          import sys
+
+          validator = "skills/ecommerce-poster-design/scripts/validate_classification.py"
+          selector = "skills/ecommerce-poster-design/scripts/select_style.py"
+          assets = "skills/ecommerce-poster-design/assets/classification"
+
+          validation = json.loads(subprocess.check_output([sys.executable, validator, assets]))
+          assert validation["valid"] is True
+          assert validation["production_ready"] is True
+          assert validation["counts"]["eligible_seed_cases"] == 6
+          assert validation["counts"]["eligible_seed_scenarios"] == 6
+
+          exact = json.loads(subprocess.check_output([
+              sys.executable, selector, assets, "P02", "M03", "S03",
+              "--request-id", "CI-FORMAL-EXACT",
+          ]))
+          assert exact["source_rule_ids"] == ["R-001"]
+          assert exact["source_case_ids"] == ["C-030"]
+          assert exact["source_case_references"][0]["checksum_sha256"]
 
       - name: Exercise C candidate adapter
         shell: python
@@ -78,7 +103,7 @@ jobs:
           assert empty["source_rule_ids"] == ["R-DEFAULT"]
           assert empty["fallback_level"] == "global"
 
-      - name: Validate pre-release and C-library state
+      - name: Validate release-candidate and C-library state
         shell: python
         run: |
           import json
@@ -93,11 +118,12 @@ jobs:
           )
 
           assert version["skill_version"] == manifest["version"]
-          assert version["release_channel"] == "pre-release"
+          assert version["release_channel"] == "release-candidate"
           assert version["final_1_0"] is False
-          assert version["production_ready"] is False
-          assert version["c_library"]["status"] == "not_connected"
-          assert version["c_library"]["asset_mode"] == "demo_only"
+          assert version["production_ready"] is True
+          assert version["c_library"]["status"] == "connected"
+          assert version["c_library"]["asset_mode"] == "production_internal_reference"
+          assert version["c_library"]["eligible_seed_cases"] == 6
 
       - name: Reject user product images in tests
         shell: python

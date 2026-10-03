@@ -1,25 +1,30 @@
 {
   "repository": "shendayongxx-dev/shared-skills",
   "skill": "ecommerce-poster-design",
-  "version": "0.9.0-alpha.2",
-  "release_channel": "pre-release",
+  "version": "1.0.0-rc.1",
+  "release_channel": "release-candidate",
   "final_1_0": false,
-  "production_ready": false,
+  "production_ready": true,
   "c_library": {
-    "status": "not_connected",
-    "asset_mode": "demo_only"
+    "status": "connected",
+    "asset_mode": "production_internal_reference",
+    "asset_version": "2.0.1-a.1",
+    "source_schema_version": "2.0.0",
+    "eligible_seed_cases": 6,
+    "seed_scenario_coverage": 6
   },
   "included": [
-    "Skill source and interface references",
-    "C candidate validation, inheritance, nullable classification, and approval-gate adapter",
-    "Demo classification assets",
-    "Non-sensitive fixtures and structured smoke-test records",
-    "Contribution rules, CODEOWNERS, and PR checklist"
+    "Skill 1.0 workflow and interface references",
+    "C 2.0.1 taxonomy, rules, case metadata, schemas, and manifest",
+    "Six approved internal-reference seed records covering S01-S06",
+    "Pinned source URLs and SHA-256 values for seed verification",
+    "Non-sensitive fixtures and structured smoke-test records"
   ],
   "excluded": [
+    "Third-party seed image binaries",
     "User-provided NORI product and logo image files",
     "Generated poster binaries",
-    "Local runtime artifacts",
-    "C integration-candidate package and unapproved third-party case assets"
-  ]
+    "Local runtime artifacts and credentials"
+  ],
+  "final_release_gate": "Project owner confirmation after release-candidate regression"
 }
