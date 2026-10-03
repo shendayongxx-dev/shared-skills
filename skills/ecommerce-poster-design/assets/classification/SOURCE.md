@@ -4,7 +4,7 @@
 - Package SHA-256: `c929fdc6f90bbfba06a892bf6c54f14cae8f4a6dc0baabadceadb4a1d25bafec`
 - Source schema: `2.0.0`
 - Rules version: `2.0.1`
-- A integration revision: `1.0.0-rc.1`
+- A integration revision: `1.0.0`
 
 The C package passed its deterministic interface checks before integration. A then promoted six reviewed third-party cases to internal reference seeds under `AUTH-SEED-1.0-001`, added pinned content hashes, and connected them to active rules.
 
