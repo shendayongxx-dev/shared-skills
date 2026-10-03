@@ -1,23 +1,34 @@
 {
   "repository": "shendayongxx-dev/shared-skills",
   "skill": "ecommerce-poster-design",
-  "version": "0.9.0-alpha.1",
-  "release_channel": "pre-release",
-  "final_1_0": false,
-  "production_ready": false,
+  "version": "1.0.0",
+  "release_channel": "stable",
+  "final_1_0": true,
+  "production_ready": true,
   "c_library": {
-    "status": "not_connected",
-    "asset_mode": "demo_only"
+    "status": "connected",
+    "asset_mode": "production_internal_reference",
+    "asset_version": "2.0.1-a.1",
+    "source_schema_version": "2.0.0",
+    "eligible_seed_cases": 6,
+    "seed_scenario_coverage": 6
   },
   "included": [
-    "Skill source and interface references",
-    "Demo classification assets",
+    "Skill 1.0 workflow and interface references",
+    "Installation, upgrade, rollback, and verification guide",
+    "C 2.0.1 taxonomy, rules, case metadata, schemas, and manifest",
+    "Six approved internal-reference seed records covering S01-S06",
+    "Pinned source URLs and SHA-256 values for seed verification",
     "Non-sensitive fixtures and structured smoke-test records",
-    "Contribution rules, CODEOWNERS, and PR checklist"
+    "Sanitized final acceptance record for Chinese and English outputs"
   ],
   "excluded": [
+    "Third-party seed image binaries",
     "User-provided NORI product and logo image files",
     "Generated poster binaries",
-    "Local runtime artifacts"
-  ]
+    "Local runtime artifacts and credentials"
+  ],
+  "final_release_gate": "completed",
+  "release_tag": "ecommerce-poster-design-v1.0.0",
+  "acceptance_record": "tests/ecommerce-poster-design/acceptance/FINAL-NORI-1.0/acceptance-summary.json"
 }

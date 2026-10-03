@@ -65,10 +65,11 @@
 ```json
 {
   "schema_version": "1.0",
+  "source_schema_version": "2.0.0",
   "taxonomy_version": "1.0",
-  "asset_version": "demo-1.0",
+  "asset_version": "2.0.1",
   "tags": {
-    "audience_id": "P01",
+    "audience_id": null,
     "motivation_id": "M01",
     "scenario_id": "S01"
   },
@@ -78,9 +79,17 @@
     "motivation": 0.0,
     "scenario": 0.0
   },
-  "source_rule_ids": ["R-001"],
-  "source_case_ids": ["C-DEMO-001"],
-  "fallback_level": "exact",
+  "needs_human_review": true,
+  "source_rule_ids": ["R-201"],
+  "inheritance_chain": ["R-201"],
+  "source_case_ids": [],
+  "source_case_statuses": [],
+  "source_case_references": [],
+  "fallback_level": "single_dimension",
+  "selected_palette_set": {
+    "palette_id": "R-201-P1",
+    "colors": []
+  },
   "palette": [],
   "typography": {},
   "layout": {},
@@ -93,6 +102,14 @@
 ```
 
 `fallback_level` 只能是 `exact`、`two_dimension`、`single_dimension`、`global` 或 `asset_failure_default`。
+
+- `schema_version` 是 A 输出的 style guide 契约版本；`source_schema_version` 是 C 源资产版本，二者不得混用。
+- 分类证据不足时对应 tag 为 null，且 `needs_human_review=true`；未知维度只允许匹配 `*`。
+- `inheritance_chain` 按父规则到选中规则排列。
+- `selected_palette_set` 是本次完整选中的色板；兼容字段 `palette` 必须等于其 `colors`，不得跨色板拼接。
+- `source_case_ids` 只包含通过审核、权利和种子门禁的案例；被过滤案例只记录在 `source_case_statuses` 与 warning。
+- `source_case_references` 提供内部参考种子的来源 URL、固定 SHA-256 和使用范围。第三方图片只用于内部参考，不是项目自有资产，也不得从公开仓库再分发。
+- `layout.information_hierarchy` 由 A 根据 `protected_content` 和 C 的层级偏好生成，不得补写未提供的价格、期限或 CTA。
 
 ## 硬性检查结果
 

@@ -1,0 +1,71 @@
+{
+  "schema_version": "2.0.0",
+  "taxonomy_version": "1.0",
+  "case_id": "C-018",
+  "title": "益圆碳性电池五号5号空调电视电风扇灯遥控器智能电子家居可视电子门铃体重秤计算器七号7号电池官方正品AIR",
+  "tags": {
+    "audience_id": "P05",
+    "motivation_id": "M03",
+    "scenario_id": "S01"
+  },
+  "rule_ids": [
+    "R-010",
+    "R-108",
+    "R-203"
+  ],
+  "is_seed": false,
+  "asset": {
+    "storage_type": "external_research_reference",
+    "local_path": null,
+    "internal_asset_uri": null,
+    "external_image_url": "https://img.alicdn.com/imgextra/i3/2215257299546/O1CN01seL1lu2KO7xNkrCQO_!!2215257299546.jpg_q50.jpg_.webp",
+    "mime_type": null,
+    "format": null,
+    "width": null,
+    "height": null,
+    "bytes": null,
+    "checksum": null,
+    "public_repository_allowed": false
+  },
+  "source": {
+    "platform": "天猫",
+    "publisher_or_shop": null,
+    "url": "https://detail.tmall.com/item.htm?id=722765525710&skuId=6005136012083",
+    "collected_at": "2026-10-02",
+    "usage_status": "research_reference_only"
+  },
+  "rights": {
+    "rights_status": "third_party_unverified",
+    "rights_proof_ref": null,
+    "redistribution_status": "prohibited_public_redistribution",
+    "scope": "仅限研究参考；不得作为正式种子或公开再分发。",
+    "expires_at": null
+  },
+  "style_analysis": {
+    "text_signals": "碳性电池、240%国家标准电量、优质原料、活性物质、黄金配比、家用遥控器",
+    "primary_information_focus": "核心卖点",
+    "palette_sets_text": "背景#F7F7F8；辅助#DCE9F6；强调#F28CAA / #55A9F2；正文#171719；材质#C6C9CC",
+    "typography": "高识别黑体；核心数字与“续航长”大字加粗；证据说明使用常规字重",
+    "composition": "电池主体居中放大，顶部为续航主标题，左右分布三项品质证据，蓝色箭头串联功能逻辑",
+    "product_ratio": 0.36,
+    "info_density": 3,
+    "promotion_intensity": 2,
+    "visual_tags": "白灰背景、粉蓝对比、中心产品、功能证据、续航强调、品质可信",
+    "why_effective": "大标题先建立续航利益点，产品居中保持辨识度，三项证据围绕主体形成清晰阅读路径。",
+    "prohibited_styles": "避免蓝色箭头遮挡电池、证据气泡过多、粉蓝饱和度同时过高，以及把240%数据脱离脚注单独夸大。"
+  },
+  "why_effective": "大标题先建立续航利益点，产品居中保持辨识度，三项证据围绕主体形成清晰阅读路径。",
+  "content_review": {
+    "content_review_status": "reviewed",
+    "reviewer_role": "C组内容标注复核",
+    "reviewed_at": "2026-10-02T12:00:00+08:00",
+    "note": "仅确认分类标签与视觉分析字段已复核，不代表生产授权或资产门禁通过。",
+    "evidence_ref": "cases/case-index.csv"
+  },
+  "review": {
+    "review_status": "draft",
+    "reviewer": null,
+    "reviewed_at": null,
+    "note": "等待项目负责人完成权利、资产可读性与checksum生产审核。"
+  }
+}
