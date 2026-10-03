@@ -7,6 +7,10 @@ on:
       - "tests/ecommerce-poster-design/**"
       - "PROJECT_STATUS.md"
       - "RELEASE_MANIFEST.json"
+      - "README.md"
+      - "INSTALL.md"
+      - "CHANGELOG.md"
+      - "CONTRIBUTING.md"
       - ".github/workflows/validate-ecommerce-poster.yml"
   pull_request:
     paths:
@@ -14,6 +18,10 @@ on:
       - "tests/ecommerce-poster-design/**"
       - "PROJECT_STATUS.md"
       - "RELEASE_MANIFEST.json"
+      - "README.md"
+      - "INSTALL.md"
+      - "CHANGELOG.md"
+      - "CONTRIBUTING.md"
       - ".github/workflows/validate-ecommerce-poster.yml"
 
 jobs:
@@ -103,7 +111,7 @@ jobs:
           assert empty["source_rule_ids"] == ["R-DEFAULT"]
           assert empty["fallback_level"] == "global"
 
-      - name: Validate release-candidate and C-library state
+      - name: Validate stable release and C-library state
         shell: python
         run: |
           import json
@@ -118,22 +126,38 @@ jobs:
           )
 
           assert version["skill_version"] == manifest["version"]
-          assert version["release_channel"] == "release-candidate"
-          assert version["final_1_0"] is False
+          assert version["skill_version"] == "1.0.0"
+          assert version["release_channel"] == "stable"
+          assert version["final_1_0"] is True
           assert version["production_ready"] is True
           assert version["c_library"]["status"] == "connected"
           assert version["c_library"]["asset_mode"] == "production_internal_reference"
           assert version["c_library"]["eligible_seed_cases"] == 6
+          assert manifest["release_tag"] == "ecommerce-poster-design-v1.0.0"
 
-      - name: Reject user product images in tests
+          acceptance = json.loads(
+              Path(manifest["acceptance_record"]).read_text(encoding="utf-8")
+          )
+          assert acceptance["overall_status"] == "pass"
+          assert acceptance["skill_version"] == "1.0.0"
+          assert len(acceptance["results"]) == 2
+          assert all(item["hard_checks_failed"] == 0 for item in acceptance["results"])
+
+      - name: Reject private and third-party raster assets
         shell: python
         run: |
           from pathlib import Path
 
           forbidden = {".png", ".jpg", ".jpeg", ".webp"}
-          found = [
-              str(path)
-              for path in Path("tests/ecommerce-poster-design").rglob("*")
-              if path.is_file() and path.suffix.lower() in forbidden
+          roots = [
+              Path("tests/ecommerce-poster-design"),
+              Path("skills/ecommerce-poster-design/assets/classification"),
           ]
-          assert not found, "Do not commit user product images: " + ", ".join(found)
+          found = []
+          for root in roots:
+              found.extend(
+                  str(path)
+                  for path in root.rglob("*")
+                  if path.is_file() and path.suffix.lower() in forbidden
+              )
+          assert not found, "Do not commit user or third-party raster images: " + ", ".join(found)
