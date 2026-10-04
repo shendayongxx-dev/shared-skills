@@ -1,2 +1,0 @@
-case_id,audience_id,motivation_id,scenario_id,rule_ids,metadata_path,asset_location,storage_type,is_seed,status
-C-DEMO-001,P01,M01,S01,R-001,cases/C-DEMO-001.json,cases/C-DEMO-001.svg,local,true,demo_only

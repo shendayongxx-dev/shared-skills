@@ -21,11 +21,12 @@ GitHub Actions 的 `Validate ecommerce poster skill` 必须通过后才能合并
 - 正式 C 资产只进入 `skill/zh/ecommerce-poster-design/assets/classification/`。
 - 不通过修改 `SKILL.md` 来适配某个临时案例。
 - taxonomy ID 是稳定关联键：允许改展示名称，不允许随意改 ID；废弃项使用 `deprecated`。
-- 正式接入前保持 `c_library.status=not_connected` 和 `asset_mode=demo_only`。
-- 只有满足 `references/c-assets.md` 的全部完成条件，才能宣布已接入 C 库。
+- C 2.0.1 已正式接入；后续变更不得降低 6 个场景的种子覆盖或绕过 checksum 门禁。
+- 第三方参考图只保存来源 URL、哈希和审核记录，不得把图片二进制提交到公开仓库。
 
 ## 版本规则
 
-- 当前为 `0.9.0-alpha.1`，不得标为最终 1.0。
-- 修正文档或小缺陷递增 alpha 修订号。
-- 接入 C 正式库并完成回归后进入候选发布版本；最终 `1.0.0` 必须由项目负责人确认。
+- 当前稳定版为 `1.0.0`；已发布标签不可移动、覆盖或静默重写。
+- 向后兼容的缺陷修复递增补丁版本，例如 `1.0.1`。
+- 新增能力但保持兼容时递增次版本；破坏现有输入输出契约时必须提供迁移说明并按语义化版本升级主版本。
+- C 库更新需单独分支、完整回归和项目负责人确认，不得把候选资产直接覆盖稳定资产。
