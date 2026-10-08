@@ -1,6 +1,29 @@
 {
   "repository": "shendayongxx-dev/shared-skills",
   "skill": "ecommerce-poster-design",
+  "latest_version": "2.0.1",
+  "version_directories": {
+    "1.0.0": "skills/ecommerce-poster-design",
+    "2.0.1": "skills/ecommerce-poster-design-2.0.1"
+  },
+  "releases": [
+    {
+      "version": "1.0.0",
+      "status": "historical-stable",
+      "directory": "skills/ecommerce-poster-design",
+      "tests": "tests/ecommerce-poster-design",
+      "tag": "ecommerce-poster-design-v1.0.0"
+    },
+    {
+      "version": "2.0.1",
+      "status": "current",
+      "directory": "skills/ecommerce-poster-design-2.0.1",
+      "tests": "tests/ecommerce-poster-design-2.0.1",
+      "tag": "ecommerce-poster-design-v2.0.1",
+      "generation_backend": "Codex imagegen/image_gen at overall skill layer",
+      "consumer_agent_boundary": "evaluation, scoring, evidence, and routing only"
+    }
+  ],
   "version": "1.0.0",
   "release_channel": "stable",
   "final_1_0": true,

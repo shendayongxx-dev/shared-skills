@@ -1,0 +1,29 @@
+{
+  "skill_name": "ecommerce-poster-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "主流程已经完成硬性合规检查。请读取提供的 A-D-2.0 消费者通过结果，在 Skill 2.0 中给出下一步机器可读路由 JSON。当前全局累计重画次数为 1。不得调用美学 Agent。",
+      "expected_output": "输出 status=passed、action=complete_v2，并明确消费者已通过且美学开关关闭；保留评分、五维、锁定维度和八组 protected_content。",
+      "files": ["modules/consumer-agent/examples/consumer-output-pass.json"],
+      "expectations": [
+        "输出状态为 passed，动作为 complete_v2",
+        "没有调用或建议调用美学 Agent",
+        "保留 A-D-2.0 的评分、五维、锁定维度和 protected_content",
+        "使用全局累计重画次数 1，而非重置计数"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "主流程已经完成硬性合规检查。请读取提供的 A-D-2.0 消费者未通过结果，在 Skill 2.0 中给出下一步机器可读路由 JSON。当前全局累计重画次数为 1。",
+      "expected_output": "输出 redraw_then_full_hard_check，将次数递增为 2，携带配对问题/建议、锁定维度和原样 protected_content，并要求重画后完整执行 HC-01 至 HC-12。",
+      "files": ["modules/consumer-agent/examples/consumer-output-iterate.json"],
+      "expectations": [
+        "动作是 redraw_then_full_hard_check，下一次全局重画次数为 2",
+        "保留问题、修改建议、锁定维度和八组 protected_content",
+        "明确重画后必须完整重跑 HC-01 至 HC-12",
+        "不把总分 85 错判为通过，因为 population_scene_fit 只有 13"
+      ]
+    }
+  ]
+}

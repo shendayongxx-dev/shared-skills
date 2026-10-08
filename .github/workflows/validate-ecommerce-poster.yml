@@ -4,7 +4,9 @@ on:
   push:
     paths:
       - "skills/ecommerce-poster-design/**"
+      - "skills/ecommerce-poster-design-2.0.1/**"
       - "tests/ecommerce-poster-design/**"
+      - "tests/ecommerce-poster-design-2.0.1/**"
       - "PROJECT_STATUS.md"
       - "RELEASE_MANIFEST.json"
       - "README.md"
@@ -15,7 +17,9 @@ on:
   pull_request:
     paths:
       - "skills/ecommerce-poster-design/**"
+      - "skills/ecommerce-poster-design-2.0.1/**"
       - "tests/ecommerce-poster-design/**"
+      - "tests/ecommerce-poster-design-2.0.1/**"
       - "PROJECT_STATUS.md"
       - "RELEASE_MANIFEST.json"
       - "README.md"
@@ -25,7 +29,7 @@ on:
       - ".github/workflows/validate-ecommerce-poster.yml"
 
 jobs:
-  validate:
+  validate_v1:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -161,3 +165,47 @@ jobs:
                   if path.is_file() and path.suffix.lower() in forbidden
               )
           assert not found, "Do not commit user or third-party raster images: " + ", ".join(found)
+
+  validate_v2_0_1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate 2.0.1 integration
+        run: >-
+          python skills/ecommerce-poster-design-2.0.1/scripts/validate_consumer_integration.py
+          skills/ecommerce-poster-design-2.0.1
+
+      - name: Validate 2.0.1 classification assets
+        run: >-
+          python skills/ecommerce-poster-design-2.0.1/scripts/validate_classification.py
+          skills/ecommerce-poster-design-2.0.1/assets/classification
+
+      - name: Test 2.0.1 consumer routing
+        run: python skills/ecommerce-poster-design-2.0.1/scripts/test_consumer_routing.py
+
+      - name: Enforce ImageGen ownership boundary
+        shell: python
+        run: |
+          from pathlib import Path
+
+          root = Path("skills/ecommerce-poster-design-2.0.1")
+          consumer = root / "modules" / "consumer-agent"
+          consumer_hits = []
+          for path in consumer.rglob("*"):
+              if path.is_file():
+                  text = path.read_text(encoding="utf-8", errors="ignore").lower()
+                  if "imagegen" in text or "image_gen" in text:
+                      consumer_hits.append(str(path))
+          assert not consumer_hits, "ImageGen must remain at the overall skill layer: " + ", ".join(consumer_hits)
+
+          skill_text = (root / "SKILL.md").read_text(encoding="utf-8").lower()
+          integration_text = (root / "references" / "imagegen-integration.md").read_text(encoding="utf-8").lower()
+          assert "imagegen" in skill_text and "image_gen" in skill_text
+          assert "不属于 `modules/consumer-agent`" in integration_text

@@ -8,3 +8,5 @@ outputs/
 tests/**/poster-*.png
 tests/**/poster-*.jpg
 tests/**/input-assets/
+__pycache__/
+*.pyc
