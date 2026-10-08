@@ -1,8 +1,22 @@
 {
-  "skill_version": "1.0.0",
-  "release_channel": "stable",
+  "skill_version": "2.0.1",
+  "release_channel": "local-integrated",
   "production_ready": true,
-  "final_1_0": true,
+  "final_1_0": false,
+  "baseline_version": "1.0.0",
+  "generation_backend": {
+    "skill": "imagegen",
+    "tool": "image_gen",
+    "mode": "builtin",
+    "required": true,
+    "cli_fallback_requires_user_confirmation": true
+  },
+  "consumer_agent_module": {
+    "name": "02-consumer-agent-skill",
+    "version": "1.5.3",
+    "interface_version": "A-D-2.0",
+    "path": "modules/consumer-agent"
+  },
   "c_library": {
     "status": "connected",
     "asset_mode": "production_internal_reference",
@@ -16,10 +30,10 @@
     "formal_integration": true,
     "supported_source_schemas": ["1.0", "1.0-rc.1", "2.0.0-rc.1", "2.0.0"]
   },
-  "workflow_version": "1.0",
-  "schema_version": "1.0",
+  "workflow_version": "2.0",
+  "schema_version": "2.0",
   "feature_flags": {
-    "consumer_agent": false,
+    "consumer_agent": true,
     "aesthetic_agent": false
   },
   "retry_policy": {

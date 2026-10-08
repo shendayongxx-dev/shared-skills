@@ -1,10 +1,22 @@
 {
   "repository": "shendayongxx-dev/shared-skills",
   "skill": "ecommerce-poster-design",
-  "version": "1.0.0",
+  "version": "2.0.1",
   "release_channel": "stable",
-  "final_1_0": true,
   "production_ready": true,
+  "generation_backend": {
+    "skill": "imagegen",
+    "tool": "image_gen",
+    "mode": "builtin"
+  },
+  "consumer_agent": {
+    "version": "1.5.3",
+    "interface_version": "A-D-2.0",
+    "enabled": true
+  },
+  "aesthetic_agent": {
+    "enabled": false
+  },
   "c_library": {
     "status": "connected",
     "asset_mode": "production_internal_reference",
@@ -14,21 +26,18 @@
     "seed_scenario_coverage": 6
   },
   "included": [
-    "Skill 1.0 workflow and interface references",
-    "Installation, upgrade, rollback, and verification guide",
+    "Skill 2.0.1 workflow and ImageGen integration contract",
+    "Consumer Agent 1.5.3 module and deterministic routing",
     "C 2.0.1 taxonomy, rules, case metadata, schemas, and manifest",
-    "Six approved internal-reference seed records covering S01-S06",
-    "Pinned source URLs and SHA-256 values for seed verification",
-    "Non-sensitive fixtures and structured smoke-test records",
-    "Sanitized final acceptance record for Chinese and English outputs"
+    "Installation, verification, upgrade, and rollback guide",
+    "Non-sensitive evaluation definitions"
   ],
   "excluded": [
+    "Codex system ImageGen source files",
     "Third-party seed image binaries",
-    "User-provided NORI product and logo image files",
+    "User-provided product and logo image files",
     "Generated poster binaries",
     "Local runtime artifacts and credentials"
   ],
-  "final_release_gate": "completed",
-  "release_tag": "ecommerce-poster-design-v1.0.0",
-  "acceptance_record": "tests/ecommerce-poster-design/acceptance/FINAL-NORI-1.0/acceptance-summary.json"
+  "release_tag": "ecommerce-poster-design-v2.0.1"
 }
