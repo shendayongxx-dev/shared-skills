@@ -1,0 +1,84 @@
+{
+  "schema_version": "2.0.0",
+  "taxonomy_version": "1.0",
+  "case_id": "C-019",
+  "title": "大疆 DJI Ronin 4D 如影全画幅旗舰云台四轴增稳电影机专业摄像机",
+  "tags": {
+    "audience_id": "P04",
+    "motivation_id": "M04",
+    "scenario_id": "S02"
+  },
+  "rule_ids": [
+    "R-009",
+    "R-107",
+    "R-204"
+  ],
+  "is_seed": true,
+  "asset": {
+    "storage_type": "external_reference_pinned",
+    "local_path": null,
+    "internal_asset_uri": "seedref://ecommerce-poster-design/1.0/C-019.webp",
+    "external_image_url": "https://img.alicdn.com/imgextra/i1/1773095659/O1CN01iZFoYaARZaE1chua_!!4611686018427382507-0-item_pic.jpg_q50.jpg_.webp",
+    "mime_type": "image/webp",
+    "format": "webp",
+    "width": 800,
+    "height": 800,
+    "bytes": 21764,
+    "checksum": "sha256:04fa3b7ea1846eba8ef0601df48c84f744a2f87b897dcecbd174e26e0be24551",
+    "public_repository_allowed": false
+  },
+  "source": {
+    "platform": "天猫",
+    "publisher_or_shop": null,
+    "url": "https://detail.tmall.com/item.htm?id=672898569437",
+    "collected_at": "2026-10-02",
+    "usage_status": "internal_reference_seed"
+  },
+  "rights": {
+    "rights_status": "internal_reference_authorized",
+    "rights_proof_ref": "AUTH-SEED-1.0-001",
+    "redistribution_status": "prohibited_public_redistribution",
+    "scope": "仅限本项目内部分类、检索、风格分析、生成参考与测试；不得公开再分发，不代表项目取得图片版权。",
+    "expires_at": null
+  },
+  "style_analysis": {
+    "text_signals": "专业影像、电影机、稳定系统、创作者、性能参数",
+    "primary_information_focus": "商品主体",
+    "palette_sets_text": "背景#151E28；辅助#394656；强调#4D8FCB；正文#F2F5F7",
+    "typography": "专业科技无衬线、标题紧凑、英文型号突出",
+    "composition": "深色舞台式居中陈列，侧逆光勾边，卖点按钮规整排布",
+    "product_ratio": 0.58,
+    "info_density": 3,
+    "promotion_intensity": 2,
+    "visual_tags": "深蓝黑、专业影像、轮廓光、设备特写、性能感",
+    "why_effective": "暗色场景强化专业设备定位，轮廓光保持复杂机身的识别度。",
+    "prohibited_styles": "避免纯黑吞没结构、蓝光过艳、把专业参数做成低价促销贴。"
+  },
+  "why_effective": "暗色场景强化专业设备定位，轮廓光保持复杂机身的识别度。",
+  "content_review": {
+    "content_review_status": "reviewed",
+    "reviewer_role": "C组内容标注复核",
+    "reviewed_at": "2026-10-02T12:00:00+08:00",
+    "note": "仅确认分类标签与视觉分析字段已复核，不代表生产授权或资产门禁通过。",
+    "evidence_ref": "cases/case-index.csv"
+  },
+  "review": {
+    "review_status": "approved",
+    "reviewer": "C_group + project_owner + A_group",
+    "reviewed_at": "2026-10-04T00:00:00+08:00",
+    "note": "C 已完成内容复核；项目负责人批准第三方照片作为内部种子参考；A 已下载核验文件并记录 SHA-256。"
+  },
+  "rights_review": {
+    "status": "approved_for_internal_reference",
+    "reviewer_role": "project_owner",
+    "reviewed_at": "2026-10-04T00:00:00+08:00",
+    "evidence_ref": "AUTH-SEED-1.0-001"
+  },
+  "technical_review": {
+    "status": "approved",
+    "reviewer_role": "A_group",
+    "reviewed_at": "2026-10-04T00:00:00+08:00",
+    "checksum": "sha256:04fa3b7ea1846eba8ef0601df48c84f744a2f87b897dcecbd174e26e0be24551",
+    "asset_verification": "downloaded_and_visually_checked"
+  }
+}

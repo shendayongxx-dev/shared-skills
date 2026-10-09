@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "skills/ecommerce-poster-design/**"
+      - "skills/ecommerce-poster-design-1.0.0-imagegen.1/**"
       - "skills/ecommerce-poster-design-2.0.1/**"
       - "tests/ecommerce-poster-design/**"
       - "tests/ecommerce-poster-design-2.0.1/**"
@@ -17,6 +18,7 @@ on:
   pull_request:
     paths:
       - "skills/ecommerce-poster-design/**"
+      - "skills/ecommerce-poster-design-1.0.0-imagegen.1/**"
       - "skills/ecommerce-poster-design-2.0.1/**"
       - "tests/ecommerce-poster-design/**"
       - "tests/ecommerce-poster-design-2.0.1/**"
@@ -209,3 +211,36 @@ jobs:
           integration_text = (root / "references" / "imagegen-integration.md").read_text(encoding="utf-8").lower()
           assert "imagegen" in skill_text and "image_gen" in skill_text
           assert "不属于 `modules/consumer-agent`" in integration_text
+
+  validate_v1_imagegen:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate 1.0 ImageGen classification assets
+        run: >-
+          python skills/ecommerce-poster-design-1.0.0-imagegen.1/scripts/validate_classification.py
+          skills/ecommerce-poster-design-1.0.0-imagegen.1/assets/classification
+
+      - name: Verify 1.0 ImageGen boundary
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+
+          root = Path("skills/ecommerce-poster-design-1.0.0-imagegen.1")
+          version = json.loads((root / "assets/config/version.json").read_text(encoding="utf-8"))
+          assert version["skill_version"] == "1.0.0-imagegen.1"
+          assert version["generation_backend"]["skill"] == "imagegen"
+          assert version["generation_backend"]["tool"] == "image_gen"
+          assert version["feature_flags"]["consumer_agent"] is False
+          assert version["feature_flags"]["aesthetic_agent"] is False
+          assert not (root / "modules/consumer-agent").exists()
+          skill_text = (root / "SKILL.md").read_text(encoding="utf-8").lower()
+          assert "imagegen" in skill_text and "image_gen" in skill_text

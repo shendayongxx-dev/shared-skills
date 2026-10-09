@@ -4,6 +4,7 @@
   "latest_version": "2.0.1",
   "version_directories": {
     "1.0.0": "skills/ecommerce-poster-design",
+    "1.0.0-imagegen.1": "skills/ecommerce-poster-design-1.0.0-imagegen.1",
     "2.0.1": "skills/ecommerce-poster-design-2.0.1"
   },
   "releases": [
@@ -13,6 +14,16 @@
       "directory": "skills/ecommerce-poster-design",
       "tests": "tests/ecommerce-poster-design",
       "tag": "ecommerce-poster-design-v1.0.0"
+    },
+    {
+      "version": "1.0.0-imagegen.1",
+      "status": "standalone-imagegen",
+      "directory": "skills/ecommerce-poster-design-1.0.0-imagegen.1",
+      "tests": "tests/ecommerce-poster-design",
+      "tag": "ecommerce-poster-design-v1.0.0-imagegen.1",
+      "generation_backend": "Codex imagegen/image_gen at overall skill layer",
+      "consumer_agent": false,
+      "aesthetic_agent": false
     },
     {
       "version": "2.0.1",

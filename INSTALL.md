@@ -3,9 +3,10 @@
 ## 选择版本
 
 - 当前正式版 2.0.1：仓库目录 `skills/ecommerce-poster-design-2.0.1/`；
+- 1.0 ImageGen 独立版 1.0.0-imagegen.1：仓库目录 `skills/ecommerce-poster-design-1.0.0-imagegen.1/`；
 - 历史稳定版 1.0.0：仓库目录 `skills/ecommerce-poster-design/`，内容保持冻结。
 
-无论选择哪个版本，复制到本机 Codex Skills 目录后，目标目录都应命名为 `ecommerce-poster-design`。不要把两个版本的文件混合到同一安装目录。
+无论选择哪个版本，复制到本机 Codex Skills 目录后，目标目录都应命名为 `ecommerce-poster-design`。不要把不同版本的文件混合到同一安装目录。
 
 ## 安装 2.0.1（推荐）
 
@@ -21,6 +22,23 @@ Copy-Item -Recurse -LiteralPath '.\shared-skills\skills\ecommerce-poster-design-
 python scripts/validate_classification.py assets/classification
 python scripts/validate_consumer_integration.py .
 python scripts/test_consumer_routing.py
+```
+
+## 安装 1.0.0-imagegen.1
+
+正式版本标签为 `ecommerce-poster-design-v1.0.0-imagegen.1`。该版本保持 1.0 的输入、分类、硬性合规和有限重画流程，由整体 Skill 调用 Codex ImageGen；不包含消费者 Agent或美学 Agent。
+
+```powershell
+git clone --branch ecommerce-poster-design-v1.0.0-imagegen.1 --depth 1 https://github.com/shendayongxx-dev/shared-skills.git shared-skills-1.0.0-imagegen.1
+$skillTarget = Join-Path $env:USERPROFILE '.codex\skills\ecommerce-poster-design'
+Copy-Item -Recurse -LiteralPath '.\shared-skills-1.0.0-imagegen.1\skills\ecommerce-poster-design-1.0.0-imagegen.1' -Destination $skillTarget
+```
+
+安装后运行：
+
+```text
+python scripts/validate_classification.py assets/classification
+python scripts/select_style.py assets/classification P02 M03 S03 --request-id INSTALL-CHECK
 ```
 
 ## 安装 1.0.0

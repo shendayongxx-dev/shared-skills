@@ -1,0 +1,83 @@
+{
+  "schema_version": "2.0.0",
+  "taxonomy_version": "1.0",
+  "case_id": "C-080",
+  "title": "三七分宽拉杆行李箱大容量防爆拉链前开口旅行箱多功能减震拉杆箱",
+  "tags": {
+    "audience_id": "P02",
+    "motivation_id": "M03",
+    "scenario_id": "S04"
+  },
+  "rule_ids": [
+    "R-101",
+    "R-203"
+  ],
+  "is_seed": true,
+  "asset": {
+    "storage_type": "external_reference_pinned",
+    "local_path": null,
+    "internal_asset_uri": "seedref://ecommerce-poster-design/1.0/C-080.webp",
+    "external_image_url": "https://img.alicdn.com/imgextra/i2/2215547697154/O1CN016xW93r22iaX3SlO8N_!!4611686018427385858-0-item_pic.jpg_q50.jpg_.webp",
+    "mime_type": "image/webp",
+    "format": "webp",
+    "width": 1500,
+    "height": 2000,
+    "bytes": 81820,
+    "checksum": "sha256:fc80c13f709fa0a99ce72d703d5d3d50530cb05347d37c9f208384fe58fb9d7b",
+    "public_repository_allowed": false
+  },
+  "source": {
+    "platform": "天猫",
+    "publisher_or_shop": null,
+    "url": "https://detail.tmall.com/item.htm?id=958659221349&skuId=5886102088799",
+    "collected_at": "2026-10-02",
+    "usage_status": "internal_reference_seed"
+  },
+  "rights": {
+    "rights_status": "internal_reference_authorized",
+    "rights_proof_ref": "AUTH-SEED-1.0-001",
+    "redistribution_status": "prohibited_public_redistribution",
+    "scope": "仅限本项目内部分类、检索、风格分析、生成参考与测试；不得公开再分发，不代表项目取得图片版权。",
+    "expires_at": null
+  },
+  "style_analysis": {
+    "text_signals": "拉杆行李箱、大容量、前开口、可放笔记本、防爆拉链、旅行、减震",
+    "primary_information_focus": "商品主体",
+    "palette_sets_text": "色板A：背景#E8E8E6、辅助#B9B9B5、强调#E5B62E、正文#111111、材质#D6D2C8；色板B：背景#F2F0EC、辅助#C6C1B8、强调#BC7D34、正文#202020、材质#9EA2A4",
+    "typography": "国际化几何无衬线，品牌大字；核心结构词中粗，说明保持克制",
+    "composition": "主箱体正面偏右放大，前开口结构用小窗或局部图示说明；左侧用短标题形成强留白",
+    "product_ratio": 0.64,
+    "info_density": 2,
+    "promotion_intensity": 1,
+    "visual_tags": "现代旅行、极简高质、大容量、前开结构、商务可靠",
+    "why_effective": "高占比箱体与大面积留白突出材质和结构，少量功能说明适合品质型出行商品。",
+    "prohibited_styles": "禁止堆叠过多旅行道具、夸张速度光效、箱体被裁切、功能箭头过多、价格信息压过产品结构"
+  },
+  "why_effective": "高占比箱体与大面积留白突出材质和结构，少量功能说明适合品质型出行商品。",
+  "content_review": {
+    "content_review_status": "reviewed",
+    "reviewer_role": "C组内容标注复核",
+    "reviewed_at": "2026-10-02T12:00:00+08:00",
+    "note": "仅确认分类标签与视觉分析字段已复核，不代表生产授权或资产门禁通过。",
+    "evidence_ref": "cases/case-index.csv"
+  },
+  "review": {
+    "review_status": "approved",
+    "reviewer": "C_group + project_owner + A_group",
+    "reviewed_at": "2026-10-04T00:00:00+08:00",
+    "note": "C 已完成内容复核；项目负责人批准第三方照片作为内部种子参考；A 已下载核验文件并记录 SHA-256。"
+  },
+  "rights_review": {
+    "status": "approved_for_internal_reference",
+    "reviewer_role": "project_owner",
+    "reviewed_at": "2026-10-04T00:00:00+08:00",
+    "evidence_ref": "AUTH-SEED-1.0-001"
+  },
+  "technical_review": {
+    "status": "approved",
+    "reviewer_role": "A_group",
+    "reviewed_at": "2026-10-04T00:00:00+08:00",
+    "checksum": "sha256:fc80c13f709fa0a99ce72d703d5d3d50530cb05347d37c9f208384fe58fb9d7b",
+    "asset_verification": "downloaded_and_visually_checked"
+  }
+}
