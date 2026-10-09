@@ -2,85 +2,44 @@
   "repository": "shendayongxx-dev/shared-skills",
   "skill": "ecommerce-poster-design",
   "latest_version": "3.0.0",
-  "version_directories": {
-    "1.0.0": "skills/ecommerce-poster-design",
-    "1.0.0-imagegen.1": "skills/ecommerce-poster-design-1.0.0-imagegen.1",
-    "2.0.1": "skills/ecommerce-poster-design-2.0.1",
-    "3.0.0": "skills/ecommerce-poster-design-3.0.0"
+  "main_policy": "current-version-only",
+  "current": {
+    "version": "3.0.0",
+    "status": "stable",
+    "directory": "skills/ecommerce-poster-design-3.0.0",
+    "tests": "tests/ecommerce-poster-design-3.0.0",
+    "tag": "ecommerce-poster-design-v3.0.0",
+    "based_on": "2.0.1",
+    "workflow": "hard compliance -> consumer agent -> aesthetic agent",
+    "generation_backend": "Codex imagegen/image_gen at overall skill layer",
+    "consumer_agent_boundary": "evaluation, scoring, evidence, and routing only",
+    "aesthetic_agent": {
+      "version": "2.4",
+      "source_commit": "5f0baa0d10c5e1e114ac9a05fb33580110f31d33",
+      "boundary": "six-dimension visual evaluation and redesign planning only"
+    },
+    "max_generation_rounds": 8
   },
-  "releases": [
+  "historical_releases": [
     {
       "version": "1.0.0",
-      "status": "historical-stable",
-      "directory": "skills/ecommerce-poster-design",
-      "tests": "tests/ecommerce-poster-design",
       "tag": "ecommerce-poster-design-v1.0.0"
     },
     {
       "version": "1.0.0-imagegen.1",
-      "status": "standalone-imagegen",
-      "directory": "skills/ecommerce-poster-design-1.0.0-imagegen.1",
-      "tests": "tests/ecommerce-poster-design",
-      "tag": "ecommerce-poster-design-v1.0.0-imagegen.1",
-      "generation_backend": "Codex imagegen/image_gen at overall skill layer",
-      "consumer_agent": false,
-      "aesthetic_agent": false
+      "tag": "ecommerce-poster-design-v1.0.0-imagegen.1"
     },
     {
       "version": "2.0.1",
-      "status": "stable-baseline",
-      "directory": "skills/ecommerce-poster-design-2.0.1",
-      "tests": "tests/ecommerce-poster-design-2.0.1",
-      "tag": "ecommerce-poster-design-v2.0.1",
-      "generation_backend": "Codex imagegen/image_gen at overall skill layer",
-      "consumer_agent_boundary": "evaluation, scoring, evidence, and routing only"
-    },
-    {
-      "version": "3.0.0",
-      "status": "current-local-integration",
-      "directory": "skills/ecommerce-poster-design-3.0.0",
-      "tests": "tests/ecommerce-poster-design-3.0.0",
-      "tag": null,
-      "based_on": "2.0.1",
-      "generation_backend": "Codex imagegen/image_gen at overall skill layer",
-      "consumer_agent_boundary": "evaluation, scoring, evidence, and routing only",
-      "aesthetic_agent": {
-        "version": "2.4",
-        "source_commit": "5f0baa0d10c5e1e114ac9a05fb33580110f31d33",
-        "boundary": "six-dimension visual evaluation and redesign planning only"
-      },
-      "workflow": "hard compliance -> consumer agent -> aesthetic agent",
-      "max_generation_rounds": 8
+      "tag": "ecommerce-poster-design-v2.0.1"
     }
   ],
-  "version": "1.0.0",
-  "release_channel": "stable",
-  "final_1_0": true,
+  "tag_policy": "immutable",
   "production_ready": true,
-  "c_library": {
-    "status": "connected",
-    "asset_mode": "production_internal_reference",
-    "asset_version": "2.0.1-a.1",
-    "source_schema_version": "2.0.0",
-    "eligible_seed_cases": 6,
-    "seed_scenario_coverage": 6
-  },
-  "included": [
-    "Skill 1.0 workflow and interface references",
-    "Installation, upgrade, rollback, and verification guide",
-    "C 2.0.1 taxonomy, rules, case metadata, schemas, and manifest",
-    "Six approved internal-reference seed records covering S01-S06",
-    "Pinned source URLs and SHA-256 values for seed verification",
-    "Non-sensitive fixtures and structured smoke-test records",
-    "Sanitized final acceptance record for Chinese and English outputs"
-  ],
   "excluded": [
     "Third-party seed image binaries",
-    "User-provided NORI product and logo image files",
+    "User-provided product and logo image files",
     "Generated poster binaries",
     "Local runtime artifacts and credentials"
-  ],
-  "final_release_gate": "completed",
-  "release_tag": "ecommerce-poster-design-v1.0.0",
-  "acceptance_record": "tests/ecommerce-poster-design/acceptance/FINAL-NORI-1.0/acceptance-summary.json"
+  ]
 }

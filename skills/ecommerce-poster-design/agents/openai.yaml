@@ -1,7 +1,0 @@
-interface:
-  display_name: "电商营销主视觉设计"
-  short_description: "根据商品资料生成、校验并交付信息准确且可追溯的电商营销主视觉海报"
-  default_prompt: "Use $ecommerce-poster-design to generate and hard-check an ecommerce product marketing poster from my product brief and assets."
-
-policy:
-  allow_implicit_invocation: true

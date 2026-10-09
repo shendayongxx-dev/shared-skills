@@ -1,24 +1,31 @@
-# 版本目录
+# 版本与 Git 引用规则
 
-本仓库并列保留 ecommerce-poster-design 1.0.0、1.0.0-imagegen.1、2.0.1 与基于 2.0.1 的 3.0.0 集成候选版。各目录独立完整，安装时只复制一个目标版本目录。
+## main
 
-| 版本 | 仓库目录 | 定位 | 发布标签 |
-|---|---|---|---|
-| 1.0.0 | `skills/ecommerce-poster-design/` | 历史稳定版；不启用消费者 Agent | `ecommerce-poster-design-v1.0.0` |
-| 1.0.0-imagegen.1 | `skills/ecommerce-poster-design-1.0.0-imagegen.1/` | 1.0 独立版；整体 Skill 使用 ImageGen，不包含消费者 Agent或美学 Agent | `ecommerce-poster-design-v1.0.0-imagegen.1` |
-| 2.0.1 | `skills/ecommerce-poster-design-2.0.1/` | 当前稳定基线；整体 Skill 使用 ImageGen 与消费者 Agent | `ecommerce-poster-design-v2.0.1` |
-| 3.0.0 | `skills/ecommerce-poster-design-3.0.0/` | 基于 2.0.1；消费者通过后进入美学 Agent v2.4 | 待发布 |
+`main` 代表当前可用主线，只保留一个完整版本：
 
-测试目录一一对应：
+| 当前版本 | Skill 目录 | 测试目录 |
+|---|---|---|
+| 3.0.0 | `skills/ecommerce-poster-design-3.0.0/` | `tests/ecommerce-poster-design-3.0.0/` |
 
-- `tests/ecommerce-poster-design/`：1.0.0 原始验收、夹具与冒烟测试；
-- `tests/ecommerce-poster-design-2.0.1/`：2.0.1 评估用例。
-- `tests/ecommerce-poster-design-3.0.0/`：3.0.0 集成评估用例。
+## Tags
 
-## 能力边界
+Tag 是不可变发布快照。旧版本从 Tag 获取，不要求其目录继续存在于 `main`。
 
-- ImageGen 集成在 2.0.1/3.0.0 整体 Skill 的生成层。
-- ImageGen 也集成在 1.0.0-imagegen.1 的生成层；该版本在硬性合规通过后结束，不进入消费者或美学评价。
-- `modules/consumer-agent/` 不生成或编辑图片，只读取已通过硬性合规的候选，产生评分、证据、问题清单和下一步路由。
-- `modules/aesthetic-agent/` 不生成图片；它读取同版本上游通过记录，产生六维评价和独立重设计方案。
-- 1.0.0 的目录继续由发布标签冻结；3.0.0 不回写 2.0.1 的文件或行为边界。
+| 版本 | Tag | 状态 |
+|---|---|---|
+| 1.0.0 | `ecommerce-poster-design-v1.0.0` | 历史稳定版 |
+| 1.0.0-imagegen.1 | `ecommerce-poster-design-v1.0.0-imagegen.1` | 历史独立版 |
+| 2.0.1 | `ecommerce-poster-design-v2.0.1` | 历史稳定版 |
+| 3.0.0 | `ecommerce-poster-design-v3.0.0` | 当前发布版 |
+
+任何已发布 Tag 都不得强制更新或复用。修复发布新补丁版本，兼容功能发布新次版本，不兼容变更发布新主版本。
+
+## Branches
+
+- `main`：当前正式主线；
+- `feature/<version>`：新功能开发；
+- `fix/<version>-<topic>`：问题修复；
+- `release/<version>`：需要独立冻结时使用的发布准备分支。
+
+开发分支可以更新；合并完成后可删除。已有历史分支不因本次目录整理而改写。

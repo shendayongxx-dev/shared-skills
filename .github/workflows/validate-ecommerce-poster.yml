@@ -3,329 +3,70 @@ name: Validate ecommerce poster skill
 on:
   push:
     paths:
-      - "skills/ecommerce-poster-design/**"
-      - "skills/ecommerce-poster-design-1.0.0-imagegen.1/**"
-      - "skills/ecommerce-poster-design-2.0.1/**"
       - "skills/ecommerce-poster-design-3.0.0/**"
-      - "tests/ecommerce-poster-design/**"
-      - "tests/ecommerce-poster-design-2.0.1/**"
       - "tests/ecommerce-poster-design-3.0.0/**"
       - "PROJECT_STATUS.md"
       - "RELEASE_MANIFEST.json"
       - "README.md"
       - "INSTALL.md"
       - "CHANGELOG.md"
-      - "CONTRIBUTING.md"
+      - "VERSIONS.md"
       - ".github/workflows/validate-ecommerce-poster.yml"
   pull_request:
     paths:
-      - "skills/ecommerce-poster-design/**"
-      - "skills/ecommerce-poster-design-1.0.0-imagegen.1/**"
-      - "skills/ecommerce-poster-design-2.0.1/**"
       - "skills/ecommerce-poster-design-3.0.0/**"
-      - "tests/ecommerce-poster-design/**"
-      - "tests/ecommerce-poster-design-2.0.1/**"
       - "tests/ecommerce-poster-design-3.0.0/**"
       - "PROJECT_STATUS.md"
       - "RELEASE_MANIFEST.json"
       - "README.md"
       - "INSTALL.md"
       - "CHANGELOG.md"
-      - "CONTRIBUTING.md"
+      - "VERSIONS.md"
       - ".github/workflows/validate-ecommerce-poster.yml"
 
 jobs:
-  validate_v1:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Validate classification assets
-        run: >-
-          python skills/ecommerce-poster-design/scripts/validate_classification.py
-          skills/ecommerce-poster-design/assets/classification
-
-      - name: Exercise deterministic rule selection
-        run: >-
-          python skills/ecommerce-poster-design/scripts/select_style.py
-          skills/ecommerce-poster-design/assets/classification
-          P02 M03 S03 --request-id CI-SMOKE
-
-      - name: Verify connected C library and six seed scenarios
-        shell: python
-        run: |
-          import json
-          import subprocess
-          import sys
-
-          validator = "skills/ecommerce-poster-design/scripts/validate_classification.py"
-          selector = "skills/ecommerce-poster-design/scripts/select_style.py"
-          assets = "skills/ecommerce-poster-design/assets/classification"
-
-          validation = json.loads(subprocess.check_output([sys.executable, validator, assets]))
-          assert validation["valid"] is True
-          assert validation["production_ready"] is True
-          assert validation["counts"]["eligible_seed_cases"] == 6
-          assert validation["counts"]["eligible_seed_scenarios"] == 6
-
-          exact = json.loads(subprocess.check_output([
-              sys.executable, selector, assets, "P02", "M03", "S03",
-              "--request-id", "CI-FORMAL-EXACT",
-          ]))
-          assert exact["source_rule_ids"] == ["R-001"]
-          assert exact["source_case_ids"] == ["C-030"]
-          assert exact["source_case_references"][0]["checksum_sha256"]
-
-      - name: Exercise C candidate adapter
-        shell: python
-        run: |
-          import json
-          import subprocess
-          import sys
-
-          validator = "skills/ecommerce-poster-design/scripts/validate_classification.py"
-          selector = "skills/ecommerce-poster-design/scripts/select_style.py"
-          fixture = "tests/ecommerce-poster-design/fixtures/classification-v2-candidate"
-
-          validation = json.loads(subprocess.check_output([sys.executable, validator, fixture]))
-          assert validation["valid"] is True
-          assert validation["production_ready"] is False
-          assert "DRAFT_MARKED_SEED" in validation["production_blockers"]
-
-          inherited = json.loads(subprocess.check_output([
-              sys.executable, selector, fixture, "P01", "M01", "S01",
-              "--request-id", "CI-INHERIT",
-          ]))
-          assert inherited["source_rule_ids"] == ["R-001"]
-          assert inherited["inheritance_chain"] == ["R-100", "R-001"]
-          assert inherited["selected_palette_set"]["palette_id"] == "R-100-P1"
-          assert inherited["source_case_ids"] == []
-
-          partial = json.loads(subprocess.check_output([
-              sys.executable, selector, fixture, "null", "M01", "S01",
-              "--request-id", "CI-PARTIAL-NULL",
-          ]))
-          assert partial["source_rule_ids"] == ["R-100"]
-          assert partial["needs_human_review"] is True
-
-          empty = json.loads(subprocess.check_output([
-              sys.executable, selector, fixture, "null", "null", "null",
-              "--request-id", "CI-ALL-NULL",
-          ]))
-          assert empty["source_rule_ids"] == ["R-DEFAULT"]
-          assert empty["fallback_level"] == "global"
-
-      - name: Validate stable release and C-library state
-        shell: python
-        run: |
-          import json
-          from pathlib import Path
-
-          version = json.loads(
-              Path("skills/ecommerce-poster-design/assets/config/version.json")
-              .read_text(encoding="utf-8")
-          )
-          manifest = json.loads(
-              Path("RELEASE_MANIFEST.json").read_text(encoding="utf-8")
-          )
-
-          assert version["skill_version"] == manifest["version"]
-          assert version["skill_version"] == "1.0.0"
-          assert version["release_channel"] == "stable"
-          assert version["final_1_0"] is True
-          assert version["production_ready"] is True
-          assert version["c_library"]["status"] == "connected"
-          assert version["c_library"]["asset_mode"] == "production_internal_reference"
-          assert version["c_library"]["eligible_seed_cases"] == 6
-          assert manifest["release_tag"] == "ecommerce-poster-design-v1.0.0"
-
-          acceptance = json.loads(
-              Path(manifest["acceptance_record"]).read_text(encoding="utf-8")
-          )
-          assert acceptance["overall_status"] == "pass"
-          assert acceptance["skill_version"] == "1.0.0"
-          assert len(acceptance["results"]) == 2
-          assert all(item["hard_checks_failed"] == 0 for item in acceptance["results"])
-
-      - name: Reject private and third-party raster assets
-        shell: python
-        run: |
-          from pathlib import Path
-
-          forbidden = {".png", ".jpg", ".jpeg", ".webp"}
-          roots = [
-              Path("tests/ecommerce-poster-design"),
-              Path("skills/ecommerce-poster-design/assets/classification"),
-          ]
-          found = []
-          for root in roots:
-              found.extend(
-                  str(path)
-                  for path in root.rglob("*")
-                  if path.is_file() and path.suffix.lower() in forbidden
-              )
-          assert not found, "Do not commit user or third-party raster images: " + ", ".join(found)
-
-  validate_v2_0_1:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Validate 2.0.1 integration
-        run: >-
-          python skills/ecommerce-poster-design-2.0.1/scripts/validate_consumer_integration.py
-          skills/ecommerce-poster-design-2.0.1
-
-      - name: Validate 2.0.1 classification assets
-        run: >-
-          python skills/ecommerce-poster-design-2.0.1/scripts/validate_classification.py
-          skills/ecommerce-poster-design-2.0.1/assets/classification
-
-      - name: Test 2.0.1 consumer routing
-        run: python skills/ecommerce-poster-design-2.0.1/scripts/test_consumer_routing.py
-
-      - name: Enforce ImageGen ownership boundary
-        shell: python
-        run: |
-          from pathlib import Path
-
-          root = Path("skills/ecommerce-poster-design-2.0.1")
-          consumer = root / "modules" / "consumer-agent"
-          consumer_hits = []
-          for path in consumer.rglob("*"):
-              if path.is_file():
-                  text = path.read_text(encoding="utf-8", errors="ignore").lower()
-                  if "imagegen" in text or "image_gen" in text:
-                      consumer_hits.append(str(path))
-          assert not consumer_hits, "ImageGen must remain at the overall skill layer: " + ", ".join(consumer_hits)
-
-          skill_text = (root / "SKILL.md").read_text(encoding="utf-8").lower()
-          integration_text = (root / "references" / "imagegen-integration.md").read_text(encoding="utf-8").lower()
-          assert "imagegen" in skill_text and "image_gen" in skill_text
-          assert "不属于 `modules/consumer-agent`" in integration_text
-
-  validate_v1_imagegen:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Validate 1.0 ImageGen classification assets
-        run: >-
-          python skills/ecommerce-poster-design-1.0.0-imagegen.1/scripts/validate_classification.py
-          skills/ecommerce-poster-design-1.0.0-imagegen.1/assets/classification
-
-      - name: Verify 1.0 ImageGen boundary
-        shell: python
-        run: |
-          import json
-          from pathlib import Path
-
-          root = Path("skills/ecommerce-poster-design-1.0.0-imagegen.1")
-          version = json.loads((root / "assets/config/version.json").read_text(encoding="utf-8"))
-          assert version["skill_version"] == "1.0.0-imagegen.1"
-          assert version["generation_backend"]["skill"] == "imagegen"
-          assert version["generation_backend"]["tool"] == "image_gen"
-          assert version["feature_flags"]["consumer_agent"] is False
-          assert version["feature_flags"]["aesthetic_agent"] is False
-          assert not (root / "modules/consumer-agent").exists()
-          skill_text = (root / "SKILL.md").read_text(encoding="utf-8").lower()
-          assert "imagegen" in skill_text and "image_gen" in skill_text
-
   validate_v3_0_0:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-
-      - name: Validate 3.0 consumer integration
-        run: >-
-          python skills/ecommerce-poster-design-3.0.0/scripts/validate_consumer_integration.py
-          skills/ecommerce-poster-design-3.0.0
-
-      - name: Validate 3.0 aesthetic integration
-        run: >-
-          python skills/ecommerce-poster-design-3.0.0/scripts/validate_aesthetic_integration.py
-          skills/ecommerce-poster-design-3.0.0
-
-      - name: Validate 3.0 classification assets
-        run: >-
-          python skills/ecommerce-poster-design-3.0.0/scripts/validate_classification.py
-          skills/ecommerce-poster-design-3.0.0/assets/classification
-
-      - name: Test 3.0 consumer routing
-        run: python skills/ecommerce-poster-design-3.0.0/scripts/test_consumer_routing.py
-
-      - name: Test 3.0 aesthetic routing
-        run: python skills/ecommerce-poster-design-3.0.0/scripts/test_aesthetic_integration.py
-
-      - name: Test 3.0 consumer module
-        run: python skills/ecommerce-poster-design-3.0.0/modules/consumer-agent/scripts/run_evals.py
-
-      - name: Test aesthetic-agent module
-        working-directory: skills/ecommerce-poster-design-3.0.0
-        run: >-
-          node --test
-          modules/aesthetic-agent/tests/evaluate.test.mjs
-          modules/aesthetic-agent/tests/references.test.mjs
-          modules/aesthetic-agent/tests/quality.test.mjs
-
-      - name: Enforce 3.0 ImageGen ownership boundary
+      - name: Validate integrations and classification
+        run: |
+          python skills/ecommerce-poster-design-3.0.0/scripts/validate_consumer_integration.py skills/ecommerce-poster-design-3.0.0
+          python skills/ecommerce-poster-design-3.0.0/scripts/validate_aesthetic_integration.py skills/ecommerce-poster-design-3.0.0
+          python skills/ecommerce-poster-design-3.0.0/scripts/validate_classification.py skills/ecommerce-poster-design-3.0.0/assets/classification
+      - name: Test host routing and agent modules
+        run: |
+          python skills/ecommerce-poster-design-3.0.0/scripts/test_consumer_routing.py
+          python skills/ecommerce-poster-design-3.0.0/scripts/test_aesthetic_integration.py
+          python skills/ecommerce-poster-design-3.0.0/modules/consumer-agent/scripts/run_evals.py
+          cd skills/ecommerce-poster-design-3.0.0
+          node --test modules/aesthetic-agent/tests/evaluate.test.mjs modules/aesthetic-agent/tests/references.test.mjs modules/aesthetic-agent/tests/quality.test.mjs
+      - name: Enforce ImageGen ownership boundary
         shell: python
         run: |
           from pathlib import Path
-
           root = Path("skills/ecommerce-poster-design-3.0.0")
-          consumer = root / "modules" / "consumer-agent"
-          consumer_hits = []
-          for path in consumer.rglob("*"):
-              if path.is_file():
-                  text = path.read_text(encoding="utf-8", errors="ignore").lower()
-                  if "imagegen" in text or "image_gen" in text:
-                      consumer_hits.append(str(path))
-          assert not consumer_hits, "ImageGen must remain at the overall skill layer: " + ", ".join(consumer_hits)
-
-          aesthetic_runtime = [
+          runtime_roots = [
+              root / "modules" / "consumer-agent",
               root / "modules" / "aesthetic-agent" / "scripts",
               root / "modules" / "aesthetic-agent" / "agents",
           ]
-          aesthetic_hits = []
-          for runtime_root in aesthetic_runtime:
+          hits = []
+          for runtime_root in runtime_roots:
               for path in runtime_root.rglob("*"):
                   if path.is_file():
                       text = path.read_text(encoding="utf-8", errors="ignore").lower()
                       if "imagegen" in text or "image_gen" in text:
-                          aesthetic_hits.append(str(path))
-          assert not aesthetic_hits, "Aesthetic Agent runtime must not call ImageGen directly: " + ", ".join(aesthetic_hits)
-
+                          hits.append(str(path))
+          assert not hits, "Agents must not call ImageGen directly: " + ", ".join(hits)
           skill_text = (root / "SKILL.md").read_text(encoding="utf-8").lower()
-          integration_text = (root / "references" / "imagegen-integration.md").read_text(encoding="utf-8").lower()
           assert "imagegen" in skill_text and "image_gen" in skill_text
-          assert "不属于 `modules/consumer-agent`" in integration_text

@@ -1,7 +1,0 @@
-interface:
-  display_name: "电商营销主视觉设计"
-  short_description: "生成并硬校验电商主视觉，再按目标消费者视角评分和有限迭代"
-  default_prompt: "Use $ecommerce-poster-design to generate, hard-check, and consumer-evaluate an ecommerce product marketing poster from my product brief and assets."
-
-policy:
-  allow_implicit_invocation: true
