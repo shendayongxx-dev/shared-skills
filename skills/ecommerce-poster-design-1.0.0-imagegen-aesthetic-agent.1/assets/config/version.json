@@ -1,0 +1,59 @@
+{
+  "skill_version": "1.0.0-imagegen-aesthetic-agent.1",
+  "baseline_version": "1.0.0-imagegen.1",
+  "baseline_tag": "ecommerce-poster-design-v1.0.0-imagegen.1",
+  "baseline_commit": "fdd3b20d74c170460f79465a241cffee012e6652",
+  "release_channel": "standalone-imagegen-aesthetic-agent-ablation",
+  "production_ready": true,
+  "final_1_0": true,
+  "c_library": {
+    "status": "connected",
+    "asset_mode": "production_internal_reference",
+    "official_asset_version": "2.0.1-a.1",
+    "source_schema_version": "2.0.0",
+    "eligible_seed_cases": 6,
+    "seed_scenario_coverage": 6
+  },
+  "c_candidate_adapter": {
+    "status": "implemented",
+    "formal_integration": true,
+    "supported_source_schemas": ["1.0", "1.0-rc.1", "2.0.0-rc.1", "2.0.0"]
+  },
+  "workflow_version": "1.0",
+  "schema_version": "1.0",
+  "feature_flags": {
+    "consumer_agent": false,
+    "aesthetic_agent": true
+  },
+  "generation_backend": {
+    "skill": "imagegen",
+    "tool": "image_gen",
+    "mode": "builtin",
+    "required": true,
+    "cli_fallback_requires_user_confirmation": true
+  },
+  "imagegen_integration_source": {
+    "declared_version": "1.0.0-imagegen.1",
+    "skill_package_sha256": "a988195aacf4b92f999a985d20c0b3fcda0e354cdfc3794b94e46e5e989c625e",
+    "zip_package_sha256": "f217d9fa6b03f1eb03fea77e8ec04ebd7ca105a2ea342976efb1e27bdf722827",
+    "provided_skill_md_sha256": "2920b9e8000aaa754e2005799e4fc85e6f561ca0390f82f2d9d1553ecd301751",
+    "classification_assets_reused": true
+  },
+  "aesthetic_agent": {
+    "repository": "zqian8245-hash/ecommerce-aesthetic-agent",
+    "commit": "5f0baa0d10c5e1e114ac9a05fb33580110f31d33",
+    "declared_iteration_rules": "v2.4",
+    "schema_version": "2.0",
+    "mode": "standalone_evaluator",
+    "loop_owner": "baseline_1.0",
+    "consumer_agent_used": false
+  },
+  "retry_policy": {
+    "max_redraw_attempts": 3,
+    "return_best_candidate_on_exhaustion": true
+  },
+  "logging": {
+    "structured_round_logs": true,
+    "record_imagegen_mode_and_prompt": true
+  }
+}

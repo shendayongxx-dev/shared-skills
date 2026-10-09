@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Poster 1.0 plus aesthetic-agent ablation result",
+  "type": "object",
+  "required": ["baseline_result", "aesthetic_agent_result", "ablation_result"],
+  "properties": {
+    "baseline_result": {"type": "object"},
+    "aesthetic_agent_result": {
+      "$ref": "../integrations/ecommerce-aesthetic-agent/schemas/output.schema.json"
+    },
+    "ablation_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pass",
+        "status",
+        "baseline_hard_pass",
+        "aesthetic_pass",
+        "aesthetic_score",
+        "score_state",
+        "consumer_agent_used",
+        "iteration_owner",
+        "max_redraw_attempts"
+      ],
+      "properties": {
+        "pass": {"type": "boolean"},
+        "status": {"enum": ["passed", "revise", "aesthetic_unavailable", "baseline_blocked"]},
+        "baseline_hard_pass": {"type": "boolean"},
+        "aesthetic_pass": {"type": "boolean"},
+        "aesthetic_score": {"type": "number", "minimum": 0, "maximum": 10},
+        "score_state": {"enum": ["measured", "unavailable"]},
+        "consumer_agent_used": {"const": false},
+        "iteration_owner": {"const": "baseline_1.0"},
+        "max_redraw_attempts": {"const": 3}
+      }
+    }
+  },
+  "additionalProperties": false
+}
+

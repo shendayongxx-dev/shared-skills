@@ -5,6 +5,7 @@
   "version_directories": {
     "1.0.0": "skills/ecommerce-poster-design",
     "1.0.0-imagegen.1": "skills/ecommerce-poster-design-1.0.0-imagegen.1",
+    "1.0.0-imagegen-aesthetic-agent.1": "skills/ecommerce-poster-design-1.0.0-imagegen-aesthetic-agent.1",
     "2.0.1": "skills/ecommerce-poster-design-2.0.1"
   },
   "releases": [
@@ -33,6 +34,17 @@
       "tag": "ecommerce-poster-design-v2.0.1",
       "generation_backend": "Codex imagegen/image_gen at overall skill layer",
       "consumer_agent_boundary": "evaluation, scoring, evidence, and routing only"
+    },
+    {
+      "version": "1.0.0-imagegen-aesthetic-agent.1",
+      "status": "standalone-ablation",
+      "directory": "skills/ecommerce-poster-design-1.0.0-imagegen-aesthetic-agent.1",
+      "tests": "skills/ecommerce-poster-design-1.0.0-imagegen-aesthetic-agent.1/tests",
+      "tag": "ecommerce-poster-design-v1.0.0-imagegen-aesthetic-agent.1",
+      "baseline_tag": "ecommerce-poster-design-v1.0.0-imagegen.1",
+      "generation_backend": "Codex imagegen/image_gen inherited from baseline",
+      "consumer_agent": false,
+      "aesthetic_agent": true
     }
   ],
   "version": "1.0.0",

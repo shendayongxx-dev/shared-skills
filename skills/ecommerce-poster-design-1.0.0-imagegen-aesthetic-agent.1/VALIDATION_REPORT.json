@@ -1,0 +1,92 @@
+{
+  "validated_at": "2026-10-09",
+  "skill_version": "1.0.0-imagegen-aesthetic-agent.1",
+  "baseline": {
+    "release_tag": "ecommerce-poster-design-v1.0.0-imagegen.1",
+    "release_commit": "fdd3b20d74c170460f79465a241cffee012e6652",
+    "release_commit_match": true,
+    "version": "1.0.0-imagegen.1",
+    "final_1_0": true,
+    "production_ready": true,
+    "classification_validation": {
+      "valid": true,
+      "production_ready": true,
+      "eligible_seed_cases": 6,
+      "eligible_seed_scenarios": 6
+    },
+    "selector_smoke": {
+      "input": ["P02", "M03", "S03"],
+      "rule": "R-001",
+      "case": "C-030",
+      "passed": true
+    }
+  },
+  "imagegen": {
+    "provided_skill_version": "1.0.0-imagegen.1",
+    "provided_skill_package_sha256": "a988195aacf4b92f999a985d20c0b3fcda0e354cdfc3794b94e46e5e989c625e",
+    "provided_zip_package_sha256": "f217d9fa6b03f1eb03fea77e8ec04ebd7ca105a2ea342976efb1e27bdf722827",
+    "provided_skill_md_sha256": "2920b9e8000aaa754e2005799e4fc85e6f561ca0390f82f2d9d1553ecd301751",
+    "skill_and_zip_file_differences": 0,
+    "classification_asset_differences": 0,
+    "system_imagegen_contract_reviewed": true,
+    "backend": {
+      "skill": "imagegen",
+      "tool": "image_gen",
+      "mode": "builtin",
+      "cli_fallback_requires_user_confirmation": true
+    },
+    "configuration_tests": {
+      "passed": 4,
+      "failed": 0
+    },
+    "live_generation_test": {
+      "run": true,
+      "case": "NORI 600 mL insulated travel tumbler, Chinese and English 4:5 posters",
+      "hard_compliance": "12/12 passed for both variants",
+      "aesthetic_scores": {"zh": 8.65, "en": 8.7},
+      "ablation_pass": true,
+      "redraws": 0
+    }
+  },
+  "aesthetic_agent": {
+    "repository": "zqian8245-hash/ecommerce-aesthetic-agent",
+    "commit": "5f0baa0d10c5e1e114ac9a05fb33580110f31d33",
+    "source_archive_sha256": "5644cdb4f785693890c4f473ae4271d8cb6f343b938736b8fb055d07e7dd283c",
+    "vendored_file_differences": 0,
+    "upstream_logic_tests": {
+      "passed": 31,
+      "failed": 0
+    }
+  },
+  "adapter": {
+    "unit_tests": {
+      "passed": 8,
+      "failed": 0
+    },
+    "end_to_end_smoke": {
+      "flow": "prepare -> vendored aesthetic evaluate -> merge",
+      "passed": true
+    },
+    "skill_quick_validate": true
+  },
+  "source_integrity": {
+    "baseline_tag": "ecommerce-poster-design-v1.0.0-imagegen.1",
+    "baseline_commit": "fdd3b20d74c170460f79465a241cffee012e6652",
+    "unexpected_differences_in_frozen_baseline_assets": 0,
+    "aesthetic_vendor_differences": 0,
+    "imagegen_and_current_c_asset_differences": 0
+  },
+  "experiment_invariants": {
+    "consumer_agent_used": false,
+    "generation_executor": "imagegen",
+    "hard_compliance_authority": "baseline_1.0",
+    "aesthetic_authority": "aesthetic_agent",
+    "iteration_owner": "baseline_1.0",
+    "max_redraw_attempts": 3,
+    "aesthetic_eight_round_loop_enabled": false,
+    "imagegen_can_score": false,
+    "aesthetic_agent_can_call_imagegen_directly": false,
+    "aesthetic_score_can_override_hard_failure": false
+  },
+  "scope_note": "Tests verify the frozen 1.0.0-imagegen.1 baseline, C library, ImageGen contract, aesthetic logic and orchestration. A real NORI case was generated and evaluated outside the public repository; user assets and generated binaries remain excluded."
+}

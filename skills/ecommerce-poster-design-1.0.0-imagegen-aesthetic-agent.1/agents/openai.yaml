@@ -1,0 +1,7 @@
+interface:
+  display_name: "电商海报 1.0 ImageGen + 美学 Agent"
+  short_description: "在 1.0.0-imagegen.1 基线上追加美学 Agent 评价迭代"
+  default_prompt: "Use $ecommerce-poster-design to run the frozen 1.0.0-imagegen.1 ecommerce poster workflow and evaluate hard-compliant candidates with the aesthetic agent."
+
+policy:
+  allow_implicit_invocation: true
