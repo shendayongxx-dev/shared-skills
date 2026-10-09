@@ -13,9 +13,9 @@
 5. 原样保留 baseline 的 [ImageGen 集成契约](references/imagegen-integration.md) 与 C 库；不重复接入或另立一套 C 库。
 6. 保留 `scripts/aesthetic_adapter.py`、其单元测试和合并结果 schema。
 7. 在每个 ImageGen 候选通过硬检后运行一次美学评价；baseline 的 C 分类、HC-01～HC-12 和最多 3 次重画不变。
-8. 独立 `ablation_result` 不覆盖 baseline 状态或 aesthetic 固定输出。
+8. 独立 `experiment_result` 不覆盖 baseline 状态或 aesthetic 固定输出，并明确记录 `variant=aesthetic_agent_added`。
 
-完整字段映射、循环裁定和冲突选项见 [references/aesthetic-ablation.md](references/aesthetic-ablation.md)。
+完整字段映射、循环裁定和冲突选项见 [references/aesthetic-agent-experiment.md](references/aesthetic-agent-experiment.md)。
 
 ## 未改变的内容
 

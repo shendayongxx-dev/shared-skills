@@ -22,7 +22,7 @@ def main():
     if not node:
         raise SystemExit("node executable is required")
 
-    with tempfile.TemporaryDirectory(prefix=".aesthetic-ablation-smoke-", dir=ROOT / "tests") as temporary:
+    with tempfile.TemporaryDirectory(prefix=".aesthetic-experiment-smoke-", dir=ROOT / "tests") as temporary:
         task = Path(temporary)
         baseline_input = {
             "request_id": "SMOKE-001",
@@ -131,10 +131,11 @@ def main():
         combined = json.loads((task / "combined.json").read_text(encoding="utf-8"))
         assert combined["baseline_result"] == baseline_result
         assert combined["aesthetic_agent_result"]["agent_name"] == "aesthetic_agent"
-        assert combined["ablation_result"]["pass"] is False
-        assert combined["ablation_result"]["consumer_agent_used"] is False
-        assert combined["ablation_result"]["iteration_owner"] == "baseline_1.0"
-        assert combined["ablation_result"]["max_redraw_attempts"] == 3
+        assert combined["experiment_result"]["variant"] == "aesthetic_agent_added"
+        assert combined["experiment_result"]["pass"] is False
+        assert combined["experiment_result"]["consumer_agent_used"] is False
+        assert combined["experiment_result"]["iteration_owner"] == "baseline_1.0"
+        assert combined["experiment_result"]["max_redraw_attempts"] == 3
         print("smoke integration passed")
 
 

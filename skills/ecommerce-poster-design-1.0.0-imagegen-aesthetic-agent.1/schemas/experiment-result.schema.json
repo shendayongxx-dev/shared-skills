@@ -1,17 +1,18 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Poster 1.0 plus aesthetic-agent ablation result",
+  "title": "Poster 1.0.0-imagegen.1 plus aesthetic-agent experiment result",
   "type": "object",
-  "required": ["baseline_result", "aesthetic_agent_result", "ablation_result"],
+  "required": ["baseline_result", "aesthetic_agent_result", "experiment_result"],
   "properties": {
     "baseline_result": {"type": "object"},
     "aesthetic_agent_result": {
       "$ref": "../integrations/ecommerce-aesthetic-agent/schemas/output.schema.json"
     },
-    "ablation_result": {
+    "experiment_result": {
       "type": "object",
       "additionalProperties": false,
       "required": [
+        "variant",
         "pass",
         "status",
         "baseline_hard_pass",
@@ -23,6 +24,7 @@
         "max_redraw_attempts"
       ],
       "properties": {
+        "variant": {"const": "aesthetic_agent_added"},
         "pass": {"type": "boolean"},
         "status": {"enum": ["passed", "revise", "aesthetic_unavailable", "baseline_blocked"]},
         "baseline_hard_pass": {"type": "boolean"},
@@ -37,4 +39,3 @@
   },
   "additionalProperties": false
 }
-

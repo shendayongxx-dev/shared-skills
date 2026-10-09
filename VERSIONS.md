@@ -1,6 +1,6 @@
 # 版本目录
 
-本发布分支在冻结的 1.0.0-imagegen.1 基础上额外保留一个独立美学消融版本。各目录是独立、完整的 Skill，安装时只复制目标版本目录，并在 Codex Skills 目录中命名为 `ecommerce-poster-design`。该消融版本不合入 `main`。
+本发布分支在冻结的 1.0.0-imagegen.1 基础上额外保留一个独立 +Aesthetic Agent 实验组。各目录是独立、完整的 Skill，安装时只复制目标版本目录，并在 Codex Skills 目录中命名为 `ecommerce-poster-design`。该实验组不合入 `main`。
 
 | 版本 | 仓库目录 | 定位 | 发布标签 |
 |---|---|---|---|

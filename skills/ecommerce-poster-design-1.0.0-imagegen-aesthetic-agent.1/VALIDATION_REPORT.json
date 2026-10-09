@@ -44,7 +44,8 @@
       "case": "NORI 600 mL insulated travel tumbler, Chinese and English 4:5 posters",
       "hard_compliance": "12/12 passed for both variants",
       "aesthetic_scores": {"zh": 8.65, "en": 8.7},
-      "ablation_pass": true,
+      "experiment_variant": "aesthetic_agent_added",
+      "experiment_pass": true,
       "redraws": 0
     }
   },

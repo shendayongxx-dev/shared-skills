@@ -1,4 +1,6 @@
-# 1.0 + Aesthetic Agent 消融集成契约
+# 1.0.0-imagegen.1 + Aesthetic Agent 实验集成契约
+
+本版本是 `+Aesthetic Agent` 实验组：相对 baseline 新增美学评价。它不是 `w/o Aesthetic Agent`，因此不得称为“美学消融版”。若以包含消费者 Agent 和美学 Agent 的完整系统为参照，本组可用于研究移除消费者评判的影响，但本文件统一使用不依赖参照系的 `aesthetic_agent_added` 名称。
 
 ## 冻结版本
 
@@ -25,7 +27,7 @@ vendored aesthetic 目录保持上游文件原样；适配逻辑只放在 baseli
 | 六维视觉评分 | 不负责 | 不负责 | 唯一负责 | 原样保留固定 JSON |
 | 消费者/Persona 评价 | 禁用 | 不负责 | 禁止输出 | 固定记录 `false` |
 | 轮次预算 | 首版 + 最多 3 次重画 | 每次只生成一个候选 | 自带 8 轮在本版禁用 | 防止嵌套 |
-| 最终状态 | `passed/degraded/blocked` | 无通过状态 | `score/pass` | 单独计算 `ablation_pass` |
+| 最终状态 | `passed/degraded/blocked` | 无通过状态 | `score/pass` | 单独计算 `experiment_result.pass` |
 
 ## 每轮顺序
 
@@ -35,7 +37,7 @@ vendored aesthetic 目录保持上游文件原样；适配逻辑只放在 baseli
 4. 硬检通过：适配器准备 aesthetic 固定输入和 protected-content sidecar。
 5. 视觉模型实际查看本轮候选、明确选定的原商品图以及可用参考图，写出符合 vendored `schemas/review.schema.json` 的内部 review。
 6. 运行 vendored `scripts/evaluate.mjs`，得到固定 `agent-result.json`。
-7. 美学通过：当前候选的 `ablation_pass=true`。美学未通过：仅在 baseline 剩余预算内将建议加入下一次 ImageGen 请求；新候选重新从步骤 2 开始。
+7. 美学通过：当前候选的 `experiment_result.pass=true`。美学未通过：仅在 baseline 剩余预算内将建议加入下一次 ImageGen 请求；新候选重新从步骤 2 开始。
 
 任何轮次都不得先跑美学改图再跳过硬检。不能把提示词中的“保护商品”视为已完成保护。
 
@@ -58,7 +60,7 @@ vendored `agent-result.json` 必须原样保存，字段只能是：`agent_name`
 
 - baseline `status=passed` 只表示硬性合规通过。
 - aesthetic `pass=true` 表示总分 ≥8.5、每维 ≥8，且其内容保护检查通过。
-- `ablation_pass=true` 只在 baseline hard pass 和 aesthetic pass 同时为真时成立。
+- `experiment_result.pass=true` 只在 baseline hard pass 和 aesthetic pass 同时为真时成立。
 - `score=0`、`confidence=0` 且问题以“无法评价”开头是未评价占位，不是 0 分样本；合并后 `score_state=unavailable`。
 - 美学高分永远不能让硬检失败候选通过或进入“硬检通过候选”的选版集合。
 
@@ -69,7 +71,7 @@ vendored `agent-result.json` 必须原样保存，字段只能是：`agent_name`
 - 选项 A（本版采用）：保留 1.0 的 3 次重画上限，美学 Agent 每个硬检通过候选只评一次。
 - 选项 B：允许美学 Agent 自己再生成最多 8 轮。
 
-推荐 A。B 改变生成次数、成本和搜索空间，不是“只增加评价 Agent”的公平消融，应作为另一实验组。
+推荐 A。B 改变生成次数、成本和搜索空间，不再是“只增加评价 Agent”的公平单变量对照，应作为另一实验组。
 
 ### 2. upstream integrated 模式强制消费者 Agent
 
@@ -88,7 +90,7 @@ vendored `agent-result.json` 必须原样保存，字段只能是：`agent_name`
 
 ### 4. 最终状态命名冲突
 
-- 选项 A（本版采用）：保留两套原始结果，再计算独立 `ablation_result`。
+- 选项 A（本版采用）：保留两套原始结果，再计算独立 `experiment_result`。
 - 选项 B：用 aesthetic `pass` 覆盖 baseline `status`。
 
 推荐 A。B 会让 baseline 结果无法与对照组逐项比较。

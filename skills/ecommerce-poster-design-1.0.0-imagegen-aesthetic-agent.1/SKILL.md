@@ -1,6 +1,6 @@
 ---
 name: ecommerce-poster-design
-description: "以正式 ecommerce-poster-design 1.0.0-imagegen.1 为冻结 baseline，保留其内置 C 库、ImageGen 生成层和硬性合规流程，仅追加固定版本的美学 Agent 做六维评价与改图反馈。用于 1.0 ImageGen + aesthetic agent 消融实验；不运行消费者 Agent，也不把美学分数当作硬性合规结果。"
+description: "以正式 ecommerce-poster-design 1.0.0-imagegen.1 为冻结 baseline，保留其内置 C 库、ImageGen 生成层和硬性合规流程，仅追加固定版本的美学 Agent 做六维评价与改图反馈。用于 1.0 ImageGen 的 +Aesthetic Agent 单变量对照实验；不运行消费者 Agent，也不把美学分数当作硬性合规结果。"
 ---
 
 # 电商商品营销主视觉设计 Skill 1.0 ImageGen + Aesthetic Agent
@@ -9,11 +9,11 @@ description: "以正式 ecommerce-poster-design 1.0.0-imagegen.1 为冻结 basel
 
 ## 版本边界
 
-这是在冻结的 `1.0.0-imagegen.1` 上只追加 Aesthetic Agent 的独立消融实现。固定流程为：
+这是在冻结的 `1.0.0-imagegen.1` 上只追加 Aesthetic Agent 的独立实验组实现。它是 `+Aesthetic Agent` 组；不应称为“美学消融版”，因为美学模块并未被移除。固定流程为：
 
 `输入校验 → 人群/购买动机/场景识别 → C 库检索 → style_guide → 生成计划 → ImageGen 生成或定向编辑 → 1.0 硬性合规 → 美学评价 → 输出或在剩余 1.0 预算内再次调用 ImageGen`
 
-1.0 仍是唯一调度器和轮次所有者；ImageGen 只生成/编辑图片；美学 Agent 只负责六维视觉评价、修改建议和美学 `score/pass`。消费者 Agent 始终关闭。美学 Agent 不直接调用生成工具、不拥有独立 8 轮循环，也不改变 1.0 的 `passed/degraded/blocked` 语义。整体实验结果另记为 `ablation_pass = baseline_hard_pass && aesthetic_pass`。先阅读 [ImageGen 集成契约](references/imagegen-integration.md) 和 [美学消融集成契约](references/aesthetic-ablation.md)。
+1.0 仍是唯一调度器和轮次所有者；ImageGen 只生成/编辑图片；美学 Agent 只负责六维视觉评价、修改建议和美学 `score/pass`。消费者 Agent 始终关闭。美学 Agent 不直接调用生成工具、不拥有独立 8 轮循环，也不改变 1.0 的 `passed/degraded/blocked` 语义。整体实验结果另记为 `experiment_result.pass = baseline_hard_pass && aesthetic_pass`。先阅读 [ImageGen 集成契约](references/imagegen-integration.md) 和 [Aesthetic Agent 实验集成契约](references/aesthetic-agent-experiment.md)。
 
 ## 开始前
 
@@ -22,7 +22,7 @@ description: "以正式 ecommerce-poster-design 1.0.0-imagegen.1 为冻结 basel
 3. 读取 [references/c-assets.md](references/c-assets.md)，校验并检索外接分类资产。
 4. 读取 [references/imagegen-integration.md](references/imagegen-integration.md)，按生成/编辑契约调用系统 ImageGen。
 5. 生成完成后读取 [references/hard-compliance.md](references/hard-compliance.md)，逐项执行硬性检查。
-6. 只有当前候选完成硬性检查后，才按 [美学消融集成契约](references/aesthetic-ablation.md) 准备固定输入并执行美学评价。
+6. 只有当前候选完成硬性检查后，才按 [Aesthetic Agent 实验集成契约](references/aesthetic-agent-experiment.md) 准备固定输入并执行美学评价。
 
 ## 必填输入
 
@@ -110,12 +110,12 @@ python scripts/select_style.py assets/classification null M04 S04 --request-id R
 
 默认最多生成 1 个首版并按 `assets/config/version.json` 的上限重画 3 次。每轮保存结构化日志。
 
-- 硬性检查和美学评价均通过：立即输出，`ablation_pass=true`；
+- 硬性检查和美学评价均通过：立即输出，`experiment_result.pass=true`；
 - 硬性检查通过但美学未通过且仍有预算：按美学建议定向重画；
-- 达到重画上限：停止。任何硬检未通过时仍按 1.0 规则选择硬性问题最少且严重度最低的候选；存在硬检通过的候选时，只在这些候选中选择有效美学分最高者。输出 baseline 状态、美学结果、`ablation_pass=false`、未解决问题、warning 和全部轮次日志；
+- 达到重画上限：停止。任何硬检未通过时仍按 1.0 规则选择硬性问题最少且严重度最低的候选；存在硬检通过的候选时，只在这些候选中选择有效美学分最高者。输出 baseline 状态、美学结果、`experiment_result.pass=false`、未解决问题、warning 和全部轮次日志；
 - 不得把失败候选描述为完全通过。
 
-美学 Agent 的 `default_generation_rounds=8` 在本消融版本中禁用，不能与 1.0 的轮次嵌套或相加。若要测试 8 轮，应另建实验组。
+美学 Agent 的 `default_generation_rounds=8` 在本实验组中禁用，不能与 1.0 的轮次嵌套或相加。若要测试 8 轮，应另建实验组。
 
 ## 输出
 
@@ -125,7 +125,7 @@ python scripts/select_style.py assets/classification null M04 S04 --request-id R
 - ImageGen 的生成/编辑模式、输入图片角色、最终提示词和工作区文件路径；
 - 硬性合规报告；
 - 原样保存的 `aesthetic_agent` 固定 JSON；
-- 独立 `ablation_result`，明确 baseline hard pass、美学 pass、score 状态和消费者 Agent 未使用；
+- 独立 `experiment_result`，明确本组为 `aesthetic_agent_added`、baseline hard pass、美学 pass、score 状态和消费者 Agent 未使用；
 - 分类标签、规则 ID、案例 ID 和回退层级；
 - `protected_content`；
 - warning 列表；

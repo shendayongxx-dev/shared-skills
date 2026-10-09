@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import Any
 
 
-ABLATION_VERSION = "1.0.0-imagegen-aesthetic-agent.1"
+EXPERIMENT_VERSION = "1.0.0-imagegen-aesthetic-agent.1"
 BASELINE_VERSION = "1.0.0-imagegen.1"
 MAX_REDRAW_ATTEMPTS = 3
 
@@ -150,7 +150,7 @@ def prepare(args: argparse.Namespace) -> dict[str, Any]:
     canvas = require_object(baseline_input["canvas"], "canvas")
     context = {
         "mode": "standalone",
-        "version": ABLATION_VERSION,
+        "version": EXPERIMENT_VERSION,
         "canvas": {
             "width": canvas.get("width"),
             "height": canvas.get("height"),
@@ -178,7 +178,7 @@ def prepare(args: argparse.Namespace) -> dict[str, Any]:
         },
     }
     manifest = {
-        "adapter_version": ABLATION_VERSION,
+        "adapter_version": EXPERIMENT_VERSION,
         "baseline_version": BASELINE_VERSION,
         "consumer_agent_used": False,
         "aesthetic_context_mode": "standalone",
@@ -270,7 +270,8 @@ def merge_results(baseline_result: dict[str, Any], aesthetic_result: dict[str, A
     return {
         "baseline_result": baseline_result,
         "aesthetic_agent_result": aesthetic,
-        "ablation_result": {
+        "experiment_result": {
+            "variant": "aesthetic_agent_added",
             "pass": combined_pass,
             "status": combined_status,
             "baseline_hard_pass": hard_pass,
@@ -289,7 +290,7 @@ def merge(args: argparse.Namespace) -> dict[str, Any]:
     aesthetic = require_object(load_json(args.aesthetic_result), "aesthetic result")
     combined = merge_results(baseline, aesthetic)
     write_new_json(Path(args.out), combined)
-    return combined["ablation_result"]
+    return combined["experiment_result"]
 
 
 def parser() -> argparse.ArgumentParser:

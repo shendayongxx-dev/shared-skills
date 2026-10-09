@@ -3,7 +3,8 @@
   "baseline_version": "1.0.0-imagegen.1",
   "baseline_tag": "ecommerce-poster-design-v1.0.0-imagegen.1",
   "baseline_commit": "fdd3b20d74c170460f79465a241cffee012e6652",
-  "release_channel": "standalone-imagegen-aesthetic-agent-ablation",
+  "release_channel": "standalone-imagegen-aesthetic-agent-experiment",
+  "experiment_variant": "aesthetic_agent_added",
   "production_ready": true,
   "final_1_0": true,
   "c_library": {

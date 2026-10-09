@@ -2,10 +2,10 @@
 
 ## 1.0.0-imagegen-aesthetic-agent.1
 
-发布状态：独立消融版本；仅发布在独立分支和同名标签，不合入 `main`。
+发布状态：独立 +Aesthetic Agent 实验组；仅发布在独立分支和同名标签，不合入 `main`。
 
 - 唯一 baseline 为 `ecommerce-poster-design-v1.0.0-imagegen.1`；其 C 2.0.1 分类库、ImageGen 生成层、硬性合规和最多 3 次重画保持不变。
-- 新增固定版本的 Aesthetic Agent 六维评价、确定性适配器和独立 `ablation_pass`。
+- 新增固定版本的 Aesthetic Agent 六维评价、确定性适配器和独立 `experiment_result`。
 - 消费者/Persona Agent 保持关闭；美学 Agent 自带 8 轮循环禁用，避免与 baseline 重画预算嵌套。
 - 已通过分类资产校验、上游美学测试、适配器测试、端到端 smoke test 与 Skill 快速校验。
 

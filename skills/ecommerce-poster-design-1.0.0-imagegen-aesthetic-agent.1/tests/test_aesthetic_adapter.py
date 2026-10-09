@@ -50,7 +50,7 @@ def aesthetic(score=8.5, passed=True, confidence=0.8, problems=None, suggestions
 
 class AdapterTests(unittest.TestCase):
     def test_adapter_uses_combined_skill_version(self):
-        self.assertEqual(adapter.ABLATION_VERSION, "1.0.0-imagegen-aesthetic-agent.1")
+        self.assertEqual(adapter.EXPERIMENT_VERSION, "1.0.0-imagegen-aesthetic-agent.1")
 
     def test_exact_mapping_and_ordered_scene_tags(self):
         result = adapter.build_aesthetic_input(baseline_input(), style(), "round-01.png")
@@ -83,17 +83,18 @@ class AdapterTests(unittest.TestCase):
     def test_high_aesthetic_score_cannot_override_hard_failure(self):
         baseline = {"status": "degraded", "hard_compliance": {"passed": False, "problem_list": []}}
         result = adapter.merge_results(baseline, aesthetic(score=9.5, passed=True))
-        self.assertFalse(result["ablation_result"]["pass"])
-        self.assertFalse(result["ablation_result"]["baseline_hard_pass"])
-        self.assertEqual(result["ablation_result"]["status"], "revise")
+        self.assertFalse(result["experiment_result"]["pass"])
+        self.assertFalse(result["experiment_result"]["baseline_hard_pass"])
+        self.assertEqual(result["experiment_result"]["status"], "revise")
 
     def test_combined_pass_requires_both_gates(self):
         baseline = {"status": "passed", "hard_compliance": {"passed": True, "problem_list": []}}
         result = adapter.merge_results(baseline, aesthetic())
-        self.assertTrue(result["ablation_result"]["pass"])
-        self.assertEqual(result["ablation_result"]["status"], "passed")
-        self.assertFalse(result["ablation_result"]["consumer_agent_used"])
-        self.assertEqual(result["ablation_result"]["max_redraw_attempts"], 3)
+        self.assertTrue(result["experiment_result"]["pass"])
+        self.assertEqual(result["experiment_result"]["variant"], "aesthetic_agent_added")
+        self.assertEqual(result["experiment_result"]["status"], "passed")
+        self.assertFalse(result["experiment_result"]["consumer_agent_used"])
+        self.assertEqual(result["experiment_result"]["max_redraw_attempts"], 3)
 
     def test_unavailable_zero_is_not_a_measured_score(self):
         baseline = {"status": "passed", "hard_compliance": {"passed": True, "problem_list": []}}
@@ -105,8 +106,8 @@ class AdapterTests(unittest.TestCase):
             suggestions=["提供可读取海报"],
         )
         result = adapter.merge_results(baseline, missing)
-        self.assertEqual(result["ablation_result"]["score_state"], "unavailable")
-        self.assertEqual(result["ablation_result"]["status"], "aesthetic_unavailable")
+        self.assertEqual(result["experiment_result"]["score_state"], "unavailable")
+        self.assertEqual(result["experiment_result"]["status"], "aesthetic_unavailable")
 
     def test_consumer_output_is_rejected(self):
         baseline = {"status": "passed", "hard_compliance": {"passed": True, "problem_list": []}}

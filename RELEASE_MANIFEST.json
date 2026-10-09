@@ -37,7 +37,7 @@
     },
     {
       "version": "1.0.0-imagegen-aesthetic-agent.1",
-      "status": "standalone-ablation",
+      "status": "standalone-aesthetic-agent-experiment",
       "directory": "skills/ecommerce-poster-design-1.0.0-imagegen-aesthetic-agent.1",
       "tests": "skills/ecommerce-poster-design-1.0.0-imagegen-aesthetic-agent.1/tests",
       "tag": "ecommerce-poster-design-v1.0.0-imagegen-aesthetic-agent.1",
