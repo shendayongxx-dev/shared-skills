@@ -1,0 +1,55 @@
+{
+  "schema_version": "A-D-2.0",
+  "request_id": "NORI-001",
+  "version_id": "v01",
+  "agent_name": "consumer_agent",
+  "score": null,
+  "pass": false,
+  "dimension_scores": null,
+  "problem_list": [
+    "输入或图像无法完成评价"
+  ],
+  "modify_suggestion": [
+    "补充meta.input_errors列出的信息；保留原始保护对象与累计锁"
+  ],
+  "protected_content": {
+    "product_identity": [
+      "NORI 600 mL 不锈钢保温杯",
+      "保温杯"
+    ],
+    "product_quantity": null,
+    "brand_and_logo": [
+      "NORI"
+    ],
+    "price_and_unit": [
+      "秋日出行价 129 元"
+    ],
+    "promotion_and_period": [
+      "秋季限时促销",
+      "2026年10月1日至10月15日"
+    ],
+    "selling_points": [
+      "316 不锈钢内胆",
+      "12 小时保温保冷",
+      "一键锁扣 防漏随行"
+    ],
+    "cta": [
+      "立即选购"
+    ],
+    "legal_text": []
+  },
+  "locked_dimensions": [],
+  "regressed_dimensions": [],
+  "hard_fail": false,
+  "next_route": "complete_input",
+  "meta": {
+    "judge_dimensions": [],
+    "confidence": 0,
+    "input_errors": [
+      "模拟图像解析失败"
+    ],
+    "unknown_dimensions": [],
+    "context_hash": "",
+    "dimension_evidence": {}
+  }
+}

@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "skills/ecommerce-poster-design-3.0.0/**"
+      - "skills/ecommerce-poster-design-1.0.0-aesthetic-first-ablation.1/**"
       - "tests/ecommerce-poster-design-3.0.0/**"
       - "PROJECT_STATUS.md"
       - "RELEASE_MANIFEST.json"
@@ -15,6 +16,7 @@ on:
   pull_request:
     paths:
       - "skills/ecommerce-poster-design-3.0.0/**"
+      - "skills/ecommerce-poster-design-1.0.0-aesthetic-first-ablation.1/**"
       - "tests/ecommerce-poster-design-3.0.0/**"
       - "PROJECT_STATUS.md"
       - "RELEASE_MANIFEST.json"
@@ -25,6 +27,30 @@ on:
       - ".github/workflows/validate-ecommerce-poster.yml"
 
 jobs:
+  validate_aesthetic_first_ablation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate ablation integration and classification
+        run: |
+          python skills/ecommerce-poster-design-1.0.0-aesthetic-first-ablation.1/scripts/validate_ablation_integration.py skills/ecommerce-poster-design-1.0.0-aesthetic-first-ablation.1
+          python skills/ecommerce-poster-design-1.0.0-aesthetic-first-ablation.1/scripts/validate_classification.py skills/ecommerce-poster-design-1.0.0-aesthetic-first-ablation.1/assets/classification
+      - name: Test ablation routing and agent modules
+        run: |
+          python skills/ecommerce-poster-design-1.0.0-aesthetic-first-ablation.1/scripts/test_ablation_routing.py
+          python skills/ecommerce-poster-design-1.0.0-aesthetic-first-ablation.1/modules/consumer-agent/scripts/run_evals.py
+          cd skills/ecommerce-poster-design-1.0.0-aesthetic-first-ablation.1
+          node --test modules/aesthetic-agent/tests/evaluate.test.mjs modules/aesthetic-agent/tests/references.test.mjs modules/aesthetic-agent/tests/quality.test.mjs
+
   validate_v3_0_0:
     runs-on: ubuntu-latest
     steps:

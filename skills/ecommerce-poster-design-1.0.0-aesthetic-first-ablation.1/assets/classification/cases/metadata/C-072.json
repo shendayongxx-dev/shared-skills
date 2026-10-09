@@ -1,0 +1,71 @@
+{
+  "schema_version": "2.0.0",
+  "taxonomy_version": "1.0",
+  "case_id": "C-072",
+  "title": "柳橙汁棒打鲜橙含果肉果汁风味饮料浓浆冲饮商用店专用原料1.1kg",
+  "tags": {
+    "audience_id": "P05",
+    "motivation_id": "M01",
+    "scenario_id": "S01"
+  },
+  "rule_ids": [
+    "R-011",
+    "R-104",
+    "R-201"
+  ],
+  "is_seed": false,
+  "asset": {
+    "storage_type": "external_research_reference",
+    "local_path": null,
+    "internal_asset_uri": null,
+    "external_image_url": "https://img.alicdn.com/imgextra/i3/2960464722/O1CN01MIexFs1kkjDwrdfV4_!!2960464722.jpg_q50.jpg_.webp",
+    "mime_type": null,
+    "format": null,
+    "width": null,
+    "height": null,
+    "bytes": null,
+    "checksum": null,
+    "public_repository_allowed": false
+  },
+  "source": {
+    "platform": "淘宝",
+    "publisher_or_shop": null,
+    "url": "https://item.taobao.com/item.htm?id=626926452221&skuId=5791276790461",
+    "collected_at": "2026-10-02",
+    "usage_status": "research_reference_only"
+  },
+  "rights": {
+    "rights_status": "third_party_unverified",
+    "rights_proof_ref": null,
+    "redistribution_status": "prohibited_public_redistribution",
+    "scope": "仅限研究参考；不得作为正式种子或公开再分发。",
+    "expires_at": null
+  },
+  "style_analysis": {
+    "text_signals": "柳橙汁棒打鲜橙含果肉果汁风味饮料浓浆冲饮商用店专用原料1.1kg；大众务实人群；价格收益；居家生活",
+    "primary_information_focus": "价格优惠",
+    "palette_sets_text": "背景#FFF5E6/#FFFFFF；辅助#FFE0B2；强调#E53935/#FF7A00；正文#222222；材质#BDBDBD",
+    "typography": "粗黑无衬线；价格数字最大；规格清晰",
+    "composition": "商品与价格双焦点，优惠信息形成独立色块",
+    "product_ratio": 0.55,
+    "info_density": 5,
+    "promotion_intensity": 5,
+    "visual_tags": "大众务实人群、价格收益、居家生活、商品主体清晰、信息分层",
+    "why_effective": "商品、核心利益点与场景线索层级明确，便于快速识别并支持对应购买决策。",
+    "prohibited_styles": "避免颜色过多、商品过小、优惠条件缺失和价格遮挡主体。"
+  },
+  "why_effective": "商品、核心利益点与场景线索层级明确，便于快速识别并支持对应购买决策。",
+  "content_review": {
+    "content_review_status": "reviewed",
+    "reviewer_role": "C组内容标注复核",
+    "reviewed_at": "2026-10-02T12:00:00+08:00",
+    "note": "仅确认分类标签与视觉分析字段已复核，不代表生产授权或资产门禁通过。",
+    "evidence_ref": "cases/case-index.csv"
+  },
+  "review": {
+    "review_status": "draft",
+    "reviewer": null,
+    "reviewed_at": null,
+    "note": "等待项目负责人完成权利、资产可读性与checksum生产审核。"
+  }
+}

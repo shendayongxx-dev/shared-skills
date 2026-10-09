@@ -24,6 +24,14 @@
 
 1.0.0、1.0.0-imagegen.1 和 2.0.1 已由对应 Tag 固定保存，不再占用 `main` 工作树。现有历史分支和 Tag 不重写、不移动。
 
+## 独立消融实验
+
+- 分支：`experiment/ecommerce-poster-design-v1.0.0-aesthetic-first-ablation.1`
+- Tag：`ecommerce-poster-design-v1.0.0-aesthetic-first-ablation.1`
+- 基线：`1.0.0`
+- 流程：`生成 → 硬性合规 → 美学 Agent → 消费者 Agent`
+- 状态：`experimental`，不替代 3.0.0，不直接合并进 `main`
+
 ## 不得误判
 
 - `production_ready=true` 表示分类资产门禁通过，不表示取得第三方图片版权；

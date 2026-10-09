@@ -20,6 +20,20 @@
     },
     "max_generation_rounds": 8
   },
+  "experiments": [
+    {
+      "version": "1.0.0-aesthetic-first-ablation.1",
+      "status": "experimental",
+      "baseline": "1.0.0",
+      "directory": "skills/ecommerce-poster-design-1.0.0-aesthetic-first-ablation.1",
+      "branch": "experiment/ecommerce-poster-design-v1.0.0-aesthetic-first-ablation.1",
+      "tag": "ecommerce-poster-design-v1.0.0-aesthetic-first-ablation.1",
+      "workflow": "hard compliance -> aesthetic agent -> consumer agent",
+      "max_redraw_attempts": 3,
+      "shared_redraw_budget": true,
+      "main_unchanged": true
+    }
+  ],
   "historical_releases": [
     {
       "version": "1.0.0",

@@ -1,0 +1,58 @@
+{
+  "skill_version": "1.0.0-aesthetic-first-ablation.1",
+  "release_channel": "experimental",
+  "git_branch": "experiment/ecommerce-poster-design-v1.0.0-aesthetic-first-ablation.1",
+  "git_tag": "ecommerce-poster-design-v1.0.0-aesthetic-first-ablation.1",
+  "production_ready": false,
+  "final_1_0": false,
+  "baseline": {
+    "skill_version": "1.0.0",
+    "workflow_version": "1.0",
+    "mutation_policy": "copied baseline; original remains unchanged"
+  },
+  "c_library": {
+    "status": "connected",
+    "asset_mode": "production_internal_reference",
+    "official_asset_version": "2.0.1-a.1",
+    "source_schema_version": "2.0.0",
+    "eligible_seed_cases": 6,
+    "seed_scenario_coverage": 6
+  },
+  "c_candidate_adapter": {
+    "status": "implemented",
+    "formal_integration": true,
+    "supported_source_schemas": ["1.0", "1.0-rc.1", "2.0.0-rc.1", "2.0.0"]
+  },
+  "workflow_version": "1.0.0-aesthetic-first-ablation.1",
+  "schema_version": "1.0+agent-contracts",
+  "feature_flags": {
+    "aesthetic_agent": true,
+    "consumer_agent": true
+  },
+  "agent_order": ["aesthetic_agent", "consumer_agent"],
+  "modules": {
+    "aesthetic_agent": {
+      "version": "2.4",
+      "source_url": "https://github.com/zqian8245-hash/ecommerce-aesthetic-agent",
+      "source_commit": "5f0baa0d10c5e1e114ac9a05fb33580110f31d33",
+      "input_schema": "modules/aesthetic-agent/schemas/input.schema.json",
+      "output_schema": "modules/aesthetic-agent/schemas/output.schema.json"
+    },
+    "consumer_agent": {
+      "version": "1.5.3",
+      "schema_version": "A-D-2.0",
+      "input_schema": "modules/consumer-agent/assets/schemas/input.schema.json",
+      "output_schema": "modules/consumer-agent/assets/schemas/output.schema.json"
+    }
+  },
+  "retry_policy": {
+    "max_redraw_attempts": 3,
+    "shared_across_stages": true,
+    "restart_agent_chain_after_redraw": true,
+    "return_best_candidate_on_exhaustion": true
+  },
+  "logging": {
+    "structured_round_logs": true,
+    "record_agent_order": true
+  }
+}

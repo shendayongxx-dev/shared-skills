@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "taxonomy_version",
+    "rules_version",
+    "request_id",
+    "audience",
+    "purchase_motivation",
+    "scenario",
+    "selected_rule_ids",
+    "recommended_case_ids",
+    "fallback_level",
+    "needs_human_review",
+    "review_reason"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0"
+    },
+    "taxonomy_version": {
+      "const": "1.0"
+    },
+    "rules_version": {
+      "const": "2.0.1"
+    },
+    "request_id": {
+      "type": "string"
+    },
+    "audience": {
+      "type": "object",
+      "required": [
+        "primary_id",
+        "secondary_ids",
+        "confidence",
+        "evidence"
+      ],
+      "properties": {
+        "primary_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^P[0-9]{2}$"
+        },
+        "secondary_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^P[0-9]{2}$"
+          }
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "purchase_motivation": {
+      "type": "object",
+      "required": [
+        "primary_id",
+        "secondary_ids",
+        "confidence",
+        "evidence"
+      ],
+      "properties": {
+        "primary_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^M[0-9]{2}$"
+        },
+        "secondary_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^M[0-9]{2}$"
+          }
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "scenario": {
+      "type": "object",
+      "required": [
+        "primary_id",
+        "secondary_ids",
+        "confidence",
+        "evidence"
+      ],
+      "properties": {
+        "primary_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^S[0-9]{2}$"
+        },
+        "secondary_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^S[0-9]{2}$"
+          }
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "selected_rule_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "recommended_case_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "fallback_level": {
+      "enum": [
+        "exact",
+        "two_dimension",
+        "single_dimension",
+        "global"
+      ]
+    },
+    "needs_human_review": {
+      "type": "boolean"
+    },
+    "review_reason": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

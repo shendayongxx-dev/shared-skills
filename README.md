@@ -12,6 +12,16 @@
 
 3.0.0 的流程为：`生成 → 硬性合规 → 消费者 Agent → 美学 Agent → 完成或有限迭代`。ImageGen 仅由整体 Skill 调用，消费者和美学 Agent 都不直接生成图片。
 
+## 独立实验分支
+
+`experiment/ecommerce-poster-design-v1.0.0-aesthetic-first-ablation.1` 在 1.0.0 基线之上新增独立目录：
+
+- Skill：`skills/ecommerce-poster-design-1.0.0-aesthetic-first-ablation.1/`
+- 流程：`生成 → 硬性合规 → 美学 Agent → 消费者 Agent → 完成或有限迭代`
+- 固定快照：`ecommerce-poster-design-v1.0.0-aesthetic-first-ablation.1`
+
+该实验用于 Agent 顺序消融，不替代当前稳定版，也不计划直接写入 `main`。两个阶段共用 1.0 的最多 3 次重画预算。
+
 ## 历史版本
 
 历史版本不继续堆放在 `main`，通过不可变 Tag 获取：

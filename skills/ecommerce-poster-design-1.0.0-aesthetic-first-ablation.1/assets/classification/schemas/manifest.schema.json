@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "package_name",
+    "package_version",
+    "source_schema_version",
+    "taxonomy_version",
+    "rules_version",
+    "status",
+    "formal_release",
+    "valid",
+    "production_ready",
+    "counts",
+    "files"
+  ],
+  "properties": {
+    "package_name": {
+      "const": "classification-2.0.0-production-candidate-a-handoff"
+    },
+    "package_version": {
+      "const": "2.0.0"
+    },
+    "source_schema_version": {
+      "const": "2.0.0"
+    },
+    "taxonomy_version": {
+      "const": "1.0"
+    },
+    "rules_version": {
+      "const": "2.0.0"
+    },
+    "formal_release": {
+      "type": "boolean"
+    },
+    "valid": {
+      "type": "boolean"
+    },
+    "production_ready": {
+      "type": "boolean"
+    },
+    "counts": {
+      "type": "object"
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "sha256",
+          "bytes"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    }
+  }
+}
