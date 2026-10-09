@@ -6,8 +6,10 @@ on:
       - "skills/ecommerce-poster-design/**"
       - "skills/ecommerce-poster-design-1.0.0-imagegen.1/**"
       - "skills/ecommerce-poster-design-2.0.1/**"
+      - "skills/ecommerce-poster-design-3.0.0/**"
       - "tests/ecommerce-poster-design/**"
       - "tests/ecommerce-poster-design-2.0.1/**"
+      - "tests/ecommerce-poster-design-3.0.0/**"
       - "PROJECT_STATUS.md"
       - "RELEASE_MANIFEST.json"
       - "README.md"
@@ -20,8 +22,10 @@ on:
       - "skills/ecommerce-poster-design/**"
       - "skills/ecommerce-poster-design-1.0.0-imagegen.1/**"
       - "skills/ecommerce-poster-design-2.0.1/**"
+      - "skills/ecommerce-poster-design-3.0.0/**"
       - "tests/ecommerce-poster-design/**"
       - "tests/ecommerce-poster-design-2.0.1/**"
+      - "tests/ecommerce-poster-design-3.0.0/**"
       - "PROJECT_STATUS.md"
       - "RELEASE_MANIFEST.json"
       - "README.md"
@@ -244,3 +248,84 @@ jobs:
           assert not (root / "modules/consumer-agent").exists()
           skill_text = (root / "SKILL.md").read_text(encoding="utf-8").lower()
           assert "imagegen" in skill_text and "image_gen" in skill_text
+
+  validate_v3_0_0:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate 3.0 consumer integration
+        run: >-
+          python skills/ecommerce-poster-design-3.0.0/scripts/validate_consumer_integration.py
+          skills/ecommerce-poster-design-3.0.0
+
+      - name: Validate 3.0 aesthetic integration
+        run: >-
+          python skills/ecommerce-poster-design-3.0.0/scripts/validate_aesthetic_integration.py
+          skills/ecommerce-poster-design-3.0.0
+
+      - name: Validate 3.0 classification assets
+        run: >-
+          python skills/ecommerce-poster-design-3.0.0/scripts/validate_classification.py
+          skills/ecommerce-poster-design-3.0.0/assets/classification
+
+      - name: Test 3.0 consumer routing
+        run: python skills/ecommerce-poster-design-3.0.0/scripts/test_consumer_routing.py
+
+      - name: Test 3.0 aesthetic routing
+        run: python skills/ecommerce-poster-design-3.0.0/scripts/test_aesthetic_integration.py
+
+      - name: Test 3.0 consumer module
+        run: python skills/ecommerce-poster-design-3.0.0/modules/consumer-agent/scripts/run_evals.py
+
+      - name: Test aesthetic-agent module
+        working-directory: skills/ecommerce-poster-design-3.0.0
+        run: >-
+          node --test
+          modules/aesthetic-agent/tests/evaluate.test.mjs
+          modules/aesthetic-agent/tests/references.test.mjs
+          modules/aesthetic-agent/tests/quality.test.mjs
+
+      - name: Enforce 3.0 ImageGen ownership boundary
+        shell: python
+        run: |
+          from pathlib import Path
+
+          root = Path("skills/ecommerce-poster-design-3.0.0")
+          consumer = root / "modules" / "consumer-agent"
+          consumer_hits = []
+          for path in consumer.rglob("*"):
+              if path.is_file():
+                  text = path.read_text(encoding="utf-8", errors="ignore").lower()
+                  if "imagegen" in text or "image_gen" in text:
+                      consumer_hits.append(str(path))
+          assert not consumer_hits, "ImageGen must remain at the overall skill layer: " + ", ".join(consumer_hits)
+
+          aesthetic_runtime = [
+              root / "modules" / "aesthetic-agent" / "scripts",
+              root / "modules" / "aesthetic-agent" / "agents",
+          ]
+          aesthetic_hits = []
+          for runtime_root in aesthetic_runtime:
+              for path in runtime_root.rglob("*"):
+                  if path.is_file():
+                      text = path.read_text(encoding="utf-8", errors="ignore").lower()
+                      if "imagegen" in text or "image_gen" in text:
+                          aesthetic_hits.append(str(path))
+          assert not aesthetic_hits, "Aesthetic Agent runtime must not call ImageGen directly: " + ", ".join(aesthetic_hits)
+
+          skill_text = (root / "SKILL.md").read_text(encoding="utf-8").lower()
+          integration_text = (root / "references" / "imagegen-integration.md").read_text(encoding="utf-8").lower()
+          assert "imagegen" in skill_text and "image_gen" in skill_text
+          assert "不属于 `modules/consumer-agent`" in integration_text

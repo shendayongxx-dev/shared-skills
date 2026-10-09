@@ -2,13 +2,32 @@
 
 ## 选择版本
 
-- 当前正式版 2.0.1：仓库目录 `skills/ecommerce-poster-design-2.0.1/`；
+- 美学集成候选版 3.0.0：仓库目录 `skills/ecommerce-poster-design-3.0.0/`；
+- 当前稳定版 2.0.1：仓库目录 `skills/ecommerce-poster-design-2.0.1/`；
 - 1.0 ImageGen 独立版 1.0.0-imagegen.1：仓库目录 `skills/ecommerce-poster-design-1.0.0-imagegen.1/`；
 - 历史稳定版 1.0.0：仓库目录 `skills/ecommerce-poster-design/`，内容保持冻结。
 
 无论选择哪个版本，复制到本机 Codex Skills 目录后，目标目录都应命名为 `ecommerce-poster-design`。不要把不同版本的文件混合到同一安装目录。
 
-## 安装 2.0.1（推荐）
+## 安装 3.0.0（美学集成候选版）
+
+```powershell
+git clone --branch main --depth 1 https://github.com/shendayongxx-dev/shared-skills.git shared-skills
+$skillTarget = Join-Path $env:USERPROFILE '.codex\skills\ecommerce-poster-design'
+Copy-Item -Recurse -LiteralPath '.\shared-skills\skills\ecommerce-poster-design-3.0.0' -Destination $skillTarget
+```
+
+3.0.0 基于未修改的 2.0.1；ImageGen 由整体 Skill 调用，`modules/consumer-agent` 与 `modules/aesthetic-agent` 只负责评价和路由。安装后运行：
+
+```text
+python scripts/validate_classification.py assets/classification
+python scripts/validate_consumer_integration.py .
+python scripts/validate_aesthetic_integration.py .
+python scripts/test_consumer_routing.py
+python scripts/test_aesthetic_integration.py
+```
+
+## 安装 2.0.1（稳定版，无美学 Agent）
 
 ```powershell
 git clone --branch main --depth 1 https://github.com/shendayongxx-dev/shared-skills.git shared-skills
@@ -16,7 +35,7 @@ $skillTarget = Join-Path $env:USERPROFILE '.codex\skills\ecommerce-poster-design
 Copy-Item -Recurse -LiteralPath '.\shared-skills\skills\ecommerce-poster-design-2.0.1' -Destination $skillTarget
 ```
 
-2.0.1 的 ImageGen 由整体 Skill 调用；`modules/consumer-agent` 只负责评分和路由。安装后运行：
+安装后运行：
 
 ```text
 python scripts/validate_classification.py assets/classification

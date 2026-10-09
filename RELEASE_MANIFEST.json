@@ -1,11 +1,12 @@
 {
   "repository": "shendayongxx-dev/shared-skills",
   "skill": "ecommerce-poster-design",
-  "latest_version": "2.0.1",
+  "latest_version": "3.0.0",
   "version_directories": {
     "1.0.0": "skills/ecommerce-poster-design",
     "1.0.0-imagegen.1": "skills/ecommerce-poster-design-1.0.0-imagegen.1",
-    "2.0.1": "skills/ecommerce-poster-design-2.0.1"
+    "2.0.1": "skills/ecommerce-poster-design-2.0.1",
+    "3.0.0": "skills/ecommerce-poster-design-3.0.0"
   },
   "releases": [
     {
@@ -27,12 +28,29 @@
     },
     {
       "version": "2.0.1",
-      "status": "current",
+      "status": "stable-baseline",
       "directory": "skills/ecommerce-poster-design-2.0.1",
       "tests": "tests/ecommerce-poster-design-2.0.1",
       "tag": "ecommerce-poster-design-v2.0.1",
       "generation_backend": "Codex imagegen/image_gen at overall skill layer",
       "consumer_agent_boundary": "evaluation, scoring, evidence, and routing only"
+    },
+    {
+      "version": "3.0.0",
+      "status": "current-local-integration",
+      "directory": "skills/ecommerce-poster-design-3.0.0",
+      "tests": "tests/ecommerce-poster-design-3.0.0",
+      "tag": null,
+      "based_on": "2.0.1",
+      "generation_backend": "Codex imagegen/image_gen at overall skill layer",
+      "consumer_agent_boundary": "evaluation, scoring, evidence, and routing only",
+      "aesthetic_agent": {
+        "version": "2.4",
+        "source_commit": "5f0baa0d10c5e1e114ac9a05fb33580110f31d33",
+        "boundary": "six-dimension visual evaluation and redesign planning only"
+      },
+      "workflow": "hard compliance -> consumer agent -> aesthetic agent",
+      "max_generation_rounds": 8
     }
   ],
   "version": "1.0.0",
