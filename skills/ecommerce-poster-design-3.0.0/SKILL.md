@@ -63,6 +63,8 @@ python scripts/select_style.py assets/classification <audience_id|null> <motivat
 
 每个成功产生的新候选获得新的 `version_id` 和图片 SHA-256；旧候选的硬检查、消费者和美学报告立即失效。工具失败、空结果或不可读结果没有形成候选，因此不增加全局重画计数。
 
+美学返图不是普通重生成。调用 ImageGen 前必须先通过 `scripts/validate_generation_edit_contract.py` 校验本轮 `generation_edit_contract`，并以最后消费者通过版作为唯一编辑底图。只允许编辑合同列出的未达标美学维度；五个消费者功能、已达标美学维度和八组保护内容全部冻结。合同要求 `local_edit_only` 时不得改为无蒙版整图重生成；工具无法遵守范围时返回 `blocked`。
+
 对候选执行 HC-01～HC-12。失败时按问题定向重画；任何返图都从 HC-01 重新开始，不能直接跳回某个 Agent。
 
 ### 4. 消费者 Agent
@@ -92,10 +94,12 @@ python modules/aesthetic-agent/scripts/score_evaluation.py \
 确定性通过条件为总分至少 80，且构图≥16/20、层级≥16/20、配色≥12/15、排版≥16/20、风格场景≥12/15、材质细节≥8/10，并且没有关键问题。
 
 - `score=null`：当前评价被阻塞；补齐输入或图像，不生成、不计轮次；
-- `pass=false`：只把未达标维度对应的最多三条局部建议交给生成层；每条建议必须明确允许编辑、禁止编辑、消费者功能锁和验收标准；
+- `pass=false`：路由器根据确定性六维明细生成结构化 `generation_edit_contract`，只授权未达标美学维度；每条局部建议仍须明确允许编辑、禁止编辑、消费者功能锁和验收标准；
 - `pass=true`：用 `scripts/route_aesthetic_result.py` 交叉核验计分明细与当前候选绑定，再进入最终验收。
 
 不得因缺少 4 档增强证据而制造重画理由。局部修复可解决时不做整体重设计；确需扩大编辑范围时，也必须保持五个消费者功能和八组保护对象。
+
+美学返图重新进入消费者评价时，必须把最后消费者通过结果作为 `previous_result`，并携带五个累计锁。若 `regressed_dimensions` 非空，立即淘汰该返图、恢复最后消费者通过版作为下一次编辑底图；不得用回退候选覆盖基线或继续进入美学评价。
 
 ### 6. 统一预算与候选选择
 

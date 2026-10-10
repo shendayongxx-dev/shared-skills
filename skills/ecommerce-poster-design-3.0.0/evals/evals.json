@@ -36,6 +36,18 @@
         "全局重画次数不增加",
         "不把 null 当作0分加入最佳候选比较"
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "当前海报已通过消费者五维，美学只在 typography 和 color 两维未达标。请为返图生成可执行约束，确保不能改变消费者已经通过的商品识别、利益表达、交易信息、场景联系和购买驱动力。",
+      "expected_output": "生成 aesthetic-edit-lock/1.0 合同，只开放 typography 和 color，冻结另外四个美学维度、五个消费者维度、八组保护内容和当前基线；ImageGen 只能局部编辑。",
+      "files": [],
+      "expectations": [
+        "editable_aesthetic_dimensions 仅包含 typography 和 color",
+        "locked_consumer_dimensions 完整包含五个消费者功能及原分数",
+        "generation_mode 为 local_edit_only，基线绑定当前 request/version/poster/context_hash",
+        "返图消费者复评出现 regressed_dimensions 时淘汰返图并恢复基线"
+      ]
     }
   ]
 }

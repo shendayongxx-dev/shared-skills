@@ -53,6 +53,8 @@
       "workflow": "hard compliance -> consumer agent -> aesthetic agent",
       "max_redraw_attempts": 8,
       "counter_scope": "global across hard compliance, consumer, and aesthetic",
+      "generation_edit_contract": "aesthetic-edit-lock/1.0",
+      "consumer_regression_policy": "reject candidate and restore last consumer-passed baseline",
       "legacy_tag": "ecommerce-poster-design-v3.0.0-legacy-aesthetic-v2.4"
     }
   ],

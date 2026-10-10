@@ -54,11 +54,21 @@ python scripts/route_aesthetic_result.py <aesthetic-result.json> \
 ```
 
 - `complete`：当前候选三重门禁通过；
-- `regenerate_then_full_pipeline`：按局部建议生成新候选，然后从 HC-01 重跑；
+- `regenerate_then_full_pipeline`：验证结构化消费者冻结合同后，以最后消费者通过版为底图做局部编辑，然后从 HC-01 重跑；
+- `complete_aesthetic_scope`：关键问题没有绑定到未达标美学维度，停止生成并人工确认范围；
 - `complete_aesthetic_input`：评价阻塞，补输入或图像，不生成；
 - `return_best_candidate`：统一八次重画预算耗尽，返回历史最佳合规候选并标记 `degraded`。
 
 `redraw_attempts` 是硬检查、消费者和美学共享的全局计数。只有成功形成新候选才加一，任何阶段和 Agent 都不能重置。
+
+路由结果中的 `generation_edit_contract` 是生成授权，至少包含：消费者通过基线、仅可编辑的未达标美学维度、已锁定美学维度、五个消费者功能锁、八组不可变保护对象、参考建议、禁止变化和返图检查。建议只是参考；它与结构化锁冲突时不得执行。调用 ImageGen 前运行：
+
+```text
+python scripts/validate_generation_edit_contract.py <routed-result.json> \
+  --workflow-input <aesthetic-input.json>
+```
+
+校验失败时不得生成。返图消费者复评必须继承原消费者通过结果和五个锁；任何 `regressed_dimensions` 都会淘汰返图并恢复基线。
 
 ## 正式通过校验
 

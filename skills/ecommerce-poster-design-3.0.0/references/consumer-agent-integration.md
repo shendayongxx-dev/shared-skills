@@ -2,10 +2,10 @@
 
 ## 版本与边界
 
-- 主流程版本：2.0.0；
+- 主流程版本：3.0.0（消费者接口继续使用 A-D-2.0）；
 - 消费者模块：`modules/consumer-agent`，版本 1.5.3；
 - 正式接口：A-D-2.0；
-- 消费者开关开启，美学开关关闭；
+- 消费者开关和美学开关均开启；消费者正式通过且五维全锁后进入美学 Agent；
 - 1.0.0 仍是无 Agent 的消融基线，不回写或覆盖其发布标签。
 
 消费者模块只评价一次并返回 JSON。主流程负责图片生成、硬性合规、日志、路由、统一重画计数和停止条件。
@@ -44,17 +44,19 @@ python modules/consumer-agent/scripts/score_evaluation.py <model-draft.json> \
 
 ## 路由表
 
-| 消费者结果 | 2.0 主流程动作 |
+| 消费者结果 | 3.0 主流程动作 |
 |---|---|
-| `pass=true` 且 `next_route=aesthetic_agent` | 美学开关为 false，因此结束 2.0 并输出当前版本 |
+| `pass=true` 且 `next_route=aesthetic_agent` | 保留当前候选为最后消费者通过基线，携带五个锁进入美学 Agent |
 | `next_route=poster_generation_skill` | 携带配对问题与建议、八组保护内容和锁定维度定向重画；随后全量硬检查并复评 |
 | `next_route=complete_input` | 停止自动重画，输出 `blocked` 和具体输入错误 |
 | `hard_fail=true` | 不得通过；按建议修复后重新执行完整硬检查 |
-| `regressed_dimensions` 非空 | 优先修复回退项，不覆盖最后消费者通过版 |
+| `regressed_dimensions` 非空 | 立即淘汰返图，恢复最后消费者通过版；只能从该基线按收紧后的美学编辑合同重试 |
 
 硬性合规与消费者修改共用 `max_redraw_attempts`。任何重新生成都必须从 HC-01 至 HC-12 全量复查。达到上限时输出 `degraded`，不得伪造 `pass=true`。
 
 图像编辑工具超时、返回空结果或产生不可读文件时，按硬合规文档的兜底协议记录工具错误并改用等价重生成。只有实际形成新候选才增加全局重画计数。
+
+美学返图复评时，`--previous` 必须指向进入美学阶段前最后一次消费者正式通过结果，不能指向失败返图或空的 `complete_input` 结果。`loop_state.locked_dimensions` 必须继续包含五个消费者维度。若发生回退，路由器返回 `candidate_disposition=reject` 和 `restore_last_consumer_pass=true`，失败返图不得覆盖基线。
 
 使用确定性路由器解释结果：
 

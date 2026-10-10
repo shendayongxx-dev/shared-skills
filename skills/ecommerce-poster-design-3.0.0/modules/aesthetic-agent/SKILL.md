@@ -30,6 +30,8 @@ description: Evaluate an ecommerce poster after the consumer Agent passes, calcu
 
 只有局部修改无法修复且不会损害消费者功能时，才建议有限范围的rebuild。用户明确要求或有证据证明现方案失效时才建议redesign。缺少4档增强证据不等于存在必须重画的缺陷，不能为凑分制造问题。
 
+建议文本不是生成授权。A 必须根据确定性评分明细生成 `aesthetic-edit-lock/1.0` 合同；合同只开放未达标美学维度，并把五个消费者功能、已达标美学维度、当前消费者通过版和八组保护对象设为不可修改基线。没有通过合同校验时不得调用生成工具。
+
 ## 输出与路由
 
 最终业务响应严格符合 [输出Schema](schemas/output.schema.json)，只有七个顶层字段。六维明细和25项贡献写入独立details文件，不扩展业务响应。

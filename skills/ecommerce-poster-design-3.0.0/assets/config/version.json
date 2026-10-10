@@ -41,6 +41,8 @@
   },
   "workflow_version": "3.0",
   "schema_version": "A-D-AESTHETIC-3.0",
+  "generation_edit_contract_version": "aesthetic-edit-lock/1.0",
+  "consumer_lock_enforcement": "pre_generation_contract_and_post_generation_regression_rejection",
   "feature_flags": {
     "consumer_agent": true,
     "aesthetic_agent": true

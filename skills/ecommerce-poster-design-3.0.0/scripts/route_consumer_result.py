@@ -82,6 +82,20 @@ def route_result(result: Dict[str, Any], version: Dict[str, Any], redraw_attempt
             "action": "stop_at_limit",
             "reason": "global redraw limit exhausted",
             "unresolved_problems": result.get("problem_list", []),
+            "candidate_disposition": "reject" if regressed else "retain_for_comparison",
+            "restore_last_consumer_pass": bool(regressed),
+        }
+    if regressed:
+        return {
+            **common,
+            "status": "in_progress",
+            "action": "redraw_from_last_consumer_pass_then_full_hard_check",
+            "reason": "aesthetic retry regressed one or more frozen consumer dimensions",
+            "candidate_disposition": "reject",
+            "restore_last_consumer_pass": True,
+            "next_global_redraw_attempt": redraw_attempts + 1,
+            "problem_list": result.get("problem_list", []),
+            "modify_suggestion": result.get("modify_suggestion", []),
         }
     return {
         **common,

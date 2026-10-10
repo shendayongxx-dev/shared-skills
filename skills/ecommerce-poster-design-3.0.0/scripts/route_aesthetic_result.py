@@ -2,6 +2,7 @@
 """Validate and route a deterministic aesthetic rc.4 result."""
 
 import argparse
+from copy import deepcopy
 import hashlib
 import json
 from pathlib import Path
@@ -23,6 +24,13 @@ AESTHETIC_LABELS = [
     "构图与视觉平衡", "视觉层级", "配色与对比", "字体与排版",
     "风格与场景适配", "材质光影与细节完成度",
 ]
+CONSUMER_LABELS = {
+    "product_recognition": "商品与品牌识别",
+    "benefit_clarity": "核心利益与卖点传达",
+    "offer_visibility": "价格促销与交易信息",
+    "population_scene_fit": "人群—动机—场景适配",
+    "purchase_drive": "信任与行动驱动",
+}
 
 
 def context_hash(workflow):
@@ -128,6 +136,58 @@ def select_best(history):
     return max(eligible, key=lambda item: item["aesthetic_score"]) if eligible else None
 
 
+def build_generation_edit_contract(result, consumer, details, workflow):
+    """Create the authoritative, machine-readable scope for an aesthetic retry."""
+    candidate = workflow["candidate"]
+    scores = details["dimension_scores"]
+    editable = [key for key, minimum in DIMENSION_MINIMUMS.items() if scores[key] < minimum]
+    if not editable:
+        raise ValueError("failed aesthetic result has no below-threshold dimension; scope review required")
+    evidence = consumer.get("meta", {}).get("dimension_evidence", {})
+    consumer_locks = {
+        key: {
+            "label": CONSUMER_LABELS[key],
+            "score": consumer["dimension_scores"][key],
+            "minimum": 14,
+            "evidence": evidence.get(key, ""),
+            "policy": "freeze_function_and_visual_relationship",
+        }
+        for key in sorted(CONSUMER_DIMENSIONS)
+    }
+    locked_aesthetic = [key for key in DIMENSION_MINIMUMS if key not in editable]
+    return {
+        "contract_version": "aesthetic-edit-lock/1.0",
+        "generation_mode": "local_edit_only",
+        "baseline_candidate": {
+            "request_id": candidate["request_id"],
+            "version_id": candidate["loop_state"]["version_id"],
+            "poster_image": candidate["poster_image"],
+            "context_hash": details["context_hash"],
+        },
+        "editable_aesthetic_dimensions": editable,
+        "locked_aesthetic_dimensions": locked_aesthetic,
+        "locked_consumer_dimensions": consumer_locks,
+        "immutable_protected_content": deepcopy(consumer["protected_content"]),
+        "advisory_instructions": deepcopy(result["modify_suggestion"]),
+        "forbidden_changes": [
+            "商品与品牌识别关系",
+            "卖点及核心利益的表达与可理解性",
+            "价格促销、交易信息和CTA的可发现性",
+            "已通过的人群—动机—场景联系",
+            "已通过的信任与购买行动驱动力",
+            "八组protected_content的文字、数量、含义、位置关系与可读性",
+            "本轮editable_aesthetic_dimensions之外的构图、层级、配色、排版、风格场景或材质功能",
+        ],
+        "required_post_generation_checks": [
+            "HC-01..HC-12",
+            "consumer_agent_with_previous_result_and_all_five_locks",
+            "reject_if_regressed_dimensions_nonempty",
+            "aesthetic_agent",
+        ],
+        "on_consumer_regression": "reject_candidate_and_restore_baseline_candidate",
+    }
+
+
 def route_result(result, consumer, details, workflow, version, redraw_attempts, history=None):
     if type(redraw_attempts) is not int or redraw_attempts < 0:
         raise ValueError("redraw_attempts must be a nonnegative integer")
@@ -148,6 +208,8 @@ def route_result(result, consumer, details, workflow, version, redraw_attempts, 
         "global_redraw_attempts": redraw_attempts,
         "max_redraw_attempts": max_attempts,
         "protected_content": consumer["protected_content"],
+        "locked_dimensions": sorted(consumer["locked_dimensions"]),
+        "consumer_dimension_scores": deepcopy(consumer["dimension_scores"]),
     }
     if result["score"] is None:
         return {**common, "status": "blocked", "action": "complete_aesthetic_input",
@@ -160,9 +222,17 @@ def route_result(result, consumer, details, workflow, version, redraw_attempts, 
         return {**common, "status": "degraded", "action": "return_best_candidate",
                 "reason": "global redraw limit exhausted", "best_candidate": best,
                 "problem_list": result["problem_list"], "modify_suggestion": result["modify_suggestion"]}
+    failed_dimensions = [key for key, minimum in DIMENSION_MINIMUMS.items()
+                         if details["dimension_scores"][key] < minimum]
+    if not failed_dimensions:
+        return {**common, "status": "blocked", "action": "complete_aesthetic_scope",
+                "reason": "critical issue is not bound to a below-threshold aesthetic dimension; human scope review required",
+                "problem_list": result["problem_list"], "modify_suggestion": result["modify_suggestion"]}
+    edit_contract = build_generation_edit_contract(result, consumer, details, workflow)
     return {**common, "status": "in_progress", "action": "regenerate_then_full_pipeline",
             "next_global_redraw_attempt": redraw_attempts + 1,
-            "problem_list": result["problem_list"], "modify_suggestion": result["modify_suggestion"]}
+            "problem_list": result["problem_list"], "modify_suggestion": result["modify_suggestion"],
+            "generation_edit_contract": edit_contract}
 
 
 def load(path):

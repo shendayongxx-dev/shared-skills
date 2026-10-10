@@ -11,6 +11,7 @@ def main():
     required = [
         "SKILL.md", "assets/config/version.json", "references/aesthetic-agent-integration.md",
         "scripts/assemble_aesthetic_input.py", "scripts/route_aesthetic_result.py",
+        "scripts/validate_generation_edit_contract.py",
         "modules/aesthetic-agent/SKILL.md", "modules/aesthetic-agent/assets/rubric.json",
         "modules/aesthetic-agent/schemas/input.schema.json", "modules/aesthetic-agent/schemas/output.schema.json",
         "modules/aesthetic-agent/schemas/evaluation-draft.schema.json",
@@ -29,9 +30,12 @@ def main():
         "features": version.get("feature_flags") == {"consumer_agent": True, "aesthetic_agent": True},
         "unified_budget": version.get("retry_policy", {}).get("counter_scope") == "global_across_hard_compliance_consumer_and_aesthetic",
         "budget_eight": version.get("retry_policy", {}).get("max_redraw_attempts") == 8,
+        "edit_contract": version.get("generation_edit_contract_version") == "aesthetic-edit-lock/1.0",
+        "consumer_lock_enforcement": version.get("consumer_lock_enforcement") == "pre_generation_contract_and_post_generation_regression_rejection",
     }
     skill = (root / "SKILL.md").read_text(encoding="utf-8")
     checks["skill_three_gates"] = all(value in skill for value in ["HC-01～HC-12", "消费者 Agent", "美学 Agent"])
+    checks["skill_requires_edit_contract"] = "validate_generation_edit_contract.py" in skill and "regressed_dimensions" in skill
     checks["legacy_not_active"] = version.get("aesthetic_agent_module", {}).get("version") != "2.4"
     output_schema = json.loads((root / "modules/aesthetic-agent/schemas/output.schema.json").read_text(encoding="utf-8"))
     dimensions = output_schema["properties"]["meta"]["properties"]["judge_dimensions"]

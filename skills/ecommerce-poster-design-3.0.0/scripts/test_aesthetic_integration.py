@@ -20,6 +20,7 @@ def module(name, path):
 
 assembler = module("assemble_aesthetic_input", ROOT / "scripts/assemble_aesthetic_input.py")
 router = module("route_aesthetic_result", ROOT / "scripts/route_aesthetic_result.py")
+contract_validator = module("validate_generation_edit_contract", ROOT / "scripts/validate_generation_edit_contract.py")
 scorer = module("score_evaluation_rc4", ROOT / "modules/aesthetic-agent/scripts/score_evaluation.py")
 
 
@@ -87,6 +88,44 @@ class IntegrationTests(unittest.TestCase):
         routed = router.route_result(result, self.consumer, details, self.workflow, self.version, 3)
         self.assertEqual(routed["action"], "regenerate_then_full_pipeline")
         self.assertEqual(routed["next_global_redraw_attempt"], 4)
+        contract = contract_validator.validate_contract(routed, self.workflow)
+        self.assertEqual(contract["generation_mode"], "local_edit_only")
+        self.assertEqual(set(contract["locked_consumer_dimensions"]), assembler.CONSUMER_DIMENSIONS)
+        self.assertEqual(set(contract["editable_aesthetic_dimensions"]), {"composition", "hierarchy", "color", "typography", "consistency"})
+        self.assertEqual(contract["locked_aesthetic_dimensions"], ["finish"])
+
+    def test_tampered_consumer_lock_contract_is_rejected(self):
+        failed = draft(3)
+        failed["problem_list"] = ["层级未达标"]
+        failed["modify_suggestion"] = ["允许编辑：层级区域；禁止编辑：消费者通过区域；消费者功能锁：五维功能；验收：缩图层级清楚"]
+        result, details = scorer.calculate(self.workflow, failed)
+        routed = router.route_result(result, self.consumer, details, self.workflow, self.version, 1)
+        routed["generation_edit_contract"]["locked_consumer_dimensions"].pop("purchase_drive")
+        with self.assertRaisesRegex(ValueError, "five consumer dimensions"):
+            contract_validator.validate_contract(routed, self.workflow)
+
+    def test_only_failed_aesthetic_dimensions_are_editable(self):
+        value = draft(4)
+        for item_id in ["A3_1", "A3_2", "A3_3", "A3_4", "A4_1", "A4_2", "A4_3", "A4_4"]:
+            value["subcriteria"][item_id].update(level=2, enhancement_evidence="")
+        value["problem_list"] = ["配色与排版未达标"]
+        value["modify_suggestion"] = ["允许编辑：颜色和文字间距；禁止编辑：商品、利益、交易、场景和CTA功能；消费者功能锁：五维功能；验收：原图和缩图均保持消费者功能"]
+        result, details = scorer.calculate(self.workflow, value)
+        routed = router.route_result(result, self.consumer, details, self.workflow, self.version, 2)
+        contract = contract_validator.validate_contract(routed, self.workflow)
+        self.assertEqual(set(contract["editable_aesthetic_dimensions"]), {"color", "typography"})
+        self.assertEqual(set(contract["locked_aesthetic_dimensions"]), {"composition", "hierarchy", "consistency", "finish"})
+        self.assertEqual(set(contract["locked_consumer_dimensions"]), assembler.CONSUMER_DIMENSIONS)
+
+    def test_critical_only_failure_requires_scope_review(self):
+        value = draft(4)
+        value["critical_issues"] = ["未绑定维度的关键视觉问题"]
+        value["problem_list"] = ["未绑定维度的关键视觉问题"]
+        value["modify_suggestion"] = ["允许编辑：待确认；禁止编辑：全部消费者通过区域；消费者功能锁：五维功能；验收：人工确认范围"]
+        result, details = scorer.calculate(self.workflow, value)
+        routed = router.route_result(result, self.consumer, details, self.workflow, self.version, 1)
+        self.assertEqual((routed["status"], routed["action"]), ("blocked", "complete_aesthetic_scope"))
+        self.assertNotIn("generation_edit_contract", routed)
 
     def test_blocked_does_not_increment_counter(self):
         blocked = {"evaluation_blocked": "poster unreadable", "critical_issues": [],

@@ -7,10 +7,12 @@
 ## 调用规则
 
 1. 使用内置 `image_gen` 作为默认生成与编辑路径，不要求用户提供 `OPENAI_API_KEY`。
-2. 新建海报时按生成任务调用；保留商品主体、包装、Logo 或既有版式并局部修改时按编辑任务调用。
+2. 新建海报时按生成任务调用；美学返图必须按编辑任务调用，并使用最后消费者通过版作为唯一编辑目标。
 3. 本地商品图或待编辑图必须先通过可用的图片查看能力载入上下文，再作为 ImageGen 输入；明确标注每张图是“编辑目标”“商品参考”还是“风格参考”。
 4. 每次调用只执行一个明确候选或一次定向修改。多候选需要分别调用并分别记录，不能把不同海报需求塞进同一提示词。
 5. 生成提示词必须消费本 Skill 已编译的 `style_guide`，并原样携带 `protected_content`。不得绕过分类契约自行补造价格、折扣、活动时间、Logo、认证或商品卖点。
+6. 美学返图调用前必须用 `scripts/validate_generation_edit_contract.py` 验证路由结果。缺少合同、合同跨版本、五个消费者锁不完整或编辑维度与锁定维度重叠时停止，不调用 ImageGen。
+7. `generation_mode=local_edit_only` 时优先使用蒙版或分层编辑。不能可靠限制编辑范围时返回 `blocked`，不得降级为无约束整图重生成。
 
 ## 提示词映射
 
@@ -29,10 +31,13 @@ Lighting/mood: <光线与情绪>
 Color palette: <完整选中色板>
 Text (verbatim): <所有必须原样出现的文案>
 Constraints: <protected_content、画布、保真要求>
+Edit contract: <baseline_candidate、editable_aesthetic_dimensions、locked_aesthetic_dimensions、locked_consumer_dimensions>
 Avoid: <禁用内容、额外 Logo、虚构信息、水印>
 ```
 
-编辑轮次必须重复列出不变量：只修改 `problem_list` 指定区域；商品外观、包装文字、Logo、价格及其他 `protected_content` 保持不变。
+编辑轮次必须重复列出不变量：只修改 `generation_edit_contract.editable_aesthetic_dimensions` 授权的区域；商品外观、包装文字、Logo、价格、其他 `protected_content`、五个消费者功能和已达标美学维度保持不变。`modify_suggestion` 与合同冲突时以合同为准。
+
+编辑完成后必须把最后消费者通过结果作为 `previous_result` 复评。出现任何 `regressed_dimensions` 时淘汰返图、恢复合同中的 `baseline_candidate`，不得将返图继续送入美学评价。
 
 ## 输出与落盘
 

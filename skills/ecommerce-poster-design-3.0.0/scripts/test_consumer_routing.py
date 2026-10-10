@@ -28,7 +28,9 @@ blocked = route_result(load("consumer-output-complete-input.json"), VERSION, 0)
 assert blocked["status"] == "blocked" and blocked["action"] == "complete_input"
 
 regression = route_result(load("consumer-output-regression.json"), VERSION, 2)
-assert regression["action"] == "redraw_then_full_hard_check"
+assert regression["action"] == "redraw_from_last_consumer_pass_then_full_hard_check"
 assert regression["regressed_dimensions"]
+assert regression["candidate_disposition"] == "reject"
+assert regression["restore_last_consumer_pass"] is True
 
 print("PASS: 5 consumer routing scenarios")
