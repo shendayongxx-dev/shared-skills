@@ -2,10 +2,10 @@
 
 ## 版本与边界
 
-- 主流程版本：3.0.0（继承 2.0.1 消费者接口）；
+- 主流程版本：2.0.0；
 - 消费者模块：`modules/consumer-agent`，版本 1.5.3；
 - 正式接口：A-D-2.0；
-- 消费者开关与美学开关均开启；消费者真实通过后才进入美学模块；
+- 消费者开关开启，美学开关关闭；
 - 1.0.0 仍是无 Agent 的消融基线，不回写或覆盖其发布标签。
 
 消费者模块只评价一次并返回 JSON。主流程负责图片生成、硬性合规、日志、路由、统一重画计数和停止条件。
@@ -46,14 +46,13 @@ python modules/consumer-agent/scripts/score_evaluation.py <model-draft.json> \
 
 | 消费者结果 | 2.0 主流程动作 |
 |---|---|
-| `pass=true` 且 `next_route=aesthetic_agent` | 美学开关为 true，组装固定美学输入与同版本调度上下文后调用美学 Agent |
-| 前置阶段 `next_route=poster_generation_skill` | 使用 2.0.1 原有累计重画计数（最多 3 次），随后全量硬检查并复评 |
-| 美学返图复检阶段 `next_route=poster_generation_skill` | 当前美学生成轮次已经消耗；若未到第 8 轮，则按消费者问题生成下一美学候选并全量复查 |
+| `pass=true` 且 `next_route=aesthetic_agent` | 美学开关为 false，因此结束 2.0 并输出当前版本 |
+| `next_route=poster_generation_skill` | 携带配对问题与建议、八组保护内容和锁定维度定向重画；随后全量硬检查并复评 |
 | `next_route=complete_input` | 停止自动重画，输出 `blocked` 和具体输入错误 |
 | `hard_fail=true` | 不得通过；按建议修复后重新执行完整硬检查 |
 | `regressed_dimensions` 非空 | 优先修复回退项，不覆盖最后消费者通过版 |
 
-进入美学前，硬性合规与消费者修改共用 2.0.1 原有 `max_redraw_attempts=3`。进入美学后改用独立 `aesthetic_max_generation_rounds=8`；每张美学返图仍从 HC-01 至 HC-12 全量复查，再重跑消费者和美学评价。两个阶段的计数不得混用或互相重置。达到相应阶段上限时输出 `degraded`，不得伪造 `pass=true`。
+硬性合规与消费者修改共用 `max_redraw_attempts`。任何重新生成都必须从 HC-01 至 HC-12 全量复查。达到上限时输出 `degraded`，不得伪造 `pass=true`。
 
 图像编辑工具超时、返回空结果或产生不可读文件时，按硬合规文档的兜底协议记录工具错误并改用等价重生成。只有实际形成新候选才增加全局重画计数。
 
@@ -62,14 +61,7 @@ python modules/consumer-agent/scripts/score_evaluation.py <model-draft.json> \
 ```text
 python scripts/route_consumer_result.py <consumer-result.json> \
   --config assets/config/version.json \
-  --redraw-attempts <前置阶段累计重画次数> \
-  --phase pre_aesthetic
-
-python scripts/route_consumer_result.py <consumer-result.json> \
-  --config assets/config/version.json \
-  --redraw-attempts <冻结的前置阶段累计重画次数> \
-  --phase aesthetic_recheck \
-  --aesthetic-generation-round <当前美学生成轮次>
+  --redraw-attempts <当前全局累计重画次数>
 ```
 
 ## 验证

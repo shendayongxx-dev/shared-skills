@@ -1,273 +1,114 @@
 #!/usr/bin/env python3
+"""Regression tests for the 2.0.1 -> aesthetic rc.4 orchestration boundary."""
+
+import copy
+import importlib.util
 import json
-import sys
-from copy import deepcopy
 from pathlib import Path
+import unittest
 
 
-ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "scripts"))
-
-from assemble_aesthetic_input import assemble  # noqa: E402
-from route_aesthetic_result import AESTHETIC_DIMENSIONS, flatten_protected, route_result  # noqa: E402
+ROOT = Path(__file__).resolve().parents[1]
 
 
-def load(path: Path):
-    return json.loads(path.read_text(encoding="utf-8"))
+def module(name, path):
+    spec = importlib.util.spec_from_file_location(name, path)
+    value = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(value)
+    return value
 
 
-def assert_value_error(callable_, message):
-    try:
-        callable_()
-        raise AssertionError(message)
-    except ValueError:
-        pass
+assembler = module("assemble_aesthetic_input", ROOT / "scripts/assemble_aesthetic_input.py")
+router = module("route_aesthetic_result", ROOT / "scripts/route_aesthetic_result.py")
+scorer = module("score_evaluation_rc4", ROOT / "modules/aesthetic-agent/scripts/score_evaluation.py")
 
 
-examples = ROOT / "modules" / "consumer-agent" / "examples"
-consumer_input = load(examples / "nori-input.json")
-consumer_result = load(examples / "consumer-output-pass.json")
-version = load(ROOT / "assets" / "config" / "version.json")
-
-aesthetic_input, context = assemble(
-    consumer_input,
-    consumer_result,
-    "runs/v01/hard-check.json",
-    "runs/v01/consumer-result.json",
-)
-assert set(aesthetic_input) == {"poster_image", "product_input"}
-assert aesthetic_input["poster_image"] == consumer_input["poster_image"]
-assert aesthetic_input["product_input"]["product_img"] == consumer_input["evaluation_context"]["product_img"]
-assert aesthetic_input["product_input"]["marketing_target"] == consumer_input["source_input"]["marketing"]["goal"]
-assert context["protected_content"] == consumer_result["protected_content"]
-assert context["hard_check"]["status"] == context["consumer"]["status"] == "pass"
-
-drifted_consumer = deepcopy(consumer_result)
-drifted_consumer["protected_content"]["cta"] = ["立即下单"]
-assert_value_error(
-    lambda: assemble(consumer_input, drifted_consumer, "hard.json", "consumer.json"),
-    "consumer protected-content drift should fail",
-)
-mismatched_version = deepcopy(consumer_result)
-mismatched_version["version_id"] = "v02"
-assert_value_error(
-    lambda: assemble(consumer_input, mismatched_version, "hard.json", "consumer.json"),
-    "consumer version mismatch should fail",
-)
-mismatched_product = deepcopy(consumer_input)
-mismatched_product["evaluation_context"]["product_img"] = "another-product.png"
-assert_value_error(
-    lambda: assemble(mismatched_product, consumer_result, "hard.json", "consumer.json"),
-    "primary product image mismatch should fail",
-)
-malformed_protected_input = deepcopy(consumer_input)
-malformed_protected_result = deepcopy(consumer_result)
-del malformed_protected_input["protected_content"]["legal_text"]
-del malformed_protected_result["protected_content"]["legal_text"]
-assert_value_error(
-    lambda: assemble(malformed_protected_input, malformed_protected_result, "hard.json", "consumer.json"),
-    "missing protected-content group should fail",
-)
-
-flat = flatten_protected(consumer_result["protected_content"])
-base = {
-    "agent_name": "aesthetic_agent",
-    "score": 7.5,
-    "pass": False,
-    "problem_list": ["层级不足"],
-    "modify_suggestion": ["重建信息层级"],
-    "protected_content": flat,
-    "meta": {"judge_dimensions": AESTHETIC_DIMENSIONS, "confidence": 0.8},
-}
+def fixtures():
+    candidate = json.loads((ROOT / "modules/consumer-agent/examples/nori-input.json").read_text(encoding="utf-8"))
+    consumer = json.loads((ROOT / "modules/consumer-agent/examples/consumer-output-pass.json").read_text(encoding="utf-8"))
+    consumer["request_id"] = candidate["request_id"]
+    consumer["version_id"] = candidate["loop_state"]["version_id"]
+    consumer["protected_content"] = copy.deepcopy(candidate["protected_content"])
+    consumer["score"] = 88
+    consumer["pass"] = True
+    consumer["dimension_scores"] = {name: 17 for name in assembler.CONSUMER_DIMENSIONS}
+    consumer["locked_dimensions"] = sorted(assembler.CONSUMER_DIMENSIONS)
+    consumer["regressed_dimensions"] = []
+    consumer["hard_fail"] = False
+    consumer["next_route"] = "aesthetic_agent"
+    return candidate, consumer
 
 
-def passing_assessment(score=8.6):
+def draft(level=4):
+    rubric = json.loads((ROOT / "modules/aesthetic-agent/assets/rubric.json").read_text(encoding="utf-8"))
+    ids = [item_id for group in rubric["dimensions"].values() for item_id, _, _ in group["items"]]
     return {
-        "schema_version": "2.0",
-        "status": "pass",
-        "score_unrounded": score,
-        "threshold": 8.5,
-        "dimensions": [
-            {
-                "key": key,
-                "label": label,
-                "score": score,
-                "threshold": 8,
-                "gap": score - 8,
-                "pass": True,
-                "evidence": "synthetic passing evidence",
-                "confidence": 0.9,
-            }
-            for key, label in zip(
-                ["composition", "hierarchy", "color", "typography", "consistency", "finish"],
-                AESTHETIC_DIMENSIONS,
-            )
-        ],
-        "below_threshold": [],
-        "config_snapshot": {
-            "total_threshold": 8.5,
-            "loop": {"max_generation_rounds": 8},
-        },
-        "design_plan": None,
-        "generation_assets_ready": True,
-        "overall_qualified": True,
-        "run_binding": {
-            "poster_image": aesthetic_input["poster_image"],
-            "product_img": aesthetic_input["product_input"]["product_img"],
-            "context_version": consumer_result["version_id"],
-        },
+        "evaluation_blocked": None,
+        "subcriteria": {item_id: {"level": level, "evidence": "visible " + item_id,
+                                     "enhancement_evidence": "enhanced " + item_id if level == 4 else "",
+                                     "root_issue_id": None} for item_id in ids},
+        "critical_issues": [], "problem_list": [], "modify_suggestion": [], "confidence": 0.9,
     }
 
-routed = route_result(base, consumer_result, version, 0, [])
-assert routed["status"] == "in_progress"
-assert routed["action"] == "regenerate_then_full_pipeline"
-assert routed["next_generation_round"] == 1
-assert routed["next_stagnation_count"] == 0
-assert routed["protected_content"] == consumer_result["protected_content"]
 
-stagnated = deepcopy(base)
-stagnated["score"] = 8.15
-routed = route_result(stagnated, consumer_result, version, 3, [8.0, 8.1], 1)
-assert routed["action"] == "change_design_direction_then_regenerate"
-assert routed["next_stagnation_count"] == 0
+class IntegrationTests(unittest.TestCase):
+    def setUp(self):
+        self.candidate, self.consumer = fixtures()
+        self.workflow = assembler.assemble(self.candidate, self.consumer)
+        self.version = json.loads((ROOT / "assets/config/version.json").read_text(encoding="utf-8"))
 
-after_direction_change = deepcopy(base)
-after_direction_change["score"] = 8.16
-routed = route_result(after_direction_change, consumer_result, version, 4, [8.0, 8.1, 8.15], 0)
-assert routed["action"] == "regenerate_then_full_pipeline"
-assert routed["next_stagnation_count"] == 1
+    def test_assembler_emits_exact_wrapper(self):
+        self.assertEqual(set(self.workflow), {"schema_version", "candidate", "consumer_result"})
+        self.assertEqual(self.workflow["schema_version"], "A-D-AESTHETIC-3.0")
 
-passed = deepcopy(base)
-passed.update({"score": 8.6, "pass": True, "problem_list": [], "modify_suggestion": []})
-routed = route_result(
-    passed,
-    consumer_result,
-    version,
-    2,
-    [7.5, 8.0],
-    assessment=passing_assessment(),
-    aesthetic_input=aesthetic_input,
-)
-assert routed["status"] == "passed" and routed["action"] == "complete"
-assert routed["assessment_verified"] is True
-assert_value_error(
-    lambda: route_result(passed, consumer_result, version, 2, [7.5, 8.0]),
-    "pass=true without internal assessment should fail",
-)
-assert_value_error(
-    lambda: route_result(
-        passed,
-        consumer_result,
-        version,
-        2,
-        [7.5, 8.0],
-        assessment=passing_assessment(),
-    ),
-    "pass=true without the bound aesthetic input should fail",
-)
-failed_dimension_assessment = passing_assessment()
-failed_dimension_assessment["dimensions"][-1].update({"score": 7.5, "pass": False})
-assert_value_error(
-    lambda: route_result(
-        passed,
-        consumer_result,
-        version,
-        2,
-        [7.5, 8.0],
-        assessment=failed_dimension_assessment,
-        aesthetic_input=aesthetic_input,
-    ),
-    "pass=true with a failed internal dimension should fail",
-)
-score_mismatch_assessment = passing_assessment(9.0)
-assert_value_error(
-    lambda: route_result(
-        passed,
-        consumer_result,
-        version,
-        2,
-        [7.5, 8.0],
-        assessment=score_mismatch_assessment,
-        aesthetic_input=aesthetic_input,
-    ),
-    "public and internal score mismatch should fail",
-)
-cross_candidate_assessment = passing_assessment()
-cross_candidate_assessment["run_binding"]["poster_image"] = "another-poster.png"
-assert_value_error(
-    lambda: route_result(
-        passed,
-        consumer_result,
-        version,
-        2,
-        [7.5, 8.0],
-        assessment=cross_candidate_assessment,
-        aesthetic_input=aesthetic_input,
-    ),
-    "assessment from another candidate should fail",
-)
+    def test_assembler_rejects_missing_consumer_lock(self):
+        broken = copy.deepcopy(self.consumer)
+        broken["locked_dimensions"].pop()
+        with self.assertRaisesRegex(ValueError, "five dimensions locked"):
+            assembler.assemble(self.candidate, broken)
 
-incomplete = deepcopy(base)
-incomplete.update({"score": 0, "meta": {"judge_dimensions": base["meta"]["judge_dimensions"], "confidence": 0}})
-routed = route_result(incomplete, consumer_result, version, 0, [])
-assert routed["status"] == "blocked"
+    def test_scored_pass_routes_complete_with_binding(self):
+        result, details = scorer.calculate(self.workflow, draft(4))
+        routed = router.route_result(result, self.consumer, details, self.workflow, self.version, 3)
+        self.assertEqual((routed["status"], routed["action"]), ("passed", "complete"))
+        self.assertTrue(routed["details_verified"])
 
-exhausted = deepcopy(base)
-routed = route_result(exhausted, consumer_result, version, 8, [7.0, 7.8, 8.1])
-assert routed["status"] == "degraded" and routed["action"] == "return_best_candidate"
+    def test_cross_version_details_are_rejected(self):
+        result, details = scorer.calculate(self.workflow, draft(4))
+        details["version_id"] = "stale-version"
+        with self.assertRaisesRegex(ValueError, "version_id"):
+            router.route_result(result, self.consumer, details, self.workflow, self.version, 3)
 
-drifted = deepcopy(base)
-drifted["protected_content"] = flat[:-1]
-try:
-    route_result(drifted, consumer_result, version, 0, [])
-    raise AssertionError("protected-content drift should fail")
-except ValueError as exc:
-    assert "protected content" in str(exc)
+    def test_failed_score_uses_global_counter(self):
+        failed = draft(3)
+        failed["problem_list"] = ["排版节奏未达标"]
+        failed["modify_suggestion"] = ["允许编辑：文字间距；禁止编辑：商品和交易文案；消费者功能锁：五维功能；验收：原图与360px缩图层级清楚"]
+        result, details = scorer.calculate(self.workflow, failed)
+        routed = router.route_result(result, self.consumer, details, self.workflow, self.version, 3)
+        self.assertEqual(routed["action"], "regenerate_then_full_pipeline")
+        self.assertEqual(routed["next_global_redraw_attempt"], 4)
 
-with_additional_protection = deepcopy(base)
-with_additional_protection["protected_content"].append("额外保护：已确认活动角标")
-assert route_result(with_additional_protection, consumer_result, version, 0, [])["status"] == "in_progress"
-duplicated_upstream = deepcopy(consumer_result)
-duplicated_upstream["protected_content"]["cta"] = ["立即选购", "立即选购"]
-duplicated_upstream_result = deepcopy(base)
-duplicated_upstream_result["protected_content"] = flatten_protected(duplicated_upstream["protected_content"])
-assert route_result(duplicated_upstream_result, duplicated_upstream, version, 0, [])["status"] == "in_progress"
-duplicated_additional = deepcopy(with_additional_protection)
-duplicated_additional["protected_content"].append("额外保护：已确认活动角标")
-assert_value_error(
-    lambda: route_result(duplicated_additional, consumer_result, version, 0, []),
-    "duplicate additional protection should fail",
-)
+    def test_blocked_does_not_increment_counter(self):
+        blocked = {"evaluation_blocked": "poster unreadable", "critical_issues": [],
+                   "problem_list": [], "modify_suggestion": [], "confidence": 0}
+        result, details = scorer.calculate(self.workflow, blocked)
+        routed = router.route_result(result, self.consumer, details, self.workflow, self.version, 6)
+        self.assertEqual((routed["status"], routed["action"]), ("blocked", "complete_aesthetic_input"))
+        self.assertEqual(routed["global_redraw_attempts"], 6)
 
-boolean_score = deepcopy(base)
-boolean_score["score"] = True
-assert_value_error(
-    lambda: route_result(boolean_score, consumer_result, version, 0, []),
-    "boolean aesthetic score should fail",
-)
-wrong_dimensions = deepcopy(base)
-wrong_dimensions["meta"]["judge_dimensions"] = list(reversed(AESTHETIC_DIMENSIONS))
-assert_value_error(
-    lambda: route_result(wrong_dimensions, consumer_result, version, 0, []),
-    "non-canonical aesthetic dimensions should fail",
-)
-boolean_consumer_score = deepcopy(consumer_result)
-boolean_consumer_score["score"] = True
-assert_value_error(
-    lambda: route_result(base, boolean_consumer_score, version, 0, []),
-    "boolean consumer score should fail",
-)
-assert_value_error(
-    lambda: route_result(base, consumer_result, version, 0, [], True),
-    "boolean stagnation counter should fail",
-)
-assert_value_error(
-    lambda: route_result(base, consumer_result, version, 0, [7.0]),
-    "round zero cannot have previous aesthetic scores",
-)
-assert_value_error(
-    lambda: route_result(base, consumer_result, version, 2, [7.0], 2),
-    "stagnation counter must already be reset at the threshold",
-)
+    def test_budget_exhaustion_returns_best_eligible_candidate(self):
+        failed = draft(3)
+        failed["problem_list"] = ["完成度未达标"]
+        failed["modify_suggestion"] = ["允许编辑：局部边缘；禁止编辑：商品文字；消费者功能锁：五维功能；验收：边缘自然"]
+        result, details = scorer.calculate(self.workflow, failed)
+        history = [
+            {"version_id": "v00", "aesthetic_score": 79, "hard_compliance_pass": True, "consumer_pass": True},
+            {"version_id": "bad", "aesthetic_score": 99, "hard_compliance_pass": False, "consumer_pass": True},
+        ]
+        routed = router.route_result(result, self.consumer, details, self.workflow, self.version, 8, history)
+        self.assertEqual(routed["action"], "return_best_candidate")
+        self.assertEqual(routed["best_candidate"]["version_id"], "v00")
 
-print(json.dumps({"valid": True, "tests": 37}, ensure_ascii=False))
+
+if __name__ == "__main__":
+    unittest.main()

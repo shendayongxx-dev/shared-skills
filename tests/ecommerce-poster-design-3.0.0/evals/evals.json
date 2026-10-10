@@ -3,51 +3,38 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "主流程已经完成硬性合规检查。请读取提供的 A-D-2.0 消费者通过结果，在 Skill 3.0 中给出下一步机器可读路由 JSON。当前前置累计重画次数为 1。",
-      "expected_output": "输出 status=in_progress、action=invoke_aesthetic_agent；保留评分、五维、锁定维度和八组 protected_content。",
-      "files": ["modules/consumer-agent/examples/consumer-output-pass.json"],
+      "prompt": "当前候选已通过 HC-01～HC-12，消费者总分 88、五维均不少于 14 且全部锁定。请组装美学输入并说明下一步，不得直接填写美学总分。",
+      "expected_output": "组装严格的 A-D-AESTHETIC-3.0 三字段输入，要求视觉模型提交25项观察，再由确定性脚本评分。",
+      "files": ["modules/consumer-agent/examples/nori-input.json", "modules/consumer-agent/examples/consumer-output-pass.json"],
       "expectations": [
-        "输出状态为 in_progress，动作为 invoke_aesthetic_agent",
-        "只在消费者真实通过后调用美学 Agent",
-        "保留 A-D-2.0 的评分、五维、锁定维度和 protected_content",
-        "使用全局累计重画次数 1，而非重置计数"
+        "只有当前同 request、version 和保护对象的消费者通过结果可进入美学",
+        "美学输入严格包含 schema_version、candidate、consumer_result",
+        "模型不直接填写六维分数或总分",
+        "五个消费者功能保持锁定"
       ]
     },
     {
       "id": 2,
-      "prompt": "主流程已经完成硬性合规检查。请读取提供的 A-D-2.0 消费者未通过结果，在 Skill 3.0 前置阶段给出下一步机器可读路由 JSON。当前前置累计重画次数为 1。",
-      "expected_output": "输出 redraw_then_full_hard_check，将次数递增为 2，携带配对问题/建议、锁定维度和原样 protected_content，并要求重画后完整执行 HC-01 至 HC-12。",
-      "files": ["modules/consumer-agent/examples/consumer-output-iterate.json"],
+      "prompt": "美学确定性结果为 78 分且排版维度未达标，当前全局累计重画次数为 3。请给出下一步机器可读路由。",
+      "expected_output": "输出 regenerate_then_full_pipeline，把统一全局重画次数推进到4，只传递未达标维度的局部建议，并要求新候选重跑完整三重门禁。",
+      "files": [],
       "expectations": [
-        "动作是 redraw_then_full_hard_check，下一次全局重画次数为 2",
-        "保留问题、修改建议、锁定维度和八组 protected_content",
-        "明确重画后必须完整重跑 HC-01 至 HC-12",
-        "不把总分 85 错判为通过，因为 population_scene_fit 只有 13"
+        "动作是 regenerate_then_full_pipeline",
+        "下一次全局重画次数为4且不因进入美学阶段重置",
+        "新候选必须从 HC-01 开始重新检查",
+        "不得使用旧美学 v2.4 的8.5分阈值或独立轮次"
       ]
     },
     {
       "id": 3,
-      "prompt": "消费者和硬性检查已对同一候选通过。请读取美学 Agent 未通过结果与消费者结果，在 generation_round=3、stagnation_count=1、历史有效美学分为 [8.0, 8.1] 时给出机器可读路由。",
-      "expected_output": "输出 status=in_progress、action=change_design_direction_then_regenerate、next_generation_round=4、next_stagnation_count=0；原样保留消费者八组 protected_content，并要求新候选重跑完整链路。",
-      "files": ["modules/aesthetic-agent/examples/integrated-output-iterate.json", "modules/consumer-agent/examples/consumer-output-pass.json"],
+      "prompt": "美学 Agent 无法读取当前海报，确定性输出 score=null。当前累计重画次数为 6。请路由。",
+      "expected_output": "输出 blocked/complete_aesthetic_input，要求补图或补输入，不生成新候选且计数仍为6。",
+      "files": [],
       "expectations": [
-        "连续两轮相对历史最佳提升小于 0.2 时切换设计方向",
-        "下一生成轮次为 4，且未伪造 pass",
-        "换设计方向后 next_stagnation_count 重置为 0",
-        "八组 protected_content 以消费者对象原样传递",
-        "新候选必须重新执行硬检查、消费者和美学评价"
-      ]
-    },
-    {
-      "id": 4,
-      "prompt": "这是美学第4轮返图的消费者复检，消费者未通过；前置阶段累计重画次数已经是3。请用 phase=aesthetic_recheck 给出路由。",
-      "expected_output": "不能因前置3次已用尽而停止；输出 action=regenerate_for_aesthetic_then_full_hard_check、next_aesthetic_generation_round=5，并保留消费者问题、建议和八组保护内容。",
-      "files": ["modules/consumer-agent/examples/consumer-output-iterate.json"],
-      "expectations": [
-        "识别当前处于 aesthetic_recheck 阶段",
-        "不复用或增加前置阶段3次计数",
-        "下一美学生成轮次为5",
-        "要求新候选重新执行完整硬检查"
+        "状态为 blocked，动作为 complete_aesthetic_input",
+        "不调用生成工具",
+        "全局重画次数不增加",
+        "不把 null 当作0分加入最佳候选比较"
       ]
     }
   ]

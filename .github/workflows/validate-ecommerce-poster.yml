@@ -260,11 +260,6 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-
       - name: Validate 3.0 consumer integration
         run: >-
           python skills/ecommerce-poster-design-3.0.0/scripts/validate_consumer_integration.py
@@ -290,12 +285,7 @@ jobs:
         run: python skills/ecommerce-poster-design-3.0.0/modules/consumer-agent/scripts/run_evals.py
 
       - name: Test aesthetic-agent module
-        working-directory: skills/ecommerce-poster-design-3.0.0
-        run: >-
-          node --test
-          modules/aesthetic-agent/tests/evaluate.test.mjs
-          modules/aesthetic-agent/tests/references.test.mjs
-          modules/aesthetic-agent/tests/quality.test.mjs
+        run: python skills/ecommerce-poster-design-3.0.0/modules/aesthetic-agent/tests/test_score_evaluation.py
 
       - name: Enforce 3.0 ImageGen ownership boundary
         shell: python

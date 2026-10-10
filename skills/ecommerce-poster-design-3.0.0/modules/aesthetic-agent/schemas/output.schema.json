@@ -1,78 +1,63 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Shared Agent output",
+  "$id": "output.schema.json",
+  "title": "Aesthetic Agent fixed seven-field output",
   "type": "object",
   "properties": {
-    "agent_name": {
-      "enum": [
-        "consumer_agent",
-        "aesthetic_agent"
-      ]
-    },
-    "score": {
-      "type": "number",
-      "minimum": 0,
-      "maximum": 10
-    },
-    "pass": {
-      "type": "boolean"
-    },
-    "problem_list": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "minLength": 1
-      },
-      "minItems": 0
-    },
-    "modify_suggestion": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "minLength": 1
-      },
-      "minItems": 0
-    },
-    "protected_content": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "minLength": 1
-      },
-      "minItems": 1
-    },
+    "agent_name": {"const": "aesthetic_agent"},
+    "score": {"type": ["integer", "null"], "minimum": 0, "maximum": 100},
+    "pass": {"type": "boolean"},
+    "problem_list": {"type": "array", "items": {"type": "string", "minLength": 1}, "maxItems": 3},
+    "modify_suggestion": {"type": "array", "items": {"type": "string", "minLength": 1}, "maxItems": 3},
+    "protected_content": {"$ref": "consumer-input.schema.json#/properties/protected_content"},
     "meta": {
       "type": "object",
       "properties": {
         "judge_dimensions": {
           "type": "array",
-          "items": {
-            "type": "string",
-            "minLength": 1
-          },
-          "minItems": 1
+          "oneOf": [
+            {"maxItems": 0},
+            {
+              "prefixItems": [
+                {"const": "构图与视觉平衡"},
+                {"const": "视觉层级"},
+                {"const": "配色与对比"},
+                {"const": "字体与排版"},
+                {"const": "风格与场景适配"},
+                {"const": "材质光影与细节完成度"}
+              ],
+              "minItems": 6,
+              "maxItems": 6
+            }
+          ]
         },
-        "confidence": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1
-        }
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1}
       },
-      "required": [
-        "judge_dimensions",
-        "confidence"
-      ],
+      "required": ["judge_dimensions", "confidence"],
       "additionalProperties": false
     }
   },
-  "required": [
-    "agent_name",
-    "score",
-    "pass",
-    "problem_list",
-    "modify_suggestion",
-    "protected_content",
-    "meta"
-  ],
-  "additionalProperties": false
+  "required": ["agent_name", "score", "pass", "problem_list", "modify_suggestion", "protected_content", "meta"],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {"properties": {"score": {"type": "null"}}, "required": ["score"]},
+      "then": {
+        "properties": {
+          "pass": {"const": false},
+          "meta": {
+            "properties": {
+              "judge_dimensions": {"maxItems": 0},
+              "confidence": {"const": 0}
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "meta": {"properties": {"judge_dimensions": {"minItems": 6}}}
+        }
+      }
+    }
+  ]
 }

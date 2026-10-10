@@ -9,9 +9,9 @@
 | `ecommerce-poster-design` | `1.0.0` | 历史稳定版 | 已接入 2.0.1 | `ecommerce-poster-design-v1.0.0` |
 | `ecommerce-poster-design` | `1.0.0-imagegen.1` | 1.0 ImageGen 独立版 | 已接入 2.0.1 | `ecommerce-poster-design-v1.0.0-imagegen.1` |
 | `ecommerce-poster-design` | `2.0.1` | 当前正式版 | 已接入 2.0.1 | `ecommerce-poster-design-v2.0.1` |
-| `ecommerce-poster-design` | `3.0.0` | 本地集成候选版 | 继承 2.0.1 | 待发布 |
+| `ecommerce-poster-design` | `3.0.0` | 重建验证候选版 | 继承 2.0.1 | `ecommerce-poster-design-v3.0.0-rebuilt-rc4` |
 
-1.0.0、1.0.0-imagegen.1 与 2.0.1 原目录和测试完整保留。1.0.0-imagegen.1 为 1.0 主流程接入 ImageGen；3.0.0 基于 2.0.1，在消费者通过后调用美学 Agent v2.4。目录对应关系见 [VERSIONS.md](VERSIONS.md)。
+1.0.0、1.0.0-imagegen.1 与 2.0.1 原目录和测试完整保留。1.0.0-imagegen.1 为 1.0 主流程接入 ImageGen；新 3.0.0 从 2.0.1 重建，在消费者通过且五维全锁后调用美学 Agent 3.0.0-rc.4。旧 v2.4 集成由 `ecommerce-poster-design-v3.0.0-legacy-aesthetic-v2.4` 冻结。目录对应关系见 [VERSIONS.md](VERSIONS.md)。
 
 ## 下载与安装
 
@@ -36,7 +36,7 @@
 - `skills/ecommerce-poster-design/`：原样保留的 1.0.0 Skill；
 - `skills/ecommerce-poster-design-1.0.0-imagegen.1/`：1.0.0-imagegen.1 独立 Skill；
 - `skills/ecommerce-poster-design-2.0.1/`：2.0.1 Skill；
-- `skills/ecommerce-poster-design-3.0.0/`：基于 2.0.1 的美学 Agent 集成候选版；
+- `skills/ecommerce-poster-design-3.0.0/`：从 2.0.1 重建的美学 Agent rc.4 集成候选版；
 - `tests/ecommerce-poster-design/`：原样保留的 1.0.0 测试；
 - `tests/ecommerce-poster-design-2.0.1/`：2.0.1 评估用例；
 - `tests/ecommerce-poster-design-3.0.0/`：3.0.0 集成评估用例；
@@ -54,7 +54,7 @@
 - 第三方参考图片二进制、用户商品图、Logo 和生成结果不得进入公共仓库；
 - 1.0 继续关闭消费者 Agent 与美学 Agent，且其目录内容不得被后续版本覆盖；
 - 2.0.1 的 ImageGen 属于整体 Skill 生成层，消费者 Agent 只负责评价和路由；
-- 3.0.0 的美学 Agent 只负责六维评价与重设计方案；任何重画必须重跑硬检查和消费者评价；
+- 3.0.0 的美学 Agent 只负责 25 子项观察、六维确定性评分与局部修改建议；任何重画必须重跑硬检查和消费者评价；
 - 相关提交和 PR 会自动运行分类资产、规则选择、发布状态和测试素材检查。
 
 开始修改前请先阅读 [项目状态](PROJECT_STATUS.md) 和 [协作规则](CONTRIBUTING.md)。

@@ -1,9 +1,9 @@
 {
   "skill_version": "3.0.0",
-  "release_channel": "local-integrated-aesthetic",
+  "release_channel": "rebuilt-aesthetic-rc4",
   "production_ready": true,
-  "final_1_0": false,
   "baseline_version": "2.0.1",
+  "legacy_version_tag": "ecommerce-poster-design-v3.0.0-legacy-aesthetic-v2.4",
   "generation_backend": {
     "skill": "imagegen",
     "tool": "image_gen",
@@ -18,11 +18,13 @@
     "path": "modules/consumer-agent"
   },
   "aesthetic_agent_module": {
-    "name": "poster-aesthetic-agent",
-    "version": "2.4",
-    "interface_version": "2.0",
-    "source_commit": "5f0baa0d10c5e1e114ac9a05fb33580110f31d33",
-    "path": "modules/aesthetic-agent"
+    "name": "ecommerce-aesthetic-agent-3-0-0-rc-4",
+    "version": "3.0.0-rc.4",
+    "interface_version": "A-D-AESTHETIC-3.0",
+    "source_package": "ecommerce-aesthetic-agent-3.0.0-rc.4.zip",
+    "source_package_sha256": "520030caf1b98285091b25bd24873efefd66156fdcaf61bacca886f92a70f7cd",
+    "path": "modules/aesthetic-agent",
+    "boundary": "visual evaluation, deterministic scoring, evidence, and local revision guidance only"
   },
   "c_library": {
     "status": "connected",
@@ -38,19 +40,19 @@
     "supported_source_schemas": ["1.0", "1.0-rc.1", "2.0.0-rc.1", "2.0.0"]
   },
   "workflow_version": "3.0",
-  "schema_version": "2.0",
+  "schema_version": "A-D-AESTHETIC-3.0",
   "feature_flags": {
     "consumer_agent": true,
     "aesthetic_agent": true
   },
   "retry_policy": {
-    "max_redraw_attempts": 3,
-    "aesthetic_max_generation_rounds": 8,
-    "aesthetic_stagnation_rounds": 2,
-    "aesthetic_min_total_gain": 0.2,
+    "max_redraw_attempts": 8,
+    "counter_scope": "global_across_hard_compliance_consumer_and_aesthetic",
+    "count_only_successful_new_candidates": true,
     "return_best_candidate_on_exhaustion": true
   },
   "logging": {
-    "structured_round_logs": true
+    "structured_round_logs": true,
+    "bind_reports_to_request_version_and_image_hash": true
   }
 }

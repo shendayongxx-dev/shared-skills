@@ -162,4 +162,4 @@
 - `degraded`：达到上限，返回最佳候选和未解决问题；
 - `blocked`：缺少必填输入，或消费者评价所需输入冲突、缺失、图片不可读而停止自动迭代。
 
-在 3.0 中，`passed` 要求硬性合规、消费者 Agent 和美学 Agent 对同一候选版本全部通过。消费者返回 `next_route=aesthetic_agent` 时，主流程按 [美学接入说明](aesthetic-agent-integration.md) 组装固定输入并调用美学模块。
+在 2.0 中，`passed` 还要求消费者 Agent 通过。消费者返回 `next_route=aesthetic_agent` 时，由于美学开关关闭，主流程将其解释为当前版本完成，而不是调用美学模块。

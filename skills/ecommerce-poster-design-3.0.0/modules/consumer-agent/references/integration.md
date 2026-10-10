@@ -23,7 +23,7 @@ v1.5.0仅改变D内部草稿和计算，A-D-2.0输入输出Schema保持不变。
 | next_route | A动作 |
 |---|---|
 | poster_generation_skill | 定向重画→完整HC-01至HC-12→消费者复评；硬检查失败不进入D |
-| aesthetic_agent | 美学开关为 true 时组装固定输入并调用；只有美学也通过才完成输出 |
+| aesthetic_agent | 美学开关true则调用；2.0美学开关false则按消费者通过完成输出 |
 | complete_input | 停止自动重画，记录blocked_stage=consumer_input；需扩展A blocked定义以包含生成后缺信息 |
 ## 回退与终止
 A逐轮传回previous_result与累计locked_dimensions，保留所有版本及最后消费者通过版。

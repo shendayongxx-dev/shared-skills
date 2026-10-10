@@ -18,24 +18,21 @@ version = json.loads(version_path.read_text(encoding="utf-8"))
 flags = version.get("feature_flags", {})
 module = version.get("consumer_agent_module", {})
 generation = version.get("generation_backend", {})
-retry = version.get("retry_policy", {})
 
-if version.get("skill_version") != "3.0.0":
-    fail("skill_version must be 3.0.0")
+if version.get("skill_version") not in {"2.0.1", "3.0.0"}:
+    fail("consumer integration supports Skill 2.0.1 or 3.0.0")
 if flags.get("consumer_agent") is not True:
     fail("consumer_agent must be enabled")
-if flags.get("aesthetic_agent") is not True:
-    fail("Skill 3.0 requires aesthetic_agent=true")
+if version.get("skill_version") == "2.0.1" and flags.get("aesthetic_agent") is not False:
+    fail("Skill 2.0.1 requires aesthetic_agent=false")
+if version.get("skill_version") == "3.0.0" and flags.get("aesthetic_agent") is not True:
+    fail("Skill 3.0.0 requires aesthetic_agent=true")
 if module.get("interface_version") != "A-D-2.0":
     fail("consumer interface must be A-D-2.0")
 if generation.get("skill") != "imagegen" or generation.get("tool") != "image_gen":
     fail("generation backend must use the Codex imagegen skill and image_gen tool")
 if generation.get("mode") != "builtin" or generation.get("required") is not True:
     fail("ImageGen built-in mode must be required")
-if retry.get("max_redraw_attempts") != 3:
-    fail("3.0 must preserve the 2.0.1 pre-aesthetic redraw limit of 3")
-if retry.get("aesthetic_max_generation_rounds") != 8:
-    fail("integrated aesthetic generation limit must be 8")
 
 consumer = root / module.get("path", "modules/consumer-agent")
 required = [

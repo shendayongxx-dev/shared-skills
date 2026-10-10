@@ -1,40 +1,84 @@
-# v2固定接口与主流程对接
+# A工作流接入
 
-外部输入精确为poster_image、product_input；product_input含product_img、selling_points、price_text、marketing_target、scene_tags。JSON不能含注释。两图由宿主解析成真实可读取资源，Node脚本不从路径执行视觉理解。
+## 位置
 
-外部输出精确为agent_name、score、pass、problem_list、modify_suggestion、protected_content、meta；meta只有judge_dimensions、confidence。共享output.schema允许consumer_agent和aesthetic_agent，本模块只返回后者。字段不增不减；问题与动作同序。
-
-score是0—10小数，总分阈值8.5，单项门槛8。舍入只影响展示，pass按原值。score0/confidence0且问题以“无法评价”开头表示未评价占位，循环不能把它当真实0分加入比较。此约定是固定数字接口的状态编码限制，正式项目需一致遵守。
-
-## 内部数据
-
-internal-review.json：图像是否实际查看、六维分数/证据/置信度、内容保护检查、问题/对应动作、design_plan。详见schemas/review.schema.json。该文件是视觉模型的内部产物，不是用户业务输入。
-
-context.json是调度器上下文，可包含version、mode、hard_check、consumer、输出画布和上游八组protected_content；不注入业务输入。每个上游结果携带同版本version、status和report_ref。mode=integrated时，hard_check、consumer和protected_content均为必填；缺少任一项时本模块对外pass=false并给补齐提示。standalone默认不需要这些上游字段。不用旧版上游通过记录验收新图。八组保护内容在对外七字段接口中按原顺序确定性展平，宿主路由时仍以原对象逐组校验和传递；可在展平数组末尾追加已确认保护项，但不能改写、重排或重复上游值。
-
-## 命令
-
-```powershell
-node scripts/evaluate.mjs --input templates/input.json --review examples/review-v2.demo.json --out runs/demo-v2
+```text
+A生成候选
+  → 硬检查
+  → 消费者Agent
+      ├─ score=null：补输入
+      ├─ pass=false：A按消费者建议修改
+      └─ pass=true：调用本美学Agent
+          ├─ score=null：补输入/图像，不生成
+          ├─ pass=false：A按美学局部提示词修改
+          │    → 新图重新硬检查→消费者→美学
+          └─ pass=true：A最终验收
 ```
 
-主流程接入可附`--context runtime/context.json`及`--config config.json`。默认外部响应写agent-result.json，另写assessment-internal.json、report-internal.md、redesign-plan.json、redesign-prompt.txt。标准输出仅同一个agent-result JSON，故调度器可以直接解析。集成调度器判定正式通过时必须同时读取同次生成的assessment-internal.json与本轮输入，用run_binding核对候选海报、商品母图和版本，再核对六维各自门槛、未舍入总分、上游资格与配置快照；固定七字段输出不含分项分数，不能单独作为最终通过证据。
+## 输入
 
-脚本校验JSON结构、计算分数和重构强度、整理提示词，不读取图片、不运行消费者Agent、不生成海报。
+```json
+{
+  "schema_version": "A-D-AESTHETIC-3.0",
+  "candidate": {"...": "完整A-D-2.0消费者输入"},
+  "consumer_result": {"...": "该候选的A-D-2.0消费者正式输出"}
+}
+```
 
-## 图片与提示词为什么独立
+`candidate.poster_image`、`candidate.request_id`、`candidate.loop_state.version_id`、八组保护对象必须与消费者结果属于同一候选。A另存图片SHA256、硬检查报告、消费者/美学版本和模型版本；七字段美学响应不承担这些日志字段。
 
-用户统一JSON没有图片、提示词和分项分数字段。评价Agent只返回固定响应；主流程根据modify_suggestion和内部design_plan制作海报。新图、提示词、详细分数放版本文件，不往meta塞额外字段。也不能把很长的图片数据塞入modify_suggestion。
+上游必须满足：消费者 `score>=80`、五维各≥14、`pass=true`、`hard_fail=false`、`next_route=aesthetic_agent`，并累计锁定五个消费者维度。否则A不应调用美学。
 
-## 循环
+## 模型草稿
 
-主流程：生成→硬性检查→消费者Agent→美学Agent→（通过选版/失败修改）。美学修改允许重构；消费者已经理解的事实信息必须保留，但并不冻结信息位置/大小。修改后重新跑全部检查。
+视觉模型依据实际图片生成符合 `schemas/evaluation-draft.schema.json` 的内部草稿。25项键必须与 `assets/rubric.json` 完全一致；每项含 `level`、`evidence`、`enhancement_evidence`、`root_issue_id`。同一根因复用同一root_issue_id，避免重复扣分。
 
-每轮用同一product_input母本、量表和阈值。未评价/等待上游/内容失败不作为分数提升的证据。默认未达标就继续，直到通过、遇到明确阻塞或达到预算；最多8次制作；仅在有明确宿主预算时附加时间限制。连续两轮相对历史最佳视觉分提升<0.2时自动换设计方向并继续剩余轮数，不将停止写成通过。缺原素材且生成反复改写标签时，优先转素材合成修复；不能继续整图重绘后仅按美学分数选版。
+失败时最多输出三对问题/建议。建议必须含允许编辑、禁止编辑、消费者功能锁和验收四段。通过后可不提建议；可选建议不得触发A重画。
 
-## v1迁移
+无法读取图像或缺少关键事实时，草稿只提交非空 `evaluation_blocked`、成对问题/建议和confidence，计分器输出 `score=null`。
 
-旧run_id、poster_version、brief、upstream不是v2业务字段。旧total_score/100不直接返回，v2 score按10分制。历史runs和examples/demo-output保留为v1记录，禁止用新版schema校验或“重新解释”旧报告。升级前完整包已另存ZIP。
+## 确定性计分
 
+```powershell
+python scripts/score_evaluation.py `
+  --workflow-input workflow-input.json `
+  --draft evaluation-draft.json `
+  --output aesthetic-result.json `
+  --details aesthetic-details.json
+```
 
-8轮规则：每轮保存图、依据、评分及身份核验状态；始终保留历史最佳版本，不以最新替代最佳。正式成功必须总分≥8.5、各项≥8且内容保护通过；达到8轮仍失败时返回最佳候选与未达标原因。缺原商品图时允许用户授权的视觉诊断迭代，但身份未经核验的图不得称为正式合格。
+脚本验证消费者上游、保护对象、25项集合、档位、证据、4档增强证据、建议结构和硬问题，再计算输出。`aesthetic-result.json` 是业务响应；`aesthetic-details.json` 是A的内部审计记录。
+
+## 输出
+
+业务响应固定为：
+
+```json
+{
+  "agent_name": "aesthetic_agent",
+  "score": 82,
+  "pass": true,
+  "problem_list": [],
+  "modify_suggestion": [],
+  "protected_content": {},
+  "meta": {
+    "judge_dimensions": [
+      "构图与视觉平衡",
+      "视觉层级",
+      "配色与对比",
+      "字体与排版",
+      "风格与场景适配",
+      "材质光影与细节完成度"
+    ],
+    "confidence": 0.86
+  }
+}
+```
+
+消费者和美学都采用百分制，但维度不同，不能相加或平均。美学总线80不替代六个单维下限。
+
+## A执行修改
+
+美学不通过时，A只把本轮未达标维度对应建议交给制作模块，同时附当前海报、原商品素材、八组保护对象和消费者锁。A实际生成后创建新version_id及图片哈希，旧分数全部失效。新候选重新进入硬检查和消费者评价，消费者通过后再调用美学。
+
+生成式整图编辑可能改变锁定区域；正式制作优先使用蒙版或分层素材，把商品、Logo和文字作为确定性图层。无论制作方式如何，都必须检查实际输出，不能用提示词宣称已经保留。
