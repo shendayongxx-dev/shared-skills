@@ -17,7 +17,9 @@ try {
   const svg = path.join(temp, "logo.svg");
   const png = path.join(temp, "logo.png");
   const prepManifest = path.join(temp, "logo.preflight.json");
-  fs.writeFileSync(svg, '<svg xmlns="http://www.w3.org/2000/svg" width="720" height="180" viewBox="0 0 720 180"><rect width="720" height="180" rx="24" fill="#13233d"/><text x="360" y="116" text-anchor="middle" font-size="96" fill="#fff">AERIN</text></svg>');
+  // Keep the fixture font-independent so CI validates the Logo pipeline rather
+  // than whichever fonts happen to be installed on a runner image.
+  fs.writeFileSync(svg, '<svg xmlns="http://www.w3.org/2000/svg" width="720" height="180" viewBox="0 0 720 180"><rect width="720" height="180" rx="24" fill="#13233d"/><path d="M210 132 270 48h36l60 84h-42l-12-20h-54l-12 20Zm66-50-12 20h36l-12-20-6-12Z" fill="#fff"/><circle cx="440" cy="90" r="42" fill="#fff"/><circle cx="440" cy="90" r="20" fill="#13233d"/></svg>');
   const prepared = await prepareLogoAsset({ input: svg, output: png, manifest: prepManifest, longEdge: 2048, sharpModule });
   assert.equal(prepared.generation_asset.width, 2048);
   assert.equal(prepared.generation_asset.height, 512);
