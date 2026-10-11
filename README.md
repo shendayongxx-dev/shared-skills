@@ -4,7 +4,7 @@
 
 ## 当前主线
 
-`main` 只保留当前版本 `ecommerce-poster-design 3.1.0-rc.3`：
+`main` 只保留当前稳定标记版 `ecommerce-poster-design 3.1.0-rc.3`。版本号保留 `rc.3`，但本仓库发布通道明确标记为 `stable`：
 
 - Skill：`skills/ecommerce-poster-design-3.1.0/`
 - 测试：`tests/ecommerce-poster-design-3.1.0/`
@@ -16,7 +16,7 @@
 
 ## 消融实验
 
-- `skills/ecommerce-poster-design-3.1.0-rc.3-ablation-no-consumer/`：严格基于 3.1.0-rc.3，仅移除消费者 Agent 及全部消费者产物依赖。实验标识为 `3.1.0-rc.3-ablation-no-consumer`，不是发布版本，不改变 main 当前版本或 rc.3 Tag。
+- `experiment/ecommerce-poster-design-3.1.0-rc.3-ablation-no-consumer`：独立实验分支，严格基于 3.1.0-rc.3，仅移除消费者 Agent 及全部消费者产物依赖。该实验不进入 `main`，不是发布版本，不改变 `latest_version` 或 rc.3 Tag。
 
 ## 历史版本
 

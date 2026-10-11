@@ -2,7 +2,7 @@
 
 ## 当前主线
 
-- 当前版本：`3.1.0-rc.3`
+- 当前版本：`3.1.0-rc.3`（当前稳定标记版；版本号保留 rc.3）
 - 发布通道：`stable`
 - main 内容策略：只保留当前完整版本
 - Skill 目录：`skills/ecommerce-poster-design-3.1.0/`

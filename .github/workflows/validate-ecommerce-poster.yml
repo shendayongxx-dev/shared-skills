@@ -11,6 +11,7 @@ on:
       - "INSTALL.md"
       - "CHANGELOG.md"
       - "VERSIONS.md"
+      - "scripts/validate_release_pointers.py"
       - ".github/workflows/validate-ecommerce-poster.yml"
   pull_request:
     paths:
@@ -22,11 +23,13 @@ on:
       - "INSTALL.md"
       - "CHANGELOG.md"
       - "VERSIONS.md"
+      - "scripts/validate_release_pointers.py"
       - ".github/workflows/validate-ecommerce-poster.yml"
 
 jobs:
   validate_v3_1_0_rc_3:
-    runs-on: ubuntu-latest
+    # Pin the runner so native image dependencies do not drift with ubuntu-latest.
+    runs-on: ubuntu-24.04
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
@@ -42,6 +45,7 @@ jobs:
         run: npm install --no-save --ignore-scripts=false sharp@0.35.5
       - name: Validate integrations, quality gates, and classification
         run: |
+          python scripts/validate_release_pointers.py
           python skills/ecommerce-poster-design-3.1.0/scripts/validate_consumer_integration.py skills/ecommerce-poster-design-3.1.0
           python skills/ecommerce-poster-design-3.1.0/scripts/validate_aesthetic_integration.py skills/ecommerce-poster-design-3.1.0
           python skills/ecommerce-poster-design-3.1.0/scripts/validate_final_quality_integration.py skills/ecommerce-poster-design-3.1.0

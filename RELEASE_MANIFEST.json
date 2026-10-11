@@ -28,7 +28,9 @@
       "id": "3.1.0-rc.3-ablation-no-consumer",
       "status": "ablation-experiment-not-for-release",
       "base_version": "3.1.0-rc.3",
-      "directory": "skills/ecommerce-poster-design-3.1.0-rc.3-ablation-no-consumer",
+      "branch": "experiment/ecommerce-poster-design-3.1.0-rc.3-ablation-no-consumer",
+      "directory_on_experiment_branch": "skills/ecommerce-poster-design-3.1.0-rc.3-ablation-no-consumer",
+      "present_on_main": false,
       "single_removed_component": "consumer_agent_and_all_consumer_artifacts",
       "changes_latest_version": false,
       "creates_release_tag": false
