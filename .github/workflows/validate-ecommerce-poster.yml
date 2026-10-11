@@ -62,7 +62,10 @@ jobs:
       - name: Test aesthetic Agent scoring
         run: python skills/ecommerce-poster-design-3.1.0/modules/aesthetic-agent/tests/test_score_evaluation.py
       - name: Test Logo asset pipeline
-        run: node skills/ecommerce-poster-design-3.1.0/scripts/test_logo_asset_pipeline.mjs
+        # Pass the workspace install explicitly: the test lives several levels
+        # below the repository root and must not depend on Node's ambient module
+        # lookup behavior on a particular runner image.
+        run: node skills/ecommerce-poster-design-3.1.0/scripts/test_logo_asset_pipeline.mjs "$GITHUB_WORKSPACE/node_modules/sharp"
       - name: Enforce ImageGen ownership boundary
         shell: python
         run: |
