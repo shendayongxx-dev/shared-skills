@@ -1,5 +1,12 @@
 # 变更记录
 
+## 3.1.0-rc.3-ablation-no-consumer（实验，不发布）
+
+- 基线固定为 3.1.0-rc.3，未修改主线 Skill 或发布 Tag。
+- 物理删除消费者模块、消费者路由、评分、五维锁、回归检测和消费者 Schema 依赖。
+- 美学输入改为 `A-D-AESTHETIC-3.1-ABLATION-NO-CONSUMER`；最终质量门改为只审计美学证据。
+- 保留硬合规、美学 rc.4 量表、SVG Logo 管线、`TEXT_OVERLAP`/`LOGO_FLOATING` 强制中度路由和 8 次统一预算。
+
 ## 3.1.0-rc.3
 
 发布状态：当前最新稳定版；在 rc.2 基础上修复“简单但可见的美学缺陷被直接 Pass”的路由漏洞。

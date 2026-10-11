@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "final-quality-review-no-consumer.schema.json",
+  "title": "No-consumer final quality review",
+  "type": "object",
+  "properties": {
+    "schema_version": {"const": "FINAL-QUALITY-3.1-ABLATION-NO-CONSUMER"},
+    "request_id": {"type": "string", "minLength": 1},
+    "version_id": {"type": "string", "minLength": 1},
+    "poster_image": {"type": "string", "minLength": 1},
+    "review_mode": {"enum": ["standard", "adversarial"]},
+    "image_views": {
+      "type": "object",
+      "properties": {"original": {"const": true}, "thumbnail_360": {"const": true}, "product_reference": {"const": true}},
+      "required": ["original", "thumbnail_360", "product_reference"],
+      "additionalProperties": false
+    },
+    "evidence_audit": {
+      "type": "object",
+      "properties": {
+        "aesthetic_evidence_supported": {"type": "boolean"},
+        "contradictions": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "generic_evidence_findings": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+      },
+      "required": ["aesthetic_evidence_supported", "contradictions", "generic_evidence_findings"],
+      "additionalProperties": false
+    },
+    "defects": {
+      "type": "array", "maxItems": 6,
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {"enum": ["COMPETING_FOCAL_POINTS", "PRODUCT_TOO_SMALL", "PRODUCT_OCCLUDED", "PRODUCT_FLOATING", "PRODUCT_DISTORTED", "QUANTITY_AMBIGUOUS", "TEXT_DENSITY_HIGH", "ALIGNMENT_INCONSISTENT", "TEXT_OVERLAP", "LOGO_FLOATING", "TYPE_STYLE_CONFLICT", "PRICE_HIERARCHY_WEAK", "CTA_HIERARCHY_WEAK", "SAFE_MARGIN_WEAK", "COLOR_CONTRAST_LOW", "DECORATION_OVERLOAD", "SCENE_PRODUCT_MISMATCH", "GENERIC_TEMPLATE_LOOK", "LIGHTING_CONFLICT", "MATERIAL_ARTIFICIAL", "AI_ARTIFACT", "OTHER_VISIBLE_DEFECT"]},
+          "category": {"enum": ["product", "hierarchy", "typography", "color_scene", "finish"]},
+          "severity": {"enum": ["critical", "severe", "moderate", "minor"]},
+          "region": {"type": "string", "minLength": 1},
+          "observation": {"type": "string", "minLength": 1},
+          "required_action": {"type": "string", "minLength": 1},
+          "editable_objects": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+          "protected_objects": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+        },
+        "required": ["code", "category", "severity", "region", "observation", "required_action", "editable_objects", "protected_objects"],
+        "additionalProperties": false
+      }
+    },
+    "no_moderate_or_major_defect": {"type": "boolean"},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "ablation": {
+      "type": "object",
+      "properties": {"id": {"const": "no-consumer"}, "base_version": {"const": "3.1.0-rc.3"}, "consumer_artifacts_used": {"const": false}},
+      "required": ["id", "base_version", "consumer_artifacts_used"], "additionalProperties": false
+    }
+  },
+  "required": ["schema_version", "request_id", "version_id", "poster_image", "review_mode", "image_views", "evidence_audit", "defects", "no_moderate_or_major_defect", "confidence", "ablation"],
+  "additionalProperties": false
+}

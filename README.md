@@ -14,6 +14,10 @@
 
 本版新增无分数最终质量门、异常高分反向复核、SVG Logo 安全管线和局部编辑合同。可见文字重叠与 Logo 悬空最低判定为 `moderate`，必须进入局部重绘和完整复检。
 
+## 消融实验
+
+- `skills/ecommerce-poster-design-3.1.0-rc.3-ablation-no-consumer/`：严格基于 3.1.0-rc.3，仅移除消费者 Agent 及全部消费者产物依赖。实验标识为 `3.1.0-rc.3-ablation-no-consumer`，不是发布版本，不改变 main 当前版本或 rc.3 Tag。
+
 ## 历史版本
 
 历史版本不继续堆放在 `main`，通过不可变 Tag 获取：

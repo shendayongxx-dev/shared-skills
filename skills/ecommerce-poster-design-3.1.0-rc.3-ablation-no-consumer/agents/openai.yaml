@@ -1,0 +1,7 @@
+interface:
+  display_name: "电商营销主视觉设计"
+  short_description: "no-consumer消融：生成电商主视觉并执行硬合规、美学与最终质量门"
+  default_prompt: "Use the no-consumer ablation of $ecommerce-poster-design. Do not call, read, or simulate consumer evaluation artifacts."
+
+policy:
+  allow_implicit_invocation: true

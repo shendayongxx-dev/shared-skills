@@ -1,0 +1,26 @@
+{
+  "skill_name": "ecommerce-poster-design-no-consumer-ablation",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "当前候选已经通过 HC-01～HC-12。请在不调用、不读取或模拟消费者评估的前提下组装美学输入并路由。",
+      "expected_output": "生成 A-D-AESTHETIC-3.1-ABLATION-NO-CONSUMER，只包含消融身份和当前候选。",
+      "files": [],
+      "expectations": ["没有 consumer_result", "记录基线3.1.0-rc.3", "consumer_artifacts_used=false"]
+    },
+    {
+      "id": 2,
+      "prompt": "no-consumer 消融版的美学排版维度未达标。请生成局部返图约束。",
+      "expected_output": "生成 aesthetic-edit-lock-no-consumer/1.0，只锁八组保护内容和未开放美学维度。",
+      "files": [],
+      "expectations": ["没有消费者五维锁", "local_edit_only", "返图重跑硬合规、美学和最终质量门"]
+    },
+    {
+      "id": 3,
+      "prompt": "双字标题发生可见重叠，Logo 又明显悬空，其余硬合规和美学结果已通过。请执行最终质量路由。",
+      "expected_output": "TEXT_OVERLAP 与 LOGO_FLOATING 均至少 moderate，生成 no-consumer 最终质量局部编辑合同。",
+      "files": [],
+      "expectations": ["两个缺陷不得降为minor", "不读取消费者证据", "局部重绘后完整运行消融链路"]
+    }
+  ]
+}

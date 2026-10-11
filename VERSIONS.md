@@ -8,6 +8,14 @@
 |---|---|---|
 | 3.1.0-rc.3 | `skills/ecommerce-poster-design-3.1.0/` | `tests/ecommerce-poster-design-3.1.0/` |
 
+## 消融实验（不进入版本序列）
+
+| 实验标识 | 固定基线 | Skill 目录 | 唯一删除变量 |
+|---|---|---|---|
+| 3.1.0-rc.3-ablation-no-consumer | 3.1.0-rc.3 | `skills/ecommerce-poster-design-3.1.0-rc.3-ablation-no-consumer/` | 消费者 Agent、消费者评分、五维锁、回归检测及全部消费者产物依赖 |
+
+消融目录不得覆盖主线目录，不创建或复用正式发布 Tag，也不得改写 `latest_version`。
+
 ## Tags
 
 Tag 是不可变发布快照。旧版本从 Tag 获取，不要求其目录继续存在于 `main`。
