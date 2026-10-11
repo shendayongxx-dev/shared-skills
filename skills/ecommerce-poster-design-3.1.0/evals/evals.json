@@ -1,0 +1,90 @@
+{
+  "skill_name": "ecommerce-poster-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "当前候选已通过 HC-01～HC-12，消费者总分 88、五维均不少于 14 且全部锁定。请组装美学输入并说明下一步，不得直接填写美学总分。",
+      "expected_output": "组装严格的 A-D-AESTHETIC-3.0 三字段输入，要求视觉模型提交25项观察，再由确定性脚本评分。",
+      "files": ["modules/consumer-agent/examples/nori-input.json", "modules/consumer-agent/examples/consumer-output-pass.json"],
+      "expectations": [
+        "只有当前同 request、version 和保护对象的消费者通过结果可进入美学",
+        "美学输入严格包含 schema_version、candidate、consumer_result",
+        "模型不直接填写六维分数或总分",
+        "五个消费者功能保持锁定"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "美学确定性结果为 78 分且排版维度未达标，当前全局累计重画次数为 3。请给出下一步机器可读路由。",
+      "expected_output": "输出 regenerate_then_full_pipeline，把统一全局重画次数推进到4，只传递未达标维度的局部建议，并要求新候选重跑完整三重门禁。",
+      "files": [],
+      "expectations": [
+        "动作是 regenerate_then_full_pipeline",
+        "下一次全局重画次数为4且不因进入美学阶段重置",
+        "新候选必须从 HC-01 开始重新检查",
+        "不得使用旧美学 v2.4 的8.5分阈值或独立轮次"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "美学 Agent 无法读取当前海报，确定性输出 score=null。当前累计重画次数为 6。请路由。",
+      "expected_output": "输出 blocked/complete_aesthetic_input，要求补图或补输入，不生成新候选且计数仍为6。",
+      "files": [],
+      "expectations": [
+        "状态为 blocked，动作为 complete_aesthetic_input",
+        "不调用生成工具",
+        "全局重画次数不增加",
+        "不把 null 当作0分加入最佳候选比较"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "当前海报已通过消费者五维，美学只在 typography 和 color 两维未达标。请为返图生成可执行约束，确保不能改变消费者已经通过的商品识别、利益表达、交易信息、场景联系和购买驱动力。",
+      "expected_output": "生成 aesthetic-edit-lock/1.0 合同，只开放 typography 和 color，冻结另外四个美学维度、五个消费者维度、八组保护内容和当前基线；ImageGen 只能局部编辑。",
+      "files": [],
+      "expectations": [
+        "editable_aesthetic_dimensions 仅包含 typography 和 color",
+        "locked_consumer_dimensions 完整包含五个消费者功能及原分数",
+        "generation_mode 为 local_edit_only，基线绑定当前 request/version/poster/context_hash",
+        "返图消费者复评出现 regressed_dimensions 时淘汰返图并恢复基线"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "品牌只提供了一个 SVG Logo，最终需要用于 1600×1600 电商主视觉。请说明生成与应用流程，确保 Logo 不被 ImageGen 重画、变形或改色。",
+      "expected_output": "保留 SVG 为权威源，安全预检后栅格化为至少 2048px 长边 PNG；ImageGen 生成预留区底图，再用确定性合成脚本贴放 Logo，最终合成图进入 HC-05 和完整门禁。",
+      "files": [],
+      "expectations": [
+        "SVG 原件与派生 PNG 均记录 SHA-256、尺寸和纵横比",
+        "危险 SVG 或外部资源会被阻断",
+        "ImageGen 不负责重画 Logo，只生成预留 Logo 区的底图",
+        "贴放禁止裁切、旋转、改色和比例变化",
+        "只有合成后的最终图进入 HC-01～HC-12"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "海报信息完全正确，消费者和美学都给了 Pass，但主标题两个字的边缘发生明显覆盖。问题只需调字距即可修复。最终质量门应如何处理？",
+      "expected_output": "登记 TEXT_OVERLAP，严重度至少 moderate，生成 local_edit_only 合同修复标题区域，并让新候选重跑完整流程；不得因容易修复或仍可猜读而 Pass。",
+      "files": [],
+      "expectations": [
+        "缺陷代码为 TEXT_OVERLAP",
+        "严重度不得低于 moderate",
+        "只开放标题文字及必要间距",
+        "成功返图后重跑硬合规、消费者、美学和最终质量门"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Logo 本身清晰且比例正确，但悬在标题上方，与标题之间有异常大空隙，没有对齐或容器关系。其余内容均通过。请路由。",
+      "expected_output": "登记 LOGO_FLOATING，严重度至少 moderate，生成 local_edit_only 合同，只调整 Logo 尺寸、位置和必要留白；允许1至2次局部重绘并完整复检。",
+      "files": [],
+      "expectations": [
+        "缺陷代码为 LOGO_FLOATING",
+        "不得因为 Logo 清晰或修改简单降为 minor",
+        "保护 Logo 形状、颜色、比例及其他已通过内容",
+        "局部重绘后重新执行完整门禁"
+      ]
+    }
+  ]
+}

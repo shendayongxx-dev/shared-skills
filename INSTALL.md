@@ -1,11 +1,11 @@
 # ecommerce-poster-design 安装与部署
 
-## 安装当前 3.0.0
+## 安装当前 3.1.0-rc.3
 
 ```powershell
-git clone --branch ecommerce-poster-design-v3.0.0 --depth 1 https://github.com/shendayongxx-dev/shared-skills.git shared-skills-3.0.0
+git clone --branch ecommerce-poster-design-v3.1.0-rc.3 --depth 1 https://github.com/shendayongxx-dev/shared-skills.git shared-skills-3.1.0-rc.3
 $skillTarget = Join-Path $env:USERPROFILE '.codex\skills\ecommerce-poster-design'
-Copy-Item -Recurse -LiteralPath '.\shared-skills-3.0.0\skills\ecommerce-poster-design-3.0.0' -Destination $skillTarget
+Copy-Item -Recurse -LiteralPath '.\shared-skills-3.1.0-rc.3\skills\ecommerce-poster-design-3.1.0' -Destination $skillTarget
 ```
 
 安装后在 Skill 目录运行：
@@ -14,8 +14,11 @@ Copy-Item -Recurse -LiteralPath '.\shared-skills-3.0.0\skills\ecommerce-poster-d
 python scripts/validate_classification.py assets/classification
 python scripts/validate_consumer_integration.py .
 python scripts/validate_aesthetic_integration.py .
+python scripts/validate_final_quality_integration.py .
+python scripts/validate_logo_pipeline.py .
 python scripts/test_consumer_routing.py
 python scripts/test_aesthetic_integration.py
+python scripts/test_final_quality_routing.py
 ```
 
 ## 安装历史版本
@@ -26,6 +29,8 @@ python scripts/test_aesthetic_integration.py
 ecommerce-poster-design-v1.0.0
 ecommerce-poster-design-v1.0.0-imagegen.1
 ecommerce-poster-design-v2.0.1
+ecommerce-poster-design-v3.0.0
+ecommerce-poster-design-v3.0.0-rebuilt-rc4
 ```
 
 示例：

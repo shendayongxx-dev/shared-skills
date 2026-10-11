@@ -2,27 +2,29 @@
 
 ## 当前主线
 
-- 当前版本：`3.0.0`
+- 当前版本：`3.1.0-rc.3`
 - 发布通道：`stable`
 - main 内容策略：只保留当前完整版本
-- Skill 目录：`skills/ecommerce-poster-design-3.0.0/`
-- 测试目录：`tests/ecommerce-poster-design-3.0.0/`
-- 发布 Tag：`ecommerce-poster-design-v3.0.0`
+- Skill 目录：`skills/ecommerce-poster-design-3.1.0/`
+- 测试目录：`tests/ecommerce-poster-design-3.1.0/`
+- 发布 Tag：`ecommerce-poster-design-v3.1.0-rc.3`
 - 分类资产：`production_ready=true`
 
 ## 当前工作流
 
-`输入校验 → C 库检索 → 生成 → 硬性合规 → 消费者 Agent → 美学 Agent → 完成或有限迭代`
+`输入校验 → C 库检索 → Logo 预检 → 生成与确定性贴放 → 硬性合规 → 消费者 Agent → 美学 Agent → 最终质量仲裁 → 完成或统一预算内迭代`
 
 - ImageGen 仅属于整体 Skill 生成层；
 - 消费者 Agent 负责消费视角评价和路由；
-- 美学 Agent 负责六维评价和重设计方案；
-- 所有返图重新执行硬检查、消费者评价和美学评价；
-- 进入美学前最多 3 次重绘，美学阶段最多 8 个生成轮次。
+- 美学 Agent 负责六维评价和局部修改建议；
+- 最终质量门核验证据和可定位缺陷，不新增第三套分数；
+- `TEXT_OVERLAP` 与 `LOGO_FLOATING` 最低为中度并强制局部重绘；
+- 所有返图重新执行硬检查、消费者、美学和最终质量仲裁；
+- 首版不计重绘，后续成功返图统一共用最多 8 次预算。
 
 ## 历史版本策略
 
-1.0.0、1.0.0-imagegen.1 和 2.0.1 已由对应 Tag 固定保存，不再占用 `main` 工作树。现有历史分支和 Tag 不重写、不移动。
+1.0.0、1.0.0-imagegen.1、2.0.1 和 3.0.0 已由对应 Tag 固定保存，不再占用 `main` 工作树。现有历史分支和 Tag 不重写、不移动。
 
 ## 不得误判
 

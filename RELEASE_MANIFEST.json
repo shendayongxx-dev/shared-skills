@@ -1,23 +1,26 @@
 {
   "repository": "shendayongxx-dev/shared-skills",
   "skill": "ecommerce-poster-design",
-  "latest_version": "3.0.0",
+  "latest_version": "3.1.0-rc.3",
   "main_policy": "current-version-only",
   "current": {
-    "version": "3.0.0",
+    "version": "3.1.0-rc.3",
     "status": "stable",
-    "directory": "skills/ecommerce-poster-design-3.0.0",
-    "tests": "tests/ecommerce-poster-design-3.0.0",
-    "tag": "ecommerce-poster-design-v3.0.0",
-    "based_on": "2.0.1",
-    "workflow": "hard compliance -> consumer agent -> aesthetic agent",
+    "directory": "skills/ecommerce-poster-design-3.1.0",
+    "tests": "tests/ecommerce-poster-design-3.1.0",
+    "tag": "ecommerce-poster-design-v3.1.0-rc.3",
+    "based_on": "3.0.0-rebuilt-rc4",
+    "workflow": "input validation -> classification/style guide -> SVG logo preflight -> ImageGen reserved-logo base -> deterministic logo application -> hard compliance -> consumer agent -> aesthetic agent -> score-free final quality gate",
     "generation_backend": "Codex imagegen/image_gen at overall skill layer",
     "consumer_agent_boundary": "evaluation, scoring, evidence, and routing only",
     "aesthetic_agent": {
-      "version": "2.4",
-      "source_commit": "5f0baa0d10c5e1e114ac9a05fb33580110f31d33",
-      "boundary": "six-dimension visual evaluation and redesign planning only"
+      "version": "3.0.0-rc.4",
+      "interface_version": "A-D-AESTHETIC-3.0",
+      "boundary": "25-item visual observation, deterministic six-dimension scoring, evidence, and local revision guidance only"
     },
+    "final_quality_schema": "FINAL-QUALITY-3.1",
+    "generation_edit_contracts": ["aesthetic-edit-lock/1.0", "final-quality-edit-lock/1.0"],
+    "mandatory_moderate_defects": ["TEXT_OVERLAP", "LOGO_FLOATING"],
     "max_generation_rounds": 8
   },
   "historical_releases": [
@@ -32,6 +35,14 @@
     {
       "version": "2.0.1",
       "tag": "ecommerce-poster-design-v2.0.1"
+    },
+    {
+      "version": "3.0.0",
+      "tag": "ecommerce-poster-design-v3.0.0"
+    },
+    {
+      "version": "3.0.0-rebuilt-rc4",
+      "tag": "ecommerce-poster-design-v3.0.0-rebuilt-rc4"
     }
   ],
   "tag_policy": "immutable",
