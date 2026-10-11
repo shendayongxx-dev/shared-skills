@@ -51,14 +51,18 @@ jobs:
           python skills/ecommerce-poster-design-3.1.0/scripts/validate_final_quality_integration.py skills/ecommerce-poster-design-3.1.0
           python skills/ecommerce-poster-design-3.1.0/scripts/validate_logo_pipeline.py skills/ecommerce-poster-design-3.1.0
           python skills/ecommerce-poster-design-3.1.0/scripts/validate_classification.py skills/ecommerce-poster-design-3.1.0/assets/classification
-      - name: Test host routing and agent modules
-        run: |
-          python skills/ecommerce-poster-design-3.1.0/scripts/test_consumer_routing.py
-          python skills/ecommerce-poster-design-3.1.0/scripts/test_aesthetic_integration.py
-          python skills/ecommerce-poster-design-3.1.0/scripts/test_final_quality_routing.py
-          python skills/ecommerce-poster-design-3.1.0/modules/consumer-agent/scripts/run_evals.py
-          python skills/ecommerce-poster-design-3.1.0/modules/aesthetic-agent/tests/test_score_evaluation.py
-          node --test skills/ecommerce-poster-design-3.1.0/scripts/test_logo_asset_pipeline.mjs
+      - name: Test consumer routing
+        run: python skills/ecommerce-poster-design-3.1.0/scripts/test_consumer_routing.py
+      - name: Test aesthetic integration
+        run: python skills/ecommerce-poster-design-3.1.0/scripts/test_aesthetic_integration.py
+      - name: Test final quality routing
+        run: python skills/ecommerce-poster-design-3.1.0/scripts/test_final_quality_routing.py
+      - name: Run consumer Agent evaluations
+        run: python skills/ecommerce-poster-design-3.1.0/modules/consumer-agent/scripts/run_evals.py
+      - name: Test aesthetic Agent scoring
+        run: python skills/ecommerce-poster-design-3.1.0/modules/aesthetic-agent/tests/test_score_evaluation.py
+      - name: Test Logo asset pipeline
+        run: node --test skills/ecommerce-poster-design-3.1.0/scripts/test_logo_asset_pipeline.mjs
       - name: Enforce ImageGen ownership boundary
         shell: python
         run: |
