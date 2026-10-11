@@ -22,6 +22,13 @@
 - 所有返图重新执行硬检查、消费者、美学和最终质量仲裁；
 - 首版不计重绘，后续成功返图统一共用最多 8 次预算。
 
+## 独立实验
+
+- `experiment/ecommerce-poster-design-3.1.0-rc.3-ablation-no-consumer`：移除消费者 Agent 的组件消融；
+- `experiment/ecommerce-poster-design-3.1.0-rc.3-ablation-aesthetic-first`：把双 Agent 顺序调整为“美学 → 消费者”的顺序消融，实验快照 Tag 为 `ecommerce-poster-design-v3.1.0-rc.3-ablation-aesthetic-first.1`。
+
+两项实验均与 `main` 隔离，不改变当前稳定版与正式发布 Tag。
+
 ## 历史版本策略
 
 1.0.0、1.0.0-imagegen.1、2.0.1 和 3.0.0 已由对应 Tag 固定保存，不再占用 `main` 工作树。现有历史分支和 Tag 不重写、不移动。

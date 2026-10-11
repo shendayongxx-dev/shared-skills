@@ -1,0 +1,43 @@
+{
+  "ablation_id": "aesthetic-first",
+  "experiment_version": "3.1.0-rc.3-ablation-aesthetic-first",
+  "base_version": "3.1.0-rc.3",
+  "release": false,
+  "branch": "experiment/ecommerce-poster-design-3.1.0-rc.3-ablation-aesthetic-first",
+  "experimental_tag": "ecommerce-poster-design-v3.1.0-rc.3-ablation-aesthetic-first.1",
+  "single_changed_variable": "evaluation_order_only",
+  "base_snapshot": {
+    "skill_md_sha256": "76ffa631180bf239e9d4037ef99b683523b743f810f0245aa73a7db9af5a5bbc",
+    "version_json_sha256": "70341a27ae65c02d0b2722f1ed0d286c2b7d38d8df5dbe88fa43817dff53ad24",
+    "aesthetic_rubric_sha256": "1cf2dbd99bfe4dfe84261772171680a3155ec31abee8e58c688b27a0841620d8",
+    "consumer_rubric_sha256": "04c6e19e7f7681584d678fd9025b3627f1d0f058d2c4f1719792642e0726e517",
+    "classification_manifest_sha256": "e540d7512116f6e9eb13e8312ae7a2adadddb1d1eee2e4ae06b9220f14fcaa59"
+  },
+  "comparison": {
+    "experiment_file_count_before_manifest": 186,
+    "evaluation_order_before": ["consumer_agent", "aesthetic_agent"],
+    "evaluation_order_after": ["aesthetic_agent", "consumer_agent"],
+    "added_test_or_validation_files": [
+      "scripts/test_aesthetic_first_routing.py",
+      "scripts/validate_aesthetic_first_ablation.py"
+    ]
+  },
+  "required_adapter_changes": [
+    "aesthetic input no longer requires a prior consumer result",
+    "aesthetic pass creates six locks before consumer evaluation",
+    "consumer edits preserve the six aesthetic locks",
+    "consumer next_route=aesthetic_agent is interpreted as invoke_final_quality_gate after both gates pass",
+    "every regenerated candidate restarts at hard compliance and repeats aesthetic then consumer evaluation"
+  ],
+  "preserved_capabilities": [
+    "C library and P-M-S selection",
+    "ImageGen generation layer",
+    "SVG logo safety and deterministic application",
+    "HC-01..HC-12",
+    "aesthetic rc.4 rubric weights and thresholds",
+    "consumer 1.5.3 rubric weights and thresholds",
+    "score-free final quality gate",
+    "TEXT_OVERLAP and LOGO_FLOATING minimum moderate severity",
+    "global maximum of eight successful redraws"
+  ]
+}

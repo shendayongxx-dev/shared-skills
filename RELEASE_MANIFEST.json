@@ -34,6 +34,19 @@
       "single_removed_component": "consumer_agent_and_all_consumer_artifacts",
       "changes_latest_version": false,
       "creates_release_tag": false
+    },
+    {
+      "id": "3.1.0-rc.3-ablation-aesthetic-first",
+      "status": "ablation-experiment-not-for-release",
+      "base_version": "3.1.0-rc.3",
+      "branch": "experiment/ecommerce-poster-design-3.1.0-rc.3-ablation-aesthetic-first",
+      "directory_on_experiment_branch": "skills/ecommerce-poster-design-3.1.0-rc.3-ablation-aesthetic-first",
+      "present_on_main": false,
+      "single_changed_variable": "evaluation_order_only",
+      "evaluation_order": ["aesthetic_agent", "consumer_agent"],
+      "experimental_tag": "ecommerce-poster-design-v3.1.0-rc.3-ablation-aesthetic-first.1",
+      "changes_latest_version": false,
+      "creates_release_tag": false
     }
   ],
   "historical_releases": [

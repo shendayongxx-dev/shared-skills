@@ -10,11 +10,12 @@
 
 ## 消融实验（独立分支，不进入版本序列）
 
-| 实验标识 | 固定基线 | Git 分支 | 唯一删除变量 |
-|---|---|---|---|
-| 3.1.0-rc.3-ablation-no-consumer | 3.1.0-rc.3 | `experiment/ecommerce-poster-design-3.1.0-rc.3-ablation-no-consumer` | 消费者 Agent、消费者评分、五维锁、回归检测及全部消费者产物依赖 |
+| 实验标识 | 固定基线 | Git 分支 | 实验变量 | 实验快照 Tag |
+|---|---|---|---|---|
+| 3.1.0-rc.3-ablation-no-consumer | 3.1.0-rc.3 | `experiment/ecommerce-poster-design-3.1.0-rc.3-ablation-no-consumer` | 删除消费者 Agent、消费者评分、五维锁、回归检测及全部消费者产物依赖 | 无 |
+| 3.1.0-rc.3-ablation-aesthetic-first | 3.1.0-rc.3 | `experiment/ecommerce-poster-design-3.1.0-rc.3-ablation-aesthetic-first` | 仅交换消费者 Agent 与美学 Agent 的评价顺序 | `ecommerce-poster-design-v3.1.0-rc.3-ablation-aesthetic-first.1` |
 
-消融分支不得合并回正式主线，不创建或复用正式发布 Tag，也不得改写 `latest_version`。
+消融分支不得合并回正式主线，不创建或复用正式发布 Tag，也不得改写 `latest_version`。如需固定实验快照，只能创建名称明确包含消融标识的独立实验 Tag。
 
 ## Tags
 

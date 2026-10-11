@@ -1,0 +1,76 @@
+{
+  "schema_version": "A-D-2.0",
+  "request_id": "NORI-001",
+  "version_id": "v01",
+  "agent_name": "consumer_agent",
+  "score": 85,
+  "pass": false,
+  "dimension_scores": {
+    "product_recognition": 20,
+    "benefit_clarity": 17,
+    "offer_visibility": 19,
+    "population_scene_fit": 13,
+    "purchase_drive": 16
+  },
+  "problem_list": [
+    "通勤使用关系表达不足"
+  ],
+  "modify_suggestion": [
+    "对象：辅助背景；操作：补充城市移动线索；保留商品、Logo和全部营销信息；验收：使用关系明确且商品仍为主体"
+  ],
+  "protected_content": {
+    "product_identity": [
+      "NORI 600 mL 不锈钢保温杯",
+      "保温杯"
+    ],
+    "product_quantity": null,
+    "brand_and_logo": [
+      "NORI"
+    ],
+    "price_and_unit": [
+      "秋日出行价 129 元"
+    ],
+    "promotion_and_period": [
+      "秋季限时促销",
+      "2026年10月1日至10月15日"
+    ],
+    "selling_points": [
+      "316 不锈钢内胆",
+      "12 小时保温保冷",
+      "一键锁扣 防漏随行"
+    ],
+    "cta": [
+      "立即选购"
+    ],
+    "legal_text": []
+  },
+  "locked_dimensions": [
+    "product_recognition",
+    "benefit_clarity",
+    "offer_visibility",
+    "purchase_drive"
+  ],
+  "regressed_dimensions": [],
+  "hard_fail": false,
+  "next_route": "poster_generation_skill",
+  "meta": {
+    "judge_dimensions": [
+      "商品与品牌识别",
+      "核心利益与卖点说服力",
+      "价格促销与交易信息",
+      "人群—动机—场景适配",
+      "信任与行动驱动"
+    ],
+    "confidence": 0.8,
+    "input_errors": [],
+    "unknown_dimensions": [],
+    "context_hash": "09a5471bcd00d5861bbb97ec02e25419edc2d5b8ac2646016ed5b3ebc56f9ed4",
+    "dimension_evidence": {
+      "product_recognition": "D1_1 商品主体清晰=4：示例占位证据：商品和品牌可识别，正式测评须读图；D1_2 商品视觉显著度=4：示例占位证据：商品和品牌可识别，正式测评须读图；D1_3 品牌识别=4：示例占位证据：商品和品牌可识别，正式测评须读图；D1_4 关键外观特征=4：示例占位证据：商品和品牌可识别，正式测评须读图；D1_5 品类与用途识别=4：示例占位证据：商品和品牌可识别，正式测评须读图",
+      "benefit_clarity": "D2_1 必需卖点出现=4：示例占位证据：卖点清楚；D2_2 卖点易懂=4：示例占位证据：卖点清楚；D2_3 使用利益转译=3：示例占位证据：卖点清楚；D2_4 输入支持的具体事实=3：示例占位证据：卖点清楚；D2_5 卖点与动机场景相关=3：示例占位证据：卖点清楚",
+      "offer_visibility": "D3_1 价格及单位准确=4：示例占位证据：价格日期清楚；D3_2 价格可发现可读=4：示例占位证据：价格日期清楚；D3_3 活动时间与条件=3：示例占位证据：价格日期清楚；D3_4 行动提示=4：示例占位证据：价格日期清楚；D3_5 交易阅读顺序=4：示例占位证据：价格日期清楚",
+      "population_scene_fit": "D4_1 P信息接受要求=3：示例占位证据：城市移动使用关系弱；D4_2 M购买动机回应=4：示例占位证据：城市移动使用关系弱；D4_3 S真实使用联系=1：示例占位证据：城市移动使用关系弱；D4_4 商品利益场景一致=2：示例占位证据：城市移动使用关系弱；D4_5 避免需求错位=2：示例占位证据：城市移动使用关系弱",
+      "purchase_drive": "D5_1 不过度承诺=4：示例占位证据：CTA可识别；D5_2 证据支持信心=3：示例占位证据：CTA可识别；D5_3 品牌表达无误导=3：示例占位证据：CTA可识别；D5_4 关键疑虑回应=3：示例占位证据：CTA可识别；D5_5 真实行动理由=3：示例占位证据：CTA可识别"
+    }
+  }
+}

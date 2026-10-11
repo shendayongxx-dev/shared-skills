@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "input.schema.json",
+  "title": "Aesthetic Agent workflow input",
+  "type": "object",
+  "properties": {
+    "schema_version": {"const": "A-D-AESTHETIC-3.0-AF"},
+    "evaluation_phase": {"const": "pre_consumer"},
+    "candidate": {"$ref": "consumer-input.schema.json"}
+  },
+  "required": ["schema_version", "evaluation_phase", "candidate"],
+  "additionalProperties": false
+}

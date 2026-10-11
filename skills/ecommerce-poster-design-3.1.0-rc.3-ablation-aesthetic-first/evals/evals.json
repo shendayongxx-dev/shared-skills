@@ -1,0 +1,33 @@
+{
+  "skill_name": "ecommerce-poster-design-aesthetic-first-ablation",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "当前候选已通过 HC-01～HC-12，但还没有消费者结果。请说明下一步，并禁止伪造消费者锁。",
+      "expected_output": "直接组装 A-D-AESTHETIC-3.0-AF 并调用美学 Agent；输入不含 consumer_result。",
+      "files": [],
+      "assertions": ["美学先于消费者", "不伪造消费者结果或五维锁"]
+    },
+    {
+      "id": 2,
+      "prompt": "当前候选美学总分 86 且六维均达标。消费者随后总分 88、五维均达标，next_route 仍为 aesthetic_agent。请路由。",
+      "expected_output": "把兼容路由映射为最终质量门，不再次调用美学。",
+      "files": [],
+      "assertions": ["路由 invoke_final_quality_gate", "避免 Agent 循环"]
+    },
+    {
+      "id": 3,
+      "prompt": "美学已通过，消费者的 purchase_drive=10，其余消费者维度通过。请生成返图约束。",
+      "expected_output": "使用 consumer-edit-lock/1.0-af，只开放购买驱动力对应区域，冻结六个美学维度和八组保护对象；返图后重跑 HC→美学→消费者。",
+      "files": [],
+      "assertions": ["六维美学锁完整", "全链按美学优先复检"]
+    },
+    {
+      "id": 4,
+      "prompt": "消费者返图改善了 CTA，但排版从 17 降到 14。该候选下一步是什么？",
+      "expected_output": "排版低于 16 构成美学回归，淘汰返图并恢复最后美学通过候选，不进入消费者复评。",
+      "files": [],
+      "assertions": ["检测美学门槛回归", "拒绝候选并恢复基线"]
+    }
+  ]
+}

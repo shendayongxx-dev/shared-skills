@@ -5,6 +5,8 @@ on:
     paths:
       - "skills/ecommerce-poster-design-3.1.0/**"
       - "tests/ecommerce-poster-design-3.1.0/**"
+      - "skills/ecommerce-poster-design-3.1.0-rc.3-ablation-aesthetic-first/**"
+      - "tests/ecommerce-poster-design-3.1.0-rc.3-ablation-aesthetic-first/**"
       - "PROJECT_STATUS.md"
       - "RELEASE_MANIFEST.json"
       - "README.md"
@@ -17,6 +19,8 @@ on:
     paths:
       - "skills/ecommerce-poster-design-3.1.0/**"
       - "tests/ecommerce-poster-design-3.1.0/**"
+      - "skills/ecommerce-poster-design-3.1.0-rc.3-ablation-aesthetic-first/**"
+      - "tests/ecommerce-poster-design-3.1.0-rc.3-ablation-aesthetic-first/**"
       - "PROJECT_STATUS.md"
       - "RELEASE_MANIFEST.json"
       - "README.md"
@@ -27,6 +31,31 @@ on:
       - ".github/workflows/validate-ecommerce-poster.yml"
 
 jobs:
+  validate_aesthetic_first_ablation:
+    if: github.ref_name == 'experiment/ecommerce-poster-design-3.1.0-rc.3-ablation-aesthetic-first'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+      - name: Install pinned logo pipeline dependency
+        run: npm install --no-save --ignore-scripts=false sharp@0.35.5
+      - name: Validate aesthetic-first experiment
+        run: |
+          root=skills/ecommerce-poster-design-3.1.0-rc.3-ablation-aesthetic-first
+          python "$root/scripts/test_aesthetic_first_routing.py"
+          python "$root/scripts/validate_aesthetic_first_ablation.py"
+          python "$root/scripts/validate_logo_pipeline.py" "$root"
+          python "$root/scripts/validate_classification.py" "$root/assets/classification"
+          node "$root/scripts/test_logo_asset_pipeline.mjs" "$GITHUB_WORKSPACE/node_modules/sharp"
+
   validate_v3_1_0_rc_3:
     # Pin the runner so native image dependencies do not drift with ubuntu-latest.
     runs-on: ubuntu-24.04

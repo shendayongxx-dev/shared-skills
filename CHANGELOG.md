@@ -1,5 +1,13 @@
 # 变更记录
 
+## 3.1.0-rc.3-ablation-aesthetic-first（实验，不发布）
+
+- 基线固定为 3.1.0-rc.3，未修改主线 Skill、稳定发布指针或正式 rc.3 Tag。
+- 新增独立实验分支 `experiment/ecommerce-poster-design-3.1.0-rc.3-ablation-aesthetic-first` 与实验快照 Tag `ecommerce-poster-design-v3.1.0-rc.3-ablation-aesthetic-first.1`。
+- 唯一实验变量为评价顺序：硬性合规后先运行美学 Agent，再运行消费者 Agent。
+- 保持双 Agent 量表与阈值、最终质量门、SVG Logo 管线和全局 8 次预算不变。
+- 增加顺序路由、锁定与新候选完整复检的确定性验证。
+
 ## 3.1.0-rc.3-ablation-no-consumer（实验，不发布）
 
 - 基线固定为 3.1.0-rc.3，未修改主线 Skill 或发布 Tag。

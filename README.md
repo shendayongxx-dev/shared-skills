@@ -17,6 +17,7 @@
 ## 消融实验
 
 - `experiment/ecommerce-poster-design-3.1.0-rc.3-ablation-no-consumer`：独立实验分支，严格基于 3.1.0-rc.3，仅移除消费者 Agent 及全部消费者产物依赖。该实验不进入 `main`，不是发布版本，不改变 `latest_version` 或 rc.3 Tag。
+- `experiment/ecommerce-poster-design-3.1.0-rc.3-ablation-aesthetic-first`：独立顺序消融分支，严格基于 3.1.0-rc.3，仅把评价链从“消费者 → 美学”换为“美学 → 消费者”，并提供实验快照 Tag `ecommerce-poster-design-v3.1.0-rc.3-ablation-aesthetic-first.1`。该实验不进入 `main`，不改变 `latest_version` 或正式 rc.3 Tag。
 
 ## 历史版本
 

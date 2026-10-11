@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 
@@ -15,6 +16,19 @@ CURRENT = MANIFEST["current"]
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise SystemExit(message)
+
+
+def current_branch() -> str:
+    github_ref = os.environ.get("GITHUB_HEAD_REF") or os.environ.get("GITHUB_REF_NAME")
+    if github_ref:
+        return github_ref
+    head_path = ROOT / ".git" / "HEAD"
+    if head_path.is_file():
+        head = head_path.read_text(encoding="utf-8").strip()
+        prefix = "ref: refs/heads/"
+        if head.startswith(prefix):
+            return head[len(prefix):]
+    return ""
 
 
 version_path = ROOT / CURRENT["directory"] / "assets" / "config" / "version.json"
@@ -30,12 +44,17 @@ require((ROOT / CURRENT["directory"] / "SKILL.md").is_file(), "current Skill is 
 require((ROOT / CURRENT["tests"]).is_dir(), "current tests are missing")
 require(CURRENT["tag"] == "ecommerce-poster-design-v3.1.0-rc.3", "current Tag drifted")
 
-main_skill_dirs = sorted(path.parent.name for path in (ROOT / "skills").glob("ecommerce-poster-design-*/SKILL.md") if path.is_file())
-require(main_skill_dirs == ["ecommerce-poster-design-3.1.0"], f"main contains unexpected Skill directories: {main_skill_dirs}")
-require(not (ROOT / "skills" / "ecommerce-poster-design-3.1.0-rc.3-ablation-no-consumer" / "SKILL.md").exists(), "ablation experiment leaked into main")
+branch = current_branch()
+allowed_skill_dirs = {Path(CURRENT["directory"]).name}
+for experiment in MANIFEST.get("experiments", []):
+    if branch == experiment.get("branch"):
+        allowed_skill_dirs.add(Path(experiment["directory_on_experiment_branch"]).name)
+
+skill_dirs = sorted(path.parent.name for path in (ROOT / "skills").glob("ecommerce-poster-design-*/SKILL.md") if path.is_file())
+require(set(skill_dirs) == allowed_skill_dirs, f"branch {branch or '<unknown>'} contains unexpected Skill directories: {skill_dirs}")
 
 for experiment in MANIFEST.get("experiments", []):
     require(experiment.get("present_on_main") is False, "experiment must be absent from main")
     require(str(experiment.get("branch", "")).startswith("experiment/"), "experiment branch is missing")
 
-print(json.dumps({"valid": True, "latest_version": MANIFEST["latest_version"], "skill_directory": CURRENT["directory"], "main_skill_dirs": main_skill_dirs}, ensure_ascii=False, indent=2))
+print(json.dumps({"valid": True, "branch": branch, "latest_version": MANIFEST["latest_version"], "skill_directory": CURRENT["directory"], "skill_dirs": skill_dirs}, ensure_ascii=False, indent=2))
