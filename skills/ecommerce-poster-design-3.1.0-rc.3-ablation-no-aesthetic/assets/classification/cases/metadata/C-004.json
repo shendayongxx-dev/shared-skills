@@ -1,0 +1,84 @@
+{
+  "schema_version": "2.0.0",
+  "taxonomy_version": "1.0",
+  "case_id": "C-004",
+  "title": "稚优泉泡泡液体腮红水光膨胀收缩色缎光高光修容晒红液日常淡妆女",
+  "tags": {
+    "audience_id": "P01",
+    "motivation_id": "M05",
+    "scenario_id": "S05"
+  },
+  "rule_ids": [
+    "R-002",
+    "R-102",
+    "R-205"
+  ],
+  "is_seed": true,
+  "asset": {
+    "storage_type": "external_reference_pinned",
+    "local_path": null,
+    "internal_asset_uri": "seedref://ecommerce-poster-design/1.0/C-004.webp",
+    "external_image_url": "https://gw.alicdn.com/imgextra/O1CN01fVTsBTksaEH1WPjS_!!776151038-0-picasso.jpg_.webp",
+    "mime_type": "image/webp",
+    "format": "webp",
+    "width": 750,
+    "height": 1000,
+    "bytes": 67140,
+    "checksum": "sha256:ff66dccb8e3bffd760a81c351c045640d004d20412c92280ce8c6a7661dad099",
+    "public_repository_allowed": false
+  },
+  "source": {
+    "platform": "天猫",
+    "publisher_or_shop": null,
+    "url": "https://detail.tmall.com/item.htm?id=1046008003404&skuId=6239069839489",
+    "collected_at": "2026-10-02",
+    "usage_status": "internal_reference_seed"
+  },
+  "rights": {
+    "rights_status": "internal_reference_authorized",
+    "rights_proof_ref": "AUTH-SEED-1.0-001",
+    "redistribution_status": "prohibited_public_redistribution",
+    "scope": "仅限本项目内部分类、检索、风格分析、生成参考与测试；不得公开再分发，不代表项目取得图片版权。",
+    "expires_at": null
+  },
+  "style_analysis": {
+    "text_signals": "彩妆、腮红、显色、氛围感、新品种草",
+    "primary_information_focus": "商品主体",
+    "palette_sets_text": "背景#F2D4D7；辅助#D2929C；强调#B64E64；正文#4A2930",
+    "typography": "圆润时尚、标题醒目、数字强调",
+    "composition": "产品居中放大，粉色同色系层叠，价格角标独立",
+    "product_ratio": 0.62,
+    "info_density": 3,
+    "promotion_intensity": 3,
+    "visual_tags": "粉色渐变、悬浮产品、甜酷美妆、价格角标、社交种草",
+    "why_effective": "同色系能强化品类氛围，产品轮廓和促销信息仍然清晰。",
+    "prohibited_styles": "避免粉色层次过近、装饰遮盖色号、价格与产品争抢中心。"
+  },
+  "why_effective": "同色系能强化品类氛围，产品轮廓和促销信息仍然清晰。",
+  "content_review": {
+    "content_review_status": "reviewed",
+    "reviewer_role": "C组内容标注复核",
+    "reviewed_at": "2026-10-02T12:00:00+08:00",
+    "note": "仅确认分类标签与视觉分析字段已复核，不代表生产授权或资产门禁通过。",
+    "evidence_ref": "cases/case-index.csv"
+  },
+  "review": {
+    "review_status": "approved",
+    "reviewer": "C_group + project_owner + A_group",
+    "reviewed_at": "2026-10-04T00:00:00+08:00",
+    "note": "C 已完成内容复核；项目负责人批准第三方照片作为内部种子参考；A 已下载核验文件并记录 SHA-256。"
+  },
+  "rights_review": {
+    "status": "approved_for_internal_reference",
+    "reviewer_role": "project_owner",
+    "reviewed_at": "2026-10-04T00:00:00+08:00",
+    "evidence_ref": "AUTH-SEED-1.0-001"
+  },
+  "technical_review": {
+    "status": "approved",
+    "reviewer_role": "A_group",
+    "reviewed_at": "2026-10-04T00:00:00+08:00",
+    "checksum": "sha256:ff66dccb8e3bffd760a81c351c045640d004d20412c92280ce8c6a7661dad099",
+    "asset_verification": "downloaded_and_visually_checked"
+  }
+}

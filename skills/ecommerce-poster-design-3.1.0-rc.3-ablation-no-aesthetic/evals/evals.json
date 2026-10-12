@@ -1,0 +1,56 @@
+{
+  "skill_name": "ecommerce-poster-design-no-aesthetic",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "当前候选已通过 HC-01～HC-12，消费者总分 88、五维均不低于14且全部锁定，消费者接口返回 next_route=aesthetic_agent。下一步是什么？",
+      "expected_output": "把兼容值解释为 invoke_final_quality_gate，不调用或模拟美学 Agent。",
+      "expectations": [
+        "保留 A-D-2.0 消费者结果和五个锁",
+        "直接进入最终质量仲裁",
+        "不创建美学输入、分数、证据或 Pass"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "消费者与硬合规已通过，但主标题字形发生肉眼可见覆盖，只需调整字距。最终质量门如何路由？",
+      "expected_output": "登记 TEXT_OVERLAP，严重度至少 moderate，生成 no-aesthetic 局部编辑合同并全链复检。",
+      "expectations": [
+        "TEXT_OVERLAP 不得降为 minor",
+        "只开放标题及必要间距",
+        "冻结五个消费者锁与八组保护内容",
+        "返图重跑硬合规、消费者和最终质量门"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Logo 清晰且比例正确，但与标题之间有异常大空隙并视觉悬空。其余内容通过。",
+      "expected_output": "登记 LOGO_FLOATING，至少 moderate，只局部调整 Logo 分组关系并完整复检。",
+      "expectations": [
+        "不因修复简单而降级",
+        "保护 Logo 形状、颜色、比例和品牌事实",
+        "不调用美学 Agent"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "消费者高分命中可疑阈值，但当前标准最终质量检查没有发现中度缺陷。",
+      "expected_output": "对同一候选执行一次无分数 adversarial 复核，不生成、不计重画。",
+      "expectations": [
+        "只使用消费者可疑高分条件",
+        "不要求美学分或美学证据",
+        "反向复核绑定同一 request、version 和图片"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "全局8次预算耗尽，有两个硬合规和消费者均通过的候选：A消费者90分但有1个moderate缺陷，B消费者84分但仅有1个minor缺陷。选择哪个？",
+      "expected_output": "选择 B；最终质量缺陷严重度优先于消费者分。",
+      "expectations": [
+        "不使用美学分排序",
+        "只在硬合规和消费者均通过的候选中选择",
+        "输出 degraded 并列明遗留问题"
+      ]
+    }
+  ]
+}

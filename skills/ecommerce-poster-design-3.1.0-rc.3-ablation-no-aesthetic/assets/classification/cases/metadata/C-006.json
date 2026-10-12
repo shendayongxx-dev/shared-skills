@@ -1,0 +1,84 @@
+{
+  "schema_version": "2.0.0",
+  "taxonomy_version": "1.0",
+  "case_id": "C-006",
+  "title": "roborock Q7 M5+ 机器人吸尘器和拖把",
+  "tags": {
+    "audience_id": "P03",
+    "motivation_id": "M02",
+    "scenario_id": "S01"
+  },
+  "rule_ids": [
+    "R-003",
+    "R-103",
+    "R-202"
+  ],
+  "is_seed": true,
+  "asset": {
+    "storage_type": "external_reference_pinned",
+    "local_path": null,
+    "internal_asset_uri": "seedref://ecommerce-poster-design/1.0/C-006.jpg",
+    "external_image_url": "https://m.media-amazon.com/images/I/71auiEZ+gQL._AC_SL1500_.jpg",
+    "mime_type": "image/jpeg",
+    "format": "jpg",
+    "width": 1500,
+    "height": 1445,
+    "bytes": 193399,
+    "checksum": "sha256:fc65d6eb4bbbfd1a3af39b152347e9f7588a1e32ef8c91d85833530da696238a",
+    "public_repository_allowed": false
+  },
+  "source": {
+    "platform": "amazon",
+    "publisher_or_shop": null,
+    "url": "https://www.amazon.com/roborock-Q7-M5-Self-Emptying-Anti-Tangle/dp/B0DWX69JVG",
+    "collected_at": "2026-10-02",
+    "usage_status": "internal_reference_seed"
+  },
+  "rights": {
+    "rights_status": "internal_reference_authorized",
+    "rights_proof_ref": "AUTH-SEED-1.0-001",
+    "redistribution_status": "prohibited_public_redistribution",
+    "scope": "仅限本项目内部分类、检索、风格分析、生成参考与测试；不得公开再分发，不代表项目取得图片版权。",
+    "expires_at": null
+  },
+  "style_analysis": {
+    "text_signals": "扫地机器人、强吸力、自动清洁、解放双手、家庭清洁",
+    "primary_information_focus": "核心卖点",
+    "palette_sets_text": "背景#F3D073；辅助#776977；强调#F05A28；正文#262125",
+    "typography": "粗体无衬线、性能数字突出",
+    "composition": "产品居中，吸力效果环绕，核心参数置顶或置侧",
+    "product_ratio": 0.5,
+    "info_density": 3,
+    "promotion_intensity": 3,
+    "visual_tags": "黄紫撞色、清洁科技、性能可视化、参数突出、家庭效率",
+    "why_effective": "强对比配色和效果线把抽象性能转成直观感受。",
+    "prohibited_styles": "避免特效遮住机身、参数无单位、使用过多竞品式夸张爆炸元素。"
+  },
+  "why_effective": "强对比配色和效果线把抽象性能转成直观感受。",
+  "content_review": {
+    "content_review_status": "reviewed",
+    "reviewer_role": "C组内容标注复核",
+    "reviewed_at": "2026-10-02T12:00:00+08:00",
+    "note": "仅确认分类标签与视觉分析字段已复核，不代表生产授权或资产门禁通过。",
+    "evidence_ref": "cases/case-index.csv"
+  },
+  "review": {
+    "review_status": "approved",
+    "reviewer": "C_group + project_owner + A_group",
+    "reviewed_at": "2026-10-04T00:00:00+08:00",
+    "note": "C 已完成内容复核；项目负责人批准第三方照片作为内部种子参考；A 已下载核验文件并记录 SHA-256。"
+  },
+  "rights_review": {
+    "status": "approved_for_internal_reference",
+    "reviewer_role": "project_owner",
+    "reviewed_at": "2026-10-04T00:00:00+08:00",
+    "evidence_ref": "AUTH-SEED-1.0-001"
+  },
+  "technical_review": {
+    "status": "approved",
+    "reviewer_role": "A_group",
+    "reviewed_at": "2026-10-04T00:00:00+08:00",
+    "checksum": "sha256:fc65d6eb4bbbfd1a3af39b152347e9f7588a1e32ef8c91d85833530da696238a",
+    "asset_verification": "downloaded_and_visually_checked"
+  }
+}

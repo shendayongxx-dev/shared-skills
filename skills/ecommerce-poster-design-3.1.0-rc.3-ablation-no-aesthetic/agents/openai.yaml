@@ -1,0 +1,7 @@
+interface:
+  display_name: "电商主视觉设计｜No Aesthetic 消融"
+  short_description: "仅移除美学评估，保留 rc.3 完整生成质量与其余门禁"
+  default_prompt: "Use $ecommerce-poster-design-no-aesthetic to generate a fully integrated, high-quality ecommerce poster with the product composed naturally into the scene. Preserve all rc.3 generation and quality behavior, hard compliance, consumer evaluation, and score-free final quality; remove only the aesthetic Agent and its artifacts. Never generate an empty background and paste the product afterward."
+
+policy:
+  allow_implicit_invocation: true

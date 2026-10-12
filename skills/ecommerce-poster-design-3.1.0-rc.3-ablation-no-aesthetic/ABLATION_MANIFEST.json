@@ -1,0 +1,56 @@
+{
+  "ablation_id": "no-aesthetic",
+  "experiment_version": "3.1.0-rc.3-ablation-no-aesthetic",
+  "base_version": "3.1.0-rc.3",
+  "base_tag": "ecommerce-poster-design-v3.1.0-rc.3",
+  "base_commit": "d36e9a3b855c6a473155f80070921afa6c61b960",
+  "base_skill_tree_git_object": "0ad214069737b40c65be4dc13604c6f1f1c8c902",
+  "release": false,
+  "single_removed_component": "aesthetic_agent_and_all_aesthetic_artifacts",
+  "preserved_snapshot": {
+    "consumer_module_git_tree": "858c958d346c7b6dc3ae161d19f75d2bf9b3ecf3",
+    "consumer_module_sha256_tree": "138d08f8e37276865d87b7545d780ead1390f25afd1cd5a8efd7aaa7054dcbbd",
+    "consumer_rubric_sha256": "04c6e19e7f7681584d678fd9025b3627f1d0f058d2c4f1719792642e0726e517",
+    "classification_git_tree": "f0b026ec487e1a66e73d1e05b1047bde467f6d57",
+    "classification_manifest_sha256": "e540d7512116f6e9eb13e8312ae7a2adadddb1d1eee2e4ae06b9220f14fcaa59",
+    "prepare_logo_asset_sha256": "f919836679f010173d37e81e3512e8d769200624e3f30dabcf49a4c064ff149f",
+    "apply_logo_asset_sha256": "8cbf2041be7be2bbe4d9e3bbfa77c69e8b43267e9503065ed3069f9ce25708fd"
+  },
+  "comparison": {
+    "base_file_count": 183,
+    "ablation_file_count": 169,
+    "byte_identical_files": 146,
+    "added_test_or_validation_files": [
+      "scripts/test_no_aesthetic_ablation.py",
+      "scripts/validate_no_aesthetic_ablation.py"
+    ]
+  },
+  "removed_runtime_components": [
+    "modules/aesthetic-agent/",
+    "references/aesthetic-agent-integration.md",
+    "scripts/assemble_aesthetic_input.py",
+    "scripts/route_aesthetic_result.py",
+    "scripts/validate_aesthetic_integration.py",
+    "scripts/test_aesthetic_integration.py",
+    "scripts/validate_generation_edit_contract.py"
+  ],
+  "required_adapter_changes": [
+    "generation protocol explicitly preserves rc.3 full-poster quality: product, scene, lighting, perspective, contact shadow, and typography are integrated before deterministic Logo-only application",
+    "consumer pass compatibility route aesthetic_agent is interpreted as invoke_final_quality_gate",
+    "final quality input and evidence audit no longer accept aesthetic results, details, scores, locks, or evidence",
+    "final quality reverse review uses only unchanged consumer suspicious-score thresholds",
+    "final quality edit contracts freeze five consumer dimensions and eight protected-content groups without aesthetic checks",
+    "budget exhaustion selection uses final-quality defect burden and consumer score instead of aesthetic score",
+    "all runtime artifacts carry the no-aesthetic ablation identity"
+  ],
+  "preserved_capabilities": [
+    "C library and P-M-S selection",
+    "ImageGen integrated full-poster generation layer and professional visual quality requirements",
+    "SVG logo safety and deterministic application",
+    "HC-01..HC-12",
+    "consumer Agent 1.5.3 rubric, thresholds, schemas, and module files",
+    "score-free final quality gate",
+    "TEXT_OVERLAP and LOGO_FLOATING minimum moderate severity",
+    "global maximum of eight successful redraws"
+  ]
+}

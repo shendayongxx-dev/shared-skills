@@ -1,0 +1,67 @@
+{
+  "schema_version": "2.0.0",
+  "taxonomy_version": "1.0",
+  "case_id": "C-078",
+  "title": "越迈老人助行器手术后辅助行走器25mm加粗带轮可坐可折叠",
+  "tags": {
+    "audience_id": "P06",
+    "motivation_id": "M06",
+    "scenario_id": "S06"
+  },
+  "rule_ids": [],
+  "is_seed": false,
+  "asset": {
+    "storage_type": "external_research_reference",
+    "local_path": null,
+    "internal_asset_uri": null,
+    "external_image_url": "https://img.alicdn.com/imgextra/i2/2222534503448/O1CN01nMRUraZSeXE2vHAO_!!2222534503448.jpg_q50.jpg_.webp",
+    "mime_type": null,
+    "format": null,
+    "width": null,
+    "height": null,
+    "bytes": null,
+    "checksum": null,
+    "public_repository_allowed": false
+  },
+  "source": {
+    "platform": "天猫",
+    "publisher_or_shop": null,
+    "url": "https://detail.tmall.com/item.htm?id=1065597666905&skuId=6279090147857",
+    "collected_at": "2026-10-02",
+    "usage_status": "research_reference_only"
+  },
+  "rights": {
+    "rights_status": "third_party_unverified",
+    "rights_proof_ref": null,
+    "redistribution_status": "prohibited_public_redistribution",
+    "scope": "仅限研究参考；不得作为正式种子或公开再分发。",
+    "expires_at": null
+  },
+  "style_analysis": {
+    "text_signals": "老人助行器、术后辅助、25mm加粗、带轮、可坐、折叠、稳定支撑",
+    "primary_information_focus": "核心功能",
+    "palette_sets_text": "色板A：背景#F5EEE4、辅助#D6C5AF、强调#8A4E2F、正文#3C2A22、材质#A7A39B；色板B：背景#F4F6F3、辅助#C9D2C7、强调#557A62、正文#29332D、材质#92999A",
+    "typography": "稳重易读黑体，管径数字加粗；功能说明使用较大字号和清晰编号",
+    "composition": "助行器完整置于真实居家场景右侧，左侧分点解释结构；底部用图标展示承重、折叠和防滑证据",
+    "product_ratio": 0.58,
+    "info_density": 4,
+    "promotion_intensity": 2,
+    "visual_tags": "适老辅助、稳定可靠、居家康复、结构说明、温和专业",
+    "why_effective": "完整结构和真实室内尺度能降低理解成本，局部放大与底部图标进一步强化安全和便利证据。",
+    "prohibited_styles": "禁止裁断支脚和轮子、夸大康复效果、使用过小文字、背景杂乱、用急救式红色制造焦虑"
+  },
+  "why_effective": "完整结构和真实室内尺度能降低理解成本，局部放大与底部图标进一步强化安全和便利证据。",
+  "content_review": {
+    "content_review_status": "reviewed",
+    "reviewer_role": "C组内容标注复核",
+    "reviewed_at": "2026-10-02T12:00:00+08:00",
+    "note": "仅确认分类标签与视觉分析字段已复核，不代表生产授权或资产门禁通过。",
+    "evidence_ref": "cases/case-index.csv"
+  },
+  "review": {
+    "review_status": "draft",
+    "reviewer": null,
+    "reviewed_at": null,
+    "note": "等待项目负责人完成权利、资产可读性与checksum生产审核。"
+  }
+}
