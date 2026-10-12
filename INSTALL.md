@@ -1,11 +1,11 @@
 # ecommerce-poster-design 安装与部署
 
-## 安装当前 3.1.0-rc.4
+## 安装当前 3.1.0-rc.5
 
 ```powershell
-git clone --branch ecommerce-poster-design-v3.1.0-rc.4 --depth 1 https://github.com/shendayongxx-dev/shared-skills.git shared-skills-3.1.0-rc.4
+git clone --branch ecommerce-poster-design-v3.1.0-rc.5 --depth 1 https://github.com/shendayongxx-dev/shared-skills.git shared-skills-3.1.0-rc.5
 $skillTarget = Join-Path $env:USERPROFILE '.codex\skills\ecommerce-poster-design'
-Copy-Item -Recurse -LiteralPath '.\shared-skills-3.1.0-rc.4\skills\ecommerce-poster-design-3.1.0' -Destination $skillTarget
+Copy-Item -Recurse -LiteralPath '.\shared-skills-3.1.0-rc.5\skills\ecommerce-poster-design-3.1.0' -Destination $skillTarget
 ```
 
 安装后在 Skill 目录运行：

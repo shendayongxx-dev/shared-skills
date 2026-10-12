@@ -1,9 +1,9 @@
 ---
-name: ecommerce-aesthetic-agent-3-0-0-rc-4
+name: ecommerce-aesthetic-agent-3-0-0-rc-5
 description: Evaluate an ecommerce poster after the consumer Agent passes, calculate a deterministic six-dimension score out of 100, and return consumer-locked local revision instructions to the main generation Skill. Evaluation only; never generates images.
 ---
 
-# 电商美学专家 Agent 3.0.0-rc.4
+# 电商美学专家 Agent 3.0.0-rc.5
 
 作为A工作流中的美学评价节点。只评价当前候选、计算分数并给A修改提示词；本Agent不调用图像生成工具。
 
@@ -18,6 +18,8 @@ description: Evaluate an ecommerce poster after the consumer Agent passes, calcu
 按 [完整量表](references/aesthetic-agent-full-spec.md) 和 [机器量表](assets/rubric.json) 观察25个子项。每项提交0—4整数档位和可定位证据；4档必须另有具体增强证据。模型不直接填写六维分数或总分。
 
 使用 `scripts/score_evaluation.py` 计算：子项贡献=`权重×档位÷4`，每维ROUND_HALF_UP后相加。通过条件为总分≥80，并且构图≥16/20、层级≥16/20、配色≥12/15、排版≥16/20、风格场景≥12/15、材质细节≥8/10，同时没有硬问题。
+
+候选含独立 Logo 时，必须在原有六维与 25 个子项内观察 Logo 的尺寸、位置、安全留白、网格对齐、主次层级、背景对比、品牌分组关系和整体融合感。不得新增 Logo 专项分数或改变权重。Logo 缺失、错贴、变形、裁切、重绘、改色、非预期矩形底色或 Alpha 异常属于硬合规问题，必须指出并判定不能通过，不能用其他美学高分抵消；Logo 悬浮、尺度失衡、对比不足或明显贴图感应映射到相关现有子项并给出位置和可见关系。
 
 ## 修改建议
 

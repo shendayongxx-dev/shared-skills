@@ -6,7 +6,7 @@
 
 | 当前版本 | Skill 目录 | 测试目录 |
 |---|---|---|
-| 3.1.0-rc.4 | `skills/ecommerce-poster-design-3.1.0/` | `tests/ecommerce-poster-design-3.1.0/` |
+| 3.1.0-rc.5 | `skills/ecommerce-poster-design-3.1.0/` | `tests/ecommerce-poster-design-3.1.0/` |
 
 ## Tags
 
@@ -20,7 +20,8 @@ Tag 是不可变发布快照。旧版本从 Tag 获取，不要求其目录继�
 | 3.0.0 | `ecommerce-poster-design-v3.0.0` | 历史稳定版 |
 | 3.0.0 rebuilt rc4 | `ecommerce-poster-design-v3.0.0-rebuilt-rc4` | 3.1 基线 |
 | 3.1.0-rc.3 | `ecommerce-poster-design-v3.1.0-rc.3` | 历史稳定候选版 |
-| 3.1.0-rc.4 | `ecommerce-poster-design-v3.1.0-rc.4` | 当前最新稳定版 |
+| 3.1.0-rc.4 | `ecommerce-poster-design-v3.1.0-rc.4` | 历史稳定候选版 |
+| 3.1.0-rc.5 | `ecommerce-poster-design-v3.1.0-rc.5` | 当前最新稳定版 |
 
 任何已发布 Tag 都不得强制更新或复用。修复发布新补丁版本，兼容功能发布新次版本，不兼容变更发布新主版本。
 

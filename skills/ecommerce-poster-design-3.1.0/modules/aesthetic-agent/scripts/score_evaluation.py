@@ -1,4 +1,4 @@
-"""Deterministic scorer for ecommerce-aesthetic-agent 3.0.0-rc.4."""
+"""Deterministic scorer for ecommerce-aesthetic-agent 3.0.0-rc.5."""
 
 from argparse import ArgumentParser
 from copy import deepcopy
@@ -86,7 +86,7 @@ def calculate(workflow, draft, rubric=None):
     if blocked is not None:
         require(text(blocked), "evaluation_blocked must be null or a reason")
         return blocked_result(candidate, draft, blocked), {
-            "rubric_version": "3.0.0-rc.4",
+            "rubric_version": "3.0.0-rc.5",
             "score": None,
             "status": "blocked",
             "reason": blocked,

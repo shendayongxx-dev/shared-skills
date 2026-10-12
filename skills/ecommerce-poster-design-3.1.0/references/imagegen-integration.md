@@ -20,10 +20,11 @@ ImageGen 的本地参考输入按可读的位图处理，不把 SVG 直接可读
 
 1. 保留 SVG 为权威品牌源，不覆盖、不改写；先运行安全预检，拒绝脚本、事件属性、外部资源、`foreignObject` 和无有效尺寸/viewBox 的文件。
 2. 使用工作区提供的 Node 与 Sharp 运行 `scripts/prepare_logo_asset.mjs`，默认把长边栅格化为 2048px；大幅画布或较大 Logo 可提高到 4096px，但不得低于 Logo 最终展示宽度的 2 倍。
-3. 清单必须绑定 SVG 与 PNG 的绝对路径、SHA-256、宽高、纵横比、Alpha 状态、渲染器版本，以及 `crop=false / recolor=false / rotation=0`。
+3. `logo-asset-preflight/1.1` 清单必须绑定 SVG 与 PNG 的绝对路径、SHA-256、宽高、纵横比、实际透明像素状态、渲染器版本，以及 `crop=false / recolor=false / rotation=0`。只有 Alpha 通道但所有像素均不透明时，不得声称背景透明，必须标记为需要视觉背景伪影复核。
 4. 首次 ImageGen 提示词不得要求模型重画 Logo；应在布局中预留干净、安全、无遮挡的 Logo 区域，并禁止额外品牌文字或假 Logo。
 5. 底图归一化到目标画布后，用 `scripts/apply_logo_asset.mjs` 按明确 `left/top/width` 做确定性合成。坐标来自本轮布局计划；脚本保持纵横比并在越界时失败。
-6. 只有合成后的最终候选进入 HC-01～HC-12、消费者、美学和最终质量门。底图不算独立候选，也不单独消耗重画次数。
+6. 合成后运行 `scripts/verify_logo_application.py`，生成 `logo-verification/1.0`，验证当前候选哈希就是合成输出哈希，并核对权威源、派生 Logo、底图与输出链路。验证失败时不得建立候选状态。
+7. 只有完成 `logo_preflight_passed → logo_applied → logo_verified → candidate_ready` 的最终候选进入 HC-01～HC-12、消费者、美学和最终质量门。底图不算独立候选，也不单独消耗重画次数。
 
 示例：
 
@@ -38,6 +39,12 @@ node scripts/apply_logo_asset.mjs \
   --output <candidate.png> --manifest <logo.application.json> \
   --left <x> --top <y> --width <pixels> \
   --sharp-module <workspace-node-modules>/sharp
+
+python scripts/verify_logo_application.py \
+  --candidate <candidate.png> \
+  --preflight <logo.preflight.json> \
+  --application <logo.application.json> \
+  --output <logo.verification.json>
 ```
 
 若运行环境没有 Sharp，允许使用能产生等价清单且保持比例/颜色/透明度的受控 SVG 渲染器；不得把网页截图、模型重绘或未知在线转换站当作等价替代。无法安全转换时返回 `blocked`。

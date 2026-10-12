@@ -4,15 +4,15 @@
 
 ## 当前主线
 
-`main` 只保留当前版本 `ecommerce-poster-design 3.1.0-rc.4`：
+`main` 只保留当前版本 `ecommerce-poster-design 3.1.0-rc.5`：
 
 - Skill：`skills/ecommerce-poster-design-3.1.0/`
 - 测试：`tests/ecommerce-poster-design-3.1.0/`
-- 固定发布：`ecommerce-poster-design-v3.1.0-rc.4`
+- 固定发布：`ecommerce-poster-design-v3.1.0-rc.5`
 
-3.1.0-rc.4 的流程为：`输入校验与画布归一化 → 分类与 Style Guide → Logo 预检 → 生成/确定性贴放 → 硬性合规 → 消费者 Agent → 美学 Agent → 最终质量仲裁 → 完成或统一预算内迭代`。ImageGen 仅由整体 Skill 调用，消费者和美学 Agent 都不直接生成图片。
+3.1.0-rc.5 的流程为：`输入校验与画布归一化 → 分类与 Style Guide → Logo 预检 → 生成无 Logo 底图 → 确定性贴放 → Logo 合成验证 → 硬性合规 → 消费者 Agent → 美学 Agent → 最终质量仲裁 → 完成或统一预算内迭代`。ImageGen 仅由整体 Skill 调用，消费者和美学 Agent 都不直接生成图片。
 
-本版在 rc.3 的无分数最终质量门、异常高分反向复核、SVG Logo 安全管线和局部编辑合同基础上，新增确定性画布归一化。只提供比例时，以短边至少 1080px 的最小整数倍派生精确尺寸，不因缺少绝对像素而阻塞。
+本版继承 rc.4 的确定性画布归一化，并把 Logo 贴放改为不可绕过的候选状态门：底图不能进入评价或交付，最终候选必须绑定合成输出哈希；最终质量门新增 Logo 缺失、错误、矩形底色、边缘光晕、低对比和悬浮检查。美学模块升级为 3.0.0-rc.5，仅补强 Logo 视觉整合观察，不改变六维权重。
 
 ## 历史版本
 
@@ -26,6 +26,7 @@
 | 3.0.0 | `ecommerce-poster-design-v3.0.0` |
 | 3.0.0 rebuilt rc4 | `ecommerce-poster-design-v3.0.0-rebuilt-rc4` |
 | 3.1.0-rc.3 | `ecommerce-poster-design-v3.1.0-rc.3` |
+| 3.1.0-rc.4 | `ecommerce-poster-design-v3.1.0-rc.4` |
 
 已有历史分支和 Tag 保持原指向，不重写、不移动。安装和迭代规则见 [INSTALL.md](INSTALL.md) 与 [VERSIONS.md](VERSIONS.md)。
 

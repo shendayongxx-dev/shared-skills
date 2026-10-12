@@ -19,13 +19,13 @@ flags = version.get("feature_flags", {})
 module = version.get("consumer_agent_module", {})
 generation = version.get("generation_backend", {})
 
-if version.get("skill_version") not in {"2.0.1", "3.0.0", "3.1.0-rc.1", "3.1.0-rc.2", "3.1.0-rc.3", "3.1.0-rc.4"}:
-    fail("consumer integration supports Skill 2.0.1, 3.0.0, 3.1.0-rc.1, 3.1.0-rc.2, 3.1.0-rc.3, or 3.1.0-rc.4")
+if version.get("skill_version") not in {"2.0.1", "3.0.0", "3.1.0-rc.1", "3.1.0-rc.2", "3.1.0-rc.3", "3.1.0-rc.4", "3.1.0-rc.5"}:
+    fail("consumer integration does not support this Skill version")
 if flags.get("consumer_agent") is not True:
     fail("consumer_agent must be enabled")
 if version.get("skill_version") == "2.0.1" and flags.get("aesthetic_agent") is not False:
     fail("Skill 2.0.1 requires aesthetic_agent=false")
-if version.get("skill_version") in {"3.0.0", "3.1.0-rc.1", "3.1.0-rc.2", "3.1.0-rc.3", "3.1.0-rc.4"} and flags.get("aesthetic_agent") is not True:
+if version.get("skill_version") in {"3.0.0", "3.1.0-rc.1", "3.1.0-rc.2", "3.1.0-rc.3", "3.1.0-rc.4", "3.1.0-rc.5"} and flags.get("aesthetic_agent") is not True:
     fail("Skill 3.0.0/3.1.0 requires aesthetic_agent=true")
 if module.get("interface_version") != "A-D-2.0":
     fail("consumer interface must be A-D-2.0")

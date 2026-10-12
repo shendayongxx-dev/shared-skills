@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Route the score-free FINAL-QUALITY-3.1 host arbitration result."""
+"""Route the score-free FINAL-QUALITY-3.2 host arbitration result."""
 
 import argparse
 from copy import deepcopy
@@ -25,12 +25,15 @@ DEFECT_FIELDS = {
 ALLOWED_CODES = {
     "COMPETING_FOCAL_POINTS", "PRODUCT_TOO_SMALL", "PRODUCT_OCCLUDED", "PRODUCT_FLOATING",
     "PRODUCT_DISTORTED", "QUANTITY_AMBIGUOUS", "TEXT_DENSITY_HIGH", "ALIGNMENT_INCONSISTENT",
-    "TEXT_OVERLAP", "LOGO_FLOATING",
+    "TEXT_OVERLAP", "LOGO_MISSING", "LOGO_INCORRECT", "LOGO_BACKGROUND_ARTIFACT",
+    "LOGO_EDGE_HALO", "LOGO_CONTRAST_LOW", "LOGO_FLOATING",
     "TYPE_STYLE_CONFLICT", "PRICE_HIERARCHY_WEAK", "CTA_HIERARCHY_WEAK", "SAFE_MARGIN_WEAK",
     "COLOR_CONTRAST_LOW", "DECORATION_OVERLOAD", "SCENE_PRODUCT_MISMATCH", "GENERIC_TEMPLATE_LOOK",
     "LIGHTING_CONFLICT", "MATERIAL_ARTIFICIAL", "AI_ARTIFACT", "OTHER_VISIBLE_DEFECT",
 }
-ALLOWED_CATEGORIES = {"product", "hierarchy", "typography", "color_scene", "finish"}
+ALLOWED_CATEGORIES = {"product", "brand", "hierarchy", "typography", "color_scene", "finish"}
+LOGO_MODERATE_CODES = {"LOGO_BACKGROUND_ARTIFACT", "LOGO_EDGE_HALO", "LOGO_CONTRAST_LOW", "LOGO_FLOATING"}
+LOGO_CRITICAL_CODES = {"LOGO_MISSING", "LOGO_INCORRECT"}
 
 
 def nonempty(value):
@@ -103,8 +106,8 @@ def validate_upstream(consumer, consumer_details, aesthetic, aesthetic_details, 
 
 
 def validate_review(review, candidate):
-    require(isinstance(review, dict) and set(review) == REVIEW_FIELDS, "final review must use the exact FINAL-QUALITY-3.1 fields")
-    require(review.get("schema_version") == "FINAL-QUALITY-3.1", "unsupported final review schema")
+    require(isinstance(review, dict) and set(review) == REVIEW_FIELDS, "final review must use the exact FINAL-QUALITY-3.2 fields")
+    require(review.get("schema_version") == "FINAL-QUALITY-3.2", "unsupported final review schema")
     require(review.get("request_id") == candidate.get("request_id"), "final review request mismatch")
     require(review.get("version_id") == candidate.get("loop_state", {}).get("version_id"), "final review version mismatch")
     require(review.get("poster_image") == candidate.get("poster_image"), "final review poster mismatch")
@@ -126,10 +129,12 @@ def validate_review(review, candidate):
         require(defect["code"] in ALLOWED_CODES, "unknown defect code")
         require(defect["category"] in ALLOWED_CATEGORIES, "unknown defect category")
         require(defect["severity"] in SEVERITIES, "unknown defect severity")
-        require(
-            defect["code"] not in {"TEXT_OVERLAP", "LOGO_FLOATING"} or defect["severity"] in MAJOR_SEVERITIES,
-            f'{defect["code"]} must be moderate or higher',
-        )
+        require(defect["code"] != "TEXT_OVERLAP" or defect["severity"] in MAJOR_SEVERITIES,
+                "TEXT_OVERLAP must be moderate or higher")
+        require(defect["code"] not in LOGO_MODERATE_CODES or defect["severity"] in MAJOR_SEVERITIES,
+                f'{defect["code"]} must be moderate or higher')
+        require(defect["code"] not in LOGO_CRITICAL_CODES or defect["severity"] == "critical",
+                f'{defect["code"]} must be critical')
         require(all(nonempty(defect[key]) for key in ("region", "observation", "required_action")), "defect needs region, observation and required action")
         for key in ("editable_objects", "protected_objects"):
             require(isinstance(defect[key], list) and defect[key] and len(defect[key]) == len(set(defect[key])) and all(nonempty(x) for x in defect[key]), "defect object lists must be unique nonempty strings")
@@ -197,10 +202,10 @@ def route_result(review, consumer, consumer_details, aesthetic, aesthetic_detail
     require(type(redraw_attempts) is int and redraw_attempts >= 0, "redraw_attempts must be a nonnegative integer")
     candidate = validate_upstream(consumer, consumer_details, aesthetic, aesthetic_details, workflow)
     validate_review(review, candidate)
-    require(version.get("skill_version") == "3.1.0-rc.4" and version.get("workflow_version") == "3.1", "final quality gate requires Skill 3.1.0-rc.4")
+    require(version.get("skill_version") == "3.1.0-rc.5" and version.get("workflow_version") == "3.1", "final quality gate requires Skill 3.1.0-rc.5")
     require(version.get("feature_flags", {}).get("final_quality_gate") is True, "final quality gate feature flag is disabled")
     gate = version.get("final_quality_gate") or {}
-    require(gate.get("schema_version") == "FINAL-QUALITY-3.1" and gate.get("mode") == "defect_based_no_score", "invalid final quality configuration")
+    require(gate.get("schema_version") == "FINAL-QUALITY-3.2" and gate.get("mode") == "defect_based_no_score", "invalid final quality configuration")
     max_attempts = version.get("retry_policy", {}).get("max_redraw_attempts")
     require(type(max_attempts) is int and max_attempts >= 0, "invalid global redraw limit")
     suspicious = suspicious_reasons(consumer, consumer_details, aesthetic, aesthetic_details, version)

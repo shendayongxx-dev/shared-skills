@@ -1,5 +1,5 @@
 {
-  "version": "3.0.0-rc.4",
+  "version": "3.0.0-rc.5",
   "score_scale": 100,
   "anchors": {
     "0": "严重失效或明确错误",

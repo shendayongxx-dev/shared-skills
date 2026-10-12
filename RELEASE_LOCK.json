@@ -1,10 +1,10 @@
 {
   "schema_version": "release-lock/1.0",
-  "release_version": "3.1.0-rc.4",
-  "release_tag": "ecommerce-poster-design-v3.1.0-rc.4",
+  "release_version": "3.1.0-rc.5",
+  "release_tag": "ecommerce-poster-design-v3.1.0-rc.5",
   "canonical_skill_directory": "skills/ecommerce-poster-design-3.1.0",
-  "skill_file_count": 186,
-  "skill_tree_sha256": "11d59c7824bfecdab56594bd8c87226f451805049e989d89a0080cd26a5148e7",
+  "skill_file_count": 188,
+  "skill_tree_sha256": "8bffb43120006c44aed1d88f3812b93bab1cd9b5281f4979df45e3de3bf5c238",
   "tree_hash_algorithm": "Sort relative POSIX paths ordinally; for each file append <path>\\t<SHA256-lowercase>\\n as UTF-8; SHA-256 the concatenated bytes.",
   "excluded_from_tree": []
 }

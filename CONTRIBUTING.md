@@ -26,7 +26,7 @@ GitHub Actions 的 `Validate ecommerce poster skill` 必须通过后才能合并
 
 ## 版本规则
 
-- 当前稳定版为 `3.1.0-rc.4`；已发布标签不可移动、覆盖或静默重写。
+- 当前稳定版为 `3.1.0-rc.5`；已发布标签不可移动、覆盖或静默重写。
 - 当前版本只允许由 `RELEASE_MANIFEST.json`、Skill 的 `assets/config/version.json` 和 `RELEASE_LOCK.json` 共同确认；三者不一致时不得发布。
 - 向后兼容的缺陷修复递增补丁版本，例如 `1.0.1`。
 - 新增能力但保持兼容时递增次版本；破坏现有输入输出契约时必须提供迁移说明并按语义化版本升级主版本。

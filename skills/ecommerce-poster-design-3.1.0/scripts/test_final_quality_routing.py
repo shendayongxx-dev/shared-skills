@@ -91,7 +91,7 @@ def defect(severity="moderate", code="TEXT_DENSITY_HIGH", region="左下卖点�
 def review(candidate, mode="standard", defects=None, confidence=0.9):
     defects = defects or []
     return {
-        "schema_version": "FINAL-QUALITY-3.1",
+        "schema_version": "FINAL-QUALITY-3.2",
         "request_id": candidate["request_id"],
         "version_id": candidate["loop_state"]["version_id"],
         "poster_image": candidate["poster_image"],
@@ -170,6 +170,24 @@ class FinalQualityRoutingTests(unittest.TestCase):
         item["category"] = "hierarchy"
         with self.assertRaisesRegex(ValueError, "LOGO_FLOATING must be moderate or higher"):
             self.route(review(self.candidate, defects=[item]))
+
+    def test_logo_background_artifact_requires_moderate_or_higher(self):
+        item = defect("minor", code="LOGO_BACKGROUND_ARTIFACT", region="顶部品牌区")
+        item["category"] = "brand"
+        with self.assertRaisesRegex(ValueError, "LOGO_BACKGROUND_ARTIFACT must be moderate or higher"):
+            self.route(review(self.candidate, defects=[item]))
+
+    def test_missing_logo_must_be_critical(self):
+        item = defect("severe", code="LOGO_MISSING", region="顶部品牌区")
+        item["category"] = "brand"
+        with self.assertRaisesRegex(ValueError, "LOGO_MISSING must be critical"):
+            self.route(review(self.candidate, defects=[item]))
+
+    def test_incorrect_logo_critical_creates_revision_contract(self):
+        item = defect("critical", code="LOGO_INCORRECT", region="顶部品牌区")
+        item["category"] = "brand"
+        routed = self.route(review(self.candidate, defects=[item]), attempts=1)
+        self.assertEqual(routed["action"], "regenerate_then_full_pipeline")
 
     def test_three_minor_defects_require_revision(self):
         defects = [defect("minor", region=value) for value in ["左上", "右下", "底部"]]
