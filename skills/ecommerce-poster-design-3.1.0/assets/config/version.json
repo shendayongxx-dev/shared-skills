@@ -1,5 +1,5 @@
 {
-  "skill_version": "3.1.0-rc.4",
+  "skill_version": "3.1.0-rc.7",
   "release_channel": "stable",
   "production_ready": true,
   "baseline_version": "3.0.0",
@@ -13,10 +13,11 @@
     "svg_logo_pipeline": {
       "enabled": true,
       "authoritative_source_preserved": true,
-      "preflight_schema": "logo-asset-preflight/1.0",
+      "preflight_schema": "logo-asset-preflight/1.1",
       "application_schema": "logo-application/1.0",
+      "verification_schema": "logo-verification/1.0",
       "default_raster_long_edge": 2048,
-      "generation_strategy": "reserve_then_deterministic_composite"
+      "generation_strategy": "integrated_poster_without_independent_logo_then_deterministic_logo_composite"
     }
   },
   "consumer_agent_module": {
@@ -26,11 +27,11 @@
     "path": "modules/consumer-agent"
   },
   "aesthetic_agent_module": {
-    "name": "ecommerce-aesthetic-agent-3-0-0-rc-4",
-    "version": "3.0.0-rc.4",
+    "name": "ecommerce-aesthetic-agent-3-0-0-rc-5",
+    "version": "3.0.0-rc.5",
     "interface_version": "A-D-AESTHETIC-3.0",
-    "source_package": "ecommerce-aesthetic-agent-3.0.0-rc.4.zip",
-    "source_package_sha256": "520030caf1b98285091b25bd24873efefd66156fdcaf61bacca886f92a70f7cd",
+    "source_package": "embedded-in-skill-3.1.0-rc.7",
+    "source_package_sha256": null,
     "path": "modules/aesthetic-agent",
     "boundary": "visual evaluation, deterministic scoring, evidence, and local revision guidance only"
   },
@@ -70,12 +71,25 @@
     "final_quality_gate": true
   },
   "final_quality_gate": {
-    "schema_version": "FINAL-QUALITY-3.1",
+    "schema_version": "FINAL-QUALITY-3.2",
     "mode": "defect_based_no_score",
     "max_moderate_defects_for_pass": 0,
     "max_minor_defects_for_pass": 2,
     "minimum_review_confidence": 0.6,
     "adversarial_review_on_suspicious_score": true,
+    "logo_required_checks": [
+      "presence_and_uniqueness",
+      "authoritative_source_correctness",
+      "transparent_background_and_edge_integrity",
+      "scale_alignment_contrast_grouping_and_integration",
+      "candidate_application_hash_binding"
+    ],
+    "product_scene_required_checks": [
+      "integrated_generation_or_edit",
+      "contact_and_shadow_consistency",
+      "perspective_scale_and_depth_consistency",
+      "edge_color_reflection_and_texture_continuity"
+    ],
     "suspicious_score": {
       "consumer_total_at_least": 96,
       "consumer_all_dimensions_at_least": 19,

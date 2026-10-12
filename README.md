@@ -4,15 +4,15 @@
 
 ## 当前主线
 
-`main` 只保留当前版本 `ecommerce-poster-design 3.1.0-rc.4`：
+`main` 只保留当前版本 `ecommerce-poster-design 3.1.0-rc.7`：
 
 - Skill：`skills/ecommerce-poster-design-3.1.0/`
 - 测试：`tests/ecommerce-poster-design-3.1.0/`
-- 固定发布：`ecommerce-poster-design-v3.1.0-rc.4`
+- 固定发布：`ecommerce-poster-design-v3.1.0-rc.7`
 
-3.1.0-rc.4 的流程为：`输入校验与画布归一化 → 分类与 Style Guide → Logo 预检 → 生成/确定性贴放 → 硬性合规 → 消费者 Agent → 美学 Agent → 最终质量仲裁 → 完成或统一预算内迭代`。ImageGen 仅由整体 Skill 调用，消费者和美学 Agent 都不直接生成图片。
+3.1.0-rc.7 的流程为：`输入校验与画布归一化 → 分类与 Style Guide → Logo 预检 → 商品、场景与文字布局联合生成/编辑 → 确定性贴放独立 Logo → Logo 合成验证 → 硬性合规 → 消费者 Agent → 美学 Agent → 最终质量仲裁 → 完成或统一预算内迭代`。ImageGen 仅由整体 Skill 调用，消费者和美学 Agent 都不直接生成图片。
 
-本版在 rc.3 的无分数最终质量门、异常高分反向复核、SVG Logo 安全管线和局部编辑合同基础上，新增确定性画布归一化。只提供比例时，以短边至少 1080px 的最小整数倍派生精确尺寸，不因缺少绝对像素而阻塞。
+本版完整继承 rc.5 的画布、Logo、消费者、美学、最终质量门和统一预算，只新增一项制作约束：无 Logo 底图必须是除独立 Logo 外已经完成的海报，禁止先生成空背景再机械后贴商品和整套文字；最终质量门用 `PRODUCT_SCENE_COMPOSITE_ARTIFACT` 拦截商品与场景的可见融合断层。
 
 ## 历史版本
 
@@ -26,6 +26,8 @@
 | 3.0.0 | `ecommerce-poster-design-v3.0.0` |
 | 3.0.0 rebuilt rc4 | `ecommerce-poster-design-v3.0.0-rebuilt-rc4` |
 | 3.1.0-rc.3 | `ecommerce-poster-design-v3.1.0-rc.3` |
+| 3.1.0-rc.4 | `ecommerce-poster-design-v3.1.0-rc.4` |
+| 3.1.0-rc.5 | `ecommerce-poster-design-v3.1.0-rc.5` |
 
 已有历史分支和 Tag 保持原指向，不重写、不移动。安装和迭代规则见 [INSTALL.md](INSTALL.md) 与 [VERSIONS.md](VERSIONS.md)。
 

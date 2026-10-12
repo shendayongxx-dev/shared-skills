@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Static integration checks for the rebuilt aesthetic rc.4 workflow."""
+"""Static integration checks for the rebuilt aesthetic rc.5 workflow."""
 
 import json
 import sys
@@ -23,9 +23,9 @@ def main():
         raise SystemExit("missing integration files: " + ", ".join(missing))
     version = json.loads((root / "assets/config/version.json").read_text(encoding="utf-8"))
     checks = {
-        "skill_version": version.get("skill_version") in {"3.0.0", "3.1.0-rc.1", "3.1.0-rc.2", "3.1.0-rc.3", "3.1.0-rc.4"},
+        "skill_version": version.get("skill_version") == "3.1.0-rc.7",
         "baseline": version.get("baseline_version") in {"2.0.1", "3.0.0"},
-        "aesthetic_version": version.get("aesthetic_agent_module", {}).get("version") == "3.0.0-rc.4",
+        "aesthetic_version": version.get("aesthetic_agent_module", {}).get("version") == "3.0.0-rc.5",
         "interface": version.get("aesthetic_agent_module", {}).get("interface_version") == "A-D-AESTHETIC-3.0",
         "features": version.get("feature_flags", {}).get("consumer_agent") is True and version.get("feature_flags", {}).get("aesthetic_agent") is True,
         "unified_budget": version.get("retry_policy", {}).get("counter_scope") == "global_across_hard_compliance_consumer_and_aesthetic",
@@ -36,6 +36,7 @@ def main():
     skill = (root / "SKILL.md").read_text(encoding="utf-8")
     checks["skill_three_gates"] = all(value in skill for value in ["HC-01～HC-12", "消费者 Agent", "美学 Agent"])
     checks["skill_requires_edit_contract"] = "validate_generation_edit_contract.py" in skill and "regressed_dimensions" in skill
+    checks["logo_aesthetic_rule"] = "不得新增 Logo 专项分数" in skill and "整体融合感" in (root / "modules/aesthetic-agent/SKILL.md").read_text(encoding="utf-8")
     checks["legacy_not_active"] = version.get("aesthetic_agent_module", {}).get("version") != "2.4"
     output_schema = json.loads((root / "modules/aesthetic-agent/schemas/output.schema.json").read_text(encoding="utf-8"))
     dimensions = output_schema["properties"]["meta"]["properties"]["judge_dimensions"]

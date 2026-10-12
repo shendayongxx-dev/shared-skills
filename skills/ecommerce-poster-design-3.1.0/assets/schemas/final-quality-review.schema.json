@@ -4,7 +4,7 @@
   "title": "Final quality gate review without a score",
   "type": "object",
   "properties": {
-    "schema_version": {"const": "FINAL-QUALITY-3.1"},
+    "schema_version": {"const": "FINAL-QUALITY-3.2"},
     "request_id": {"type": "string", "minLength": 1},
     "version_id": {"type": "string", "minLength": 1},
     "poster_image": {"type": "string", "minLength": 1},
@@ -39,13 +39,14 @@
           "code": {
             "enum": [
               "COMPETING_FOCAL_POINTS", "PRODUCT_TOO_SMALL", "PRODUCT_OCCLUDED", "PRODUCT_FLOATING",
-              "PRODUCT_DISTORTED", "QUANTITY_AMBIGUOUS", "TEXT_DENSITY_HIGH", "ALIGNMENT_INCONSISTENT", "TEXT_OVERLAP", "LOGO_FLOATING",
+              "PRODUCT_DISTORTED", "QUANTITY_AMBIGUOUS", "TEXT_DENSITY_HIGH", "ALIGNMENT_INCONSISTENT", "TEXT_OVERLAP",
+              "LOGO_MISSING", "LOGO_INCORRECT", "LOGO_BACKGROUND_ARTIFACT", "LOGO_EDGE_HALO", "LOGO_CONTRAST_LOW", "LOGO_FLOATING",
               "TYPE_STYLE_CONFLICT", "PRICE_HIERARCHY_WEAK", "CTA_HIERARCHY_WEAK", "SAFE_MARGIN_WEAK",
               "COLOR_CONTRAST_LOW", "DECORATION_OVERLOAD", "SCENE_PRODUCT_MISMATCH", "GENERIC_TEMPLATE_LOOK",
-              "LIGHTING_CONFLICT", "MATERIAL_ARTIFICIAL", "AI_ARTIFACT", "OTHER_VISIBLE_DEFECT"
+              "LIGHTING_CONFLICT", "MATERIAL_ARTIFICIAL", "PRODUCT_SCENE_COMPOSITE_ARTIFACT", "AI_ARTIFACT", "OTHER_VISIBLE_DEFECT"
             ]
           },
-          "category": {"enum": ["product", "hierarchy", "typography", "color_scene", "finish"]},
+          "category": {"enum": ["product", "brand", "hierarchy", "typography", "color_scene", "finish"]},
           "severity": {"enum": ["critical", "severe", "moderate", "minor"]},
           "region": {"type": "string", "minLength": 1},
           "observation": {"type": "string", "minLength": 1},

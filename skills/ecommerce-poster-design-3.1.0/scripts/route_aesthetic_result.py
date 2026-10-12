@@ -105,7 +105,7 @@ def validate_details(result, details, workflow):
     if not isinstance(details, dict):
         raise ValueError("aesthetic details are required for a scored result")
     expected = {
-        "rubric_version": "3.0.0-rc.4",
+        "rubric_version": "3.0.0-rc.5",
         "score": result["score"],
         "pass": result["pass"],
         "request_id": candidate["request_id"],

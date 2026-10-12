@@ -3,9 +3,9 @@ name: ecommerce-poster-design
 description: "根据商品图、商品信息、卖点、价格促销、营销目标和画布规格，调用 Codex ImageGen 生成或编辑电商商品营销主视觉，依次执行硬性合规、消费者有效性和专业美学三重门禁，并在统一预算内定向迭代。用于电商海报、商品主图或营销主视觉生成；不用于普通艺术海报、非商品宣传或脱离生成工作流的独立审美打分。"
 ---
 
-# 电商商品营销主视觉设计 Skill 3.1.0-rc.4
+# 电商商品营销主视觉设计 Skill 3.1.0-rc.7
 
-> 本版本从 `3.0.0` 测试候选独立迭代，保留消费者 Agent 1.5.3、美学专家 Agent `3.0.0-rc.4` 和 C 2.0.1 分类库。3.1 在主流程末端新增无分数的最终质量仲裁、高分反向复核和局部修改路由；rc.2 增加 SVG Logo 安全预检、高清栅格化和确定性贴放；rc.3 将可见文字重叠和视觉悬空的 Logo 固定为至少中度、可定位缺陷，并强制进入局部重绘与全链复检；rc.4 增加画布比例到精确像素的确定性归一化，避免因未提供绝对像素而阻塞。3.0.0 原目录保持冻结。
+> 本版本从 `3.0.0` 测试候选独立迭代，保留消费者 Agent 1.5.3、C 2.0.1 分类库，并将美学专家 Agent 更新为 `3.0.0-rc.5`。3.1 在主流程末端新增无分数的最终质量仲裁、高分反向复核和局部修改路由；rc.2 增加 SVG Logo 安全预检、高清栅格化和确定性贴放；rc.3 将可见文字重叠和视觉悬空的 Logo 固定为至少中度、可定位缺陷；rc.4 增加确定性画布归一化；rc.5 把 Logo 合成绑定、正确性、透明伪影和视觉协调检查升级为最终交付前不可绕过的门禁；rc.5.1 收紧首次候选的制作方式，禁止先生成空背景再机械后贴商品和整套文字；rc.7 进一步收紧 Logo 安全区和权威锁定关系，禁止可见占位容器与未授权品牌文字组合。旧版本目录与 Tag 保持冻结。
 
 ## 版本边界
 
@@ -30,7 +30,7 @@ description: "根据商品图、商品信息、卖点、价格促销、营销目
 5. 每张新候选先按 [references/hard-compliance.md](references/hard-compliance.md) 完整检查。
 6. 硬检查通过后，按 [references/consumer-agent-integration.md](references/consumer-agent-integration.md) 调用消费者 Agent。
 7. 消费者通过后，按 [references/aesthetic-agent-integration.md](references/aesthetic-agent-integration.md) 调用美学 Agent。
-8. 美学通过后读取 [references/final-quality-gate.md](references/final-quality-gate.md)，按 `FINAL-QUALITY-3.1` 执行无分数仲裁。
+8. 美学通过后读取 [references/final-quality-gate.md](references/final-quality-gate.md)，按 `FINAL-QUALITY-3.2` 执行无分数仲裁。
 9. 需要核对完整链路或从 2.0.1 升级时，读取 [references/workflow-3.1-and-2.0.1-delta.md](references/workflow-3.1-and-2.0.1-delta.md)。
 
 ## 必填输入
@@ -69,7 +69,15 @@ python scripts/select_style.py assets/classification <audience_id|null> <motivat
 
 使用系统 `imagegen` Skill 和内置 `image_gen` 工具生成首版或编辑当前候选。未经用户确认，不切换到需要 API Key 的 CLI。
 
-当 `brand.logo_ref` 为 SVG 时，SVG 始终是品牌权威源，不直接假设 ImageGen 能读取或逐像素复现。先加载工作区依赖取得 Node 与 Sharp 路径，再运行 `scripts/prepare_logo_asset.mjs` 生成至少 2048px 长边的透明 PNG 和 `logo-asset-preflight/1.0` 清单。ImageGen 只负责生成预留 Logo 安全区的海报底图，不得在底图中重画品牌标志或品牌文字；底图完成后运行 `scripts/apply_logo_asset.mjs`，按生成计划的明确坐标和宽度把已验证 PNG 确定性贴入。贴放不得裁切、旋转、改色或改变纵横比，最终合成图才是进入 HC-01～HC-12 的候选。SVG、派生 PNG、底图和合成图的 SHA-256 都写入本轮日志。
+首次候选必须以用户商品图为权威参考，在同一次完整海报生成或编辑中共同完成商品、场景、透视、环境光、反射、接触阴影、景深关系和文字布局。禁止先生成不含商品的独立背景，再把商品抠图和整套文字作为普通二维图层机械贴入；也不得把“保证商品保真”解释为允许商品与场景各自独立制作后直接拼接。需要提高商品保真时，应把原商品图作为商品参考或编辑目标，让 ImageGen 在保持商品数量、形态、颜色、包装和关键结构的前提下完成场景融合。
+
+“无 Logo 底图”仅指独立 Logo 尚未贴入；它必须已经是除独立 Logo 外完成的海报，而不是空背景板。为修正模型错字而做的局部文字替换可以在完整候选上进行，但只能修改已定位的文字区域，并保持原有版式、材质承托和空间关系；不得借文字修复退化为背景、商品、文字三层机械拼装。用户明确要求透明商品图模板、纯白目录图或其他扁平合成样式时可遵从，但仍须建立一致的尺度、边缘、接触关系和光影，且不得把这种例外扩展到普通场景海报。
+
+当 `brand.logo_ref` 为 SVG 时，SVG 始终是品牌权威源，不直接假设 ImageGen 能读取或逐像素复现。先加载工作区依赖取得 Node 与 Sharp 路径，再运行 `scripts/prepare_logo_asset.mjs` 生成至少 2048px 长边的透明 PNG 和 `logo-asset-preflight/1.1` 清单。ImageGen 只负责生成预留 Logo 安全区的海报底图，不得在底图中重画品牌标志或品牌文字；底图完成后运行 `scripts/apply_logo_asset.mjs`，按生成计划的明确坐标和宽度把已验证 PNG 确定性贴入。贴放不得裁切、旋转、改色或改变纵横比，最终合成图才是进入 HC-01～HC-12 的候选。SVG、派生 PNG、底图和合成图的 SHA-256 都写入本轮日志。
+
+Logo 安全区只能是可自然放置 Logo 的画面区域，不得生成占位框、底板、描边、卡片或其他可见容器；不得自行补充权威 Logo 文件中不存在的品牌文字，也不得重新组合 Logo 的图形、字标或锁定关系。需要完整图形与字标组合时，必须由用户提供对应的权威完整 Logo 资产；只有图形标资产时，只能按原资产贴放图形标。
+
+当 `brand.logo_ref` 非空时，底图只是中间产物，禁止为其分配可进入评价或交付的候选状态。必须完成 `logo_preflight_passed → logo_applied → logo_verified → candidate_ready` 状态链；使用 `scripts/verify_logo_application.py` 核对权威源、派生 Logo、底图、合成输出及当前 `poster_image` 的哈希绑定。缺少任一清单、哈希不一致、最终候选仍指向底图或 Logo 未通过检查时，停止后续评价并完成 Logo 合成或修复，不得把无 Logo 底图送入 HC、消费者、美学或最终输出。
 
 SVG 含脚本、事件处理器、外部资源、`foreignObject` 或无法确定画布比例时返回 `blocked`，不得把不安全或不可验证的 SVG 直接交给生成器。Logo 原本就是受支持的高分辨率 PNG 时可直接作为确定性贴放源，但仍须记录哈希、像素尺寸和纵横比；低分辨率位图不得靠生成模型重绘成“高清 Logo”。
 
@@ -105,6 +113,8 @@ python modules/aesthetic-agent/scripts/score_evaluation.py \
 
 确定性通过条件为总分至少 80，且构图≥16/20、层级≥16/20、配色≥12/15、排版≥16/20、风格场景≥12/15、材质细节≥8/10，并且没有关键问题。
 
+候选含独立 Logo 时，美学评价必须在现有六维、25 子项内检查其尺寸、位置、安全留白、网格对齐、层级、背景对比、品牌分组关系和整体融合感；不得新增 Logo 专项分数或改变六维权重。Logo 缺失、错贴、变形、裁切、重绘、改色或透明背景异常属于硬合规问题，美学分不得抵消；Logo 悬浮、尺度失衡、对比不足或明显贴图感必须映射到相关现有子项并给出可定位证据。
+
 - `score=null`：当前评价被阻塞；补齐输入或图像，不生成、不计轮次；
 - `pass=false`：路由器根据确定性六维明细生成结构化 `generation_edit_contract`，只授权未达标美学维度；每条局部建议仍须明确允许编辑、禁止编辑、消费者功能锁和验收标准；
 - `pass=true`：用 `scripts/route_aesthetic_result.py` 交叉核验计分明细与当前候选绑定，再进入最终质量仲裁，不得直接交付。
@@ -117,9 +127,9 @@ python modules/aesthetic-agent/scripts/score_evaluation.py \
 
 只有当前同一候选已经通过硬检查、消费者和美学评价，才能进入最终质量仲裁。仲裁者必须实际查看当前海报原尺寸、360px 缩图和商品参考素材，但不得再输出第三套分数。
 
-按 `references/final-quality-gate.md` 形成严格的 `FINAL-QUALITY-3.1` 观察：核对消费者与美学证据是否由当前画面支持，扫描商品呈现、信息层级、排版、配色场景和视觉完成度，并为每个缺陷提供代码、严重度、位置、可见事实和最小修复动作。
+按 `references/final-quality-gate.md` 形成严格的 `FINAL-QUALITY-3.2` 观察：核对消费者与美学证据是否由当前画面支持，扫描商品呈现、信息层级、排版、配色场景和视觉完成度，并为每个缺陷提供代码、严重度、位置、可见事实和最小修复动作。
 
-文字字形、行框或相邻文本块出现肉眼可见的覆盖、粘连或边缘冲突时，必须登记 `TEXT_OVERLAP`；Logo 与标题、品牌区或商品缺乏可解释的分组关系，形成明显孤立大空隙或视觉悬空时，必须登记 `LOGO_FLOATING`。两者均至少为 `moderate`，不得因为修复简单、文字仍能猜读或 Logo 本身清晰而降为 `minor` 或直接 Pass。它们属于可定位缺陷，默认只开放相应文字/Logo 及必要留白区域，执行 1～2 次局部重绘；每张新候选仍须从硬检查开始完整复检。
+文字字形、行框或相邻文本块出现肉眼可见的覆盖、粘连或边缘冲突时，必须登记 `TEXT_OVERLAP`。Logo 缺失或不是授权源时分别登记 `LOGO_MISSING`、`LOGO_INCORRECT`，按 `critical` 处理；非预期矩形底色、边框、白黑边或 Alpha 光晕分别登记 `LOGO_BACKGROUND_ARTIFACT`、`LOGO_EDGE_HALO`；对比不足登记 `LOGO_CONTRAST_LOW`；缺乏可解释的分组关系、形成孤立空隙或视觉悬空时登记 `LOGO_FLOATING`。除缺失和错误 Logo 外，其余上述 Logo 可见缺陷均至少为 `moderate`，不得因修复简单或 Logo 仍可识别而降为 `minor` 或直接 Pass。
 
 运行 `scripts/route_final_quality.py` 确定性路由：
 
@@ -144,6 +154,8 @@ python modules/aesthetic-agent/scripts/score_evaluation.py \
 
 ## 输出
 
+若输入包含 `brand.logo_ref`，最终输出前必须完成 Logo 专项验收：最终图中存在且仅存在一个授权独立 Logo；其权威源、比例、颜色、方向和完整边界一致，无重绘、替换、拉伸、旋转、裁切或改色；透明区域无非预期矩形底色、边框、白边、黑边或 Alpha 光晕；位置、尺度、留白、对齐、对比度和分组关系与画面协调；当前 `poster_image` 的 SHA-256 必须等于 `logo-application/1.0` 的输出哈希并通过 `logo-verification/1.0`。任一项无法确认时不得输出 `passed`。
+
 最终输出包含：
 
 - 海报文件或生成结果；
@@ -155,6 +167,7 @@ python modules/aesthetic-agent/scripts/score_evaluation.py \
 - 八组 `protected_content` 与五个消费者锁；
 - Skill、Schema、模块和资产版本；
 - 全局重画次数、每轮版本、图片哈希、检查结果和修改记录；
+- Logo 预检、应用与验证清单；若无 `logo_ref`，明确记录 `logo_required=false`；
 - 最终状态 `passed`、`degraded` 或 `blocked`。
 
 ## 禁止事项

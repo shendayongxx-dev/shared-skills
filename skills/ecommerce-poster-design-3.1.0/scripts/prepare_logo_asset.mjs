@@ -83,11 +83,18 @@ export async function prepareLogoAsset({ input, output, manifest, longEdge = 204
     .toFile(outputPath);
 
   const metadata = await sharp(outputPath).metadata();
+  const stats = await sharp(outputPath).stats();
   const outputRatio = metadata.width / metadata.height;
   if (Math.abs(outputRatio / svg.aspectRatio - 1) > 0.002) throw new Error("rasterized logo aspect ratio drifted");
+  const alpha = metadata.hasAlpha && stats.channels.length >= 4 ? stats.channels[3] : null;
+  const transparencyClass = !metadata.hasAlpha
+    ? "no_alpha_channel"
+    : alpha.min < 255
+      ? "has_transparent_pixels"
+      : "alpha_channel_fully_opaque";
 
   const record = {
-    schema_version: "logo-asset-preflight/1.0",
+    schema_version: "logo-asset-preflight/1.1",
     authoritative_source: {
       path: inputPath,
       format: "svg",
@@ -104,6 +111,10 @@ export async function prepareLogoAsset({ input, output, manifest, longEdge = 204
       width: metadata.width,
       height: metadata.height,
       has_alpha: metadata.hasAlpha,
+      alpha_min: alpha?.min ?? null,
+      alpha_max: alpha?.max ?? null,
+      has_transparent_pixels: Boolean(alpha && alpha.min < 255),
+      transparency_class: transparencyClass,
       aspect_ratio: outputRatio
     },
     transformation: {
@@ -120,7 +131,9 @@ export async function prepareLogoAsset({ input, output, manifest, longEdge = 204
       active_content_absent: true,
       external_references_absent: true,
       embedded_reference_count: svg.embeddedReferences,
-      aspect_ratio_preserved: true
+      aspect_ratio_preserved: true,
+      transparency_inspected: true,
+      visual_background_artifact_review_required: transparencyClass !== "has_transparent_pixels"
     }
   };
   fs.writeFileSync(manifestPath, `${JSON.stringify(record, null, 2)}\n`, "utf8");

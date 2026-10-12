@@ -28,22 +28,30 @@ def main():
     router = (root / "scripts/route_final_quality.py").read_text(encoding="utf-8")
     defect_codes = set(schema["properties"]["defects"]["items"]["properties"]["code"]["enum"])
     checks = {
-        "skill_version": version.get("skill_version") == "3.1.0-rc.4",
+        "skill_version": version.get("skill_version") == "3.1.0-rc.7",
         "workflow_version": version.get("workflow_version") == "3.1",
         "baseline": version.get("baseline_version") == "3.0.0",
         "stable_release_channel": version.get("production_ready") is True and version.get("release_channel") == "stable",
         "feature_enabled": version.get("feature_flags", {}).get("final_quality_gate") is True,
         "score_free_mode": gate.get("mode") == "defect_based_no_score",
-        "schema_version": schema.get("properties", {}).get("schema_version", {}).get("const") == "FINAL-QUALITY-3.1",
+        "schema_version": schema.get("properties", {}).get("schema_version", {}).get("const") == "FINAL-QUALITY-3.2",
         "schema_has_no_score": "score" not in schema.get("properties", {}),
         "adversarial_review": gate.get("adversarial_review_on_suspicious_score") is True,
         "minor_limit": gate.get("max_minor_defects_for_pass") == 2,
         "skill_routes_to_gate": "route_final_quality.py" in skill and "最终质量仲裁" in skill,
         "skill_forbids_abstract_redraw": "抽象审美意见触发重画" in skill,
-        "mandatory_defect_codes": {"TEXT_OVERLAP", "LOGO_FLOATING"} <= defect_codes,
-        "skill_requires_moderate_text_and_logo_defects": all(value in skill for value in ("TEXT_OVERLAP", "LOGO_FLOATING", "至少为 `moderate`")),
-        "gate_documents_mandatory_severity": all(value in gate_spec for value in ("TEXT_OVERLAP", "LOGO_FLOATING", "强制中度缺陷")),
+        "mandatory_defect_codes": {
+            "TEXT_OVERLAP", "LOGO_MISSING", "LOGO_INCORRECT", "LOGO_BACKGROUND_ARTIFACT",
+            "LOGO_EDGE_HALO", "LOGO_CONTRAST_LOW", "LOGO_FLOATING", "PRODUCT_SCENE_COMPOSITE_ARTIFACT",
+        } <= defect_codes,
+        "skill_requires_logo_output_gate": all(value in skill for value in ("Logo 专项验收", "logo-verification/1.0", "LOGO_MISSING", "LOGO_BACKGROUND_ARTIFACT")),
+        "gate_documents_mandatory_severity": all(value in gate_spec for value in ("LOGO_MISSING", "LOGO_INCORRECT", "强制严重 Logo 缺陷", "强制中度缺陷")),
         "router_rejects_minor_downgrade": "must be moderate or higher" in router,
+        "router_requires_critical_logo_facts": "must be critical" in router,
+        "integrated_product_scene_generation": all(value in skill for value in ("同一次完整海报生成或编辑", "禁止先生成不含商品的独立背景", "无 Logo 底图")),
+        "product_scene_artifact_is_moderate": all(value in gate_spec for value in ("PRODUCT_SCENE_COMPOSITE_ARTIFACT", "至少记为 `moderate`")),
+        "visible_logo_container_is_background_artifact": all(value in gate_spec for value in ("Logo 安全区必须只是可自然放置 Logo 的画面区域", "不得以“版式容器”或“预留区”为由放行", "LOGO_BACKGROUND_ARTIFACT")),
+        "unauthorized_lockup_is_incorrect_logo": all(value in gate_spec for value in ("权威 Logo 文件中不存在的品牌文字", "重新组合图形、字标和锁定关系", "LOGO_INCORRECT")),
     }
     failed = [name for name, passed in checks.items() if not passed]
     print(json.dumps({"valid": not failed, "checks": checks, "missing": missing}, ensure_ascii=False, indent=2))

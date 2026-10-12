@@ -16,6 +16,7 @@ def main() -> int:
     required = [
         root / "scripts/prepare_logo_asset.mjs",
         root / "scripts/apply_logo_asset.mjs",
+        root / "scripts/verify_logo_application.py",
         root / "scripts/test_logo_asset_pipeline.mjs",
         root / "references/imagegen-integration.md",
         root / "references/hard-compliance.md",
@@ -24,17 +25,23 @@ def main() -> int:
     imagegen_text = (root / "references/imagegen-integration.md").read_text(encoding="utf-8")
     hard_text = (root / "references/hard-compliance.md").read_text(encoding="utf-8")
     checks = {
-        "skill_version": version.get("skill_version") == "3.1.0-rc.4",
+        "skill_version": version.get("skill_version") == "3.1.0-rc.7",
         "pipeline_enabled": pipeline.get("enabled") is True,
         "source_preserved": pipeline.get("authoritative_source_preserved") is True,
-        "preflight_schema": pipeline.get("preflight_schema") == "logo-asset-preflight/1.0",
+        "preflight_schema": pipeline.get("preflight_schema") == "logo-asset-preflight/1.1",
         "application_schema": pipeline.get("application_schema") == "logo-application/1.0",
+        "verification_schema": pipeline.get("verification_schema") == "logo-verification/1.0",
         "raster_size": pipeline.get("default_raster_long_edge", 0) >= 2048,
-        "reserve_then_composite": pipeline.get("generation_strategy") == "reserve_then_deterministic_composite",
+        "integrated_then_logo_composite": pipeline.get("generation_strategy") == "integrated_poster_without_independent_logo_then_deterministic_logo_composite",
         "required_files": all(item.is_file() for item in required),
         "skill_requires_svg_preflight": "prepare_logo_asset.mjs" in skill_text and "apply_logo_asset.mjs" in skill_text,
         "imagegen_does_not_redraw_logo": "不得要求模型重画 Logo" in imagegen_text,
-        "hc05_requires_manifests": "logo-asset-preflight/1.0" in hard_text and "logo-application/1.0" in hard_text,
+        "logo_safe_area_has_no_visible_container": all(value in imagegen_text for value in ("可自然放置 Logo", "不得包含占位框", "底板", "描边", "卡片")),
+        "logo_lockup_requires_authoritative_asset": all(value in skill_text for value in ("不得自行补充权威 Logo 文件中不存在的品牌文字", "不得重新组合 Logo", "权威完整 Logo 资产")),
+        "hc05_requires_manifests": "logo-asset-preflight/1.1" in hard_text and "logo-application/1.0" in hard_text,
+        "hc05_requires_verification": "logo-verification/1.0" in hard_text,
+        "skill_binds_final_candidate": "verify_logo_application.py" in skill_text and "logo_verified" in skill_text,
+        "preflight_distinguishes_real_transparency": "has_transparent_pixels" in (root / "scripts/prepare_logo_asset.mjs").read_text(encoding="utf-8"),
     }
     result = {"valid": all(checks.values()), "checks": checks, "missing": [str(p) for p in required if not p.is_file()]}
     print(json.dumps(result, ensure_ascii=False, indent=2))

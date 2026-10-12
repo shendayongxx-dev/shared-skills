@@ -1,11 +1,11 @@
 # ecommerce-poster-design 安装与部署
 
-## 安装当前 3.1.0-rc.4
+## 安装当前 3.1.0-rc.7
 
 ```powershell
-git clone --branch ecommerce-poster-design-v3.1.0-rc.4 --depth 1 https://github.com/shendayongxx-dev/shared-skills.git shared-skills-3.1.0-rc.4
+git clone --branch ecommerce-poster-design-v3.1.0-rc.7 --depth 1 https://github.com/shendayongxx-dev/shared-skills.git shared-skills-3.1.0-rc.7
 $skillTarget = Join-Path $env:USERPROFILE '.codex\skills\ecommerce-poster-design'
-Copy-Item -Recurse -LiteralPath '.\shared-skills-3.1.0-rc.4\skills\ecommerce-poster-design-3.1.0' -Destination $skillTarget
+Copy-Item -Recurse -LiteralPath '.\shared-skills-3.1.0-rc.7\skills\ecommerce-poster-design-3.1.0' -Destination $skillTarget
 ```
 
 安装后在 Skill 目录运行：
@@ -34,6 +34,8 @@ ecommerce-poster-design-v2.0.1
 ecommerce-poster-design-v3.0.0
 ecommerce-poster-design-v3.0.0-rebuilt-rc4
 ecommerce-poster-design-v3.1.0-rc.3
+ecommerce-poster-design-v3.1.0-rc.4
+ecommerce-poster-design-v3.1.0-rc.5
 ```
 
 示例：
@@ -52,4 +54,4 @@ git clone --branch ecommerce-poster-design-v2.0.1 --depth 1 https://github.com/s
 
 本 Skill 的确定性脚本仅依赖 Python 标准库，建议使用 Python 3.10 或更高版本。第三方种子图、用户商品素材、Logo、生成图片和凭据不得随安装包公开分发。
 
-发布包根目录运行 `python scripts/validate_release_lock.py .` 可验证 rc.4 发布指针与 Skill 树哈希；安装后可追加 `--installed <Skill目录>` 验证安装副本与发布源逐文件一致。
+发布包根目录运行 `python scripts/validate_release_lock.py .` 可验证 rc.7 发布指针与 Skill 树哈希；安装后可追加 `--installed <Skill目录>` 验证安装副本与发布源逐文件一致。

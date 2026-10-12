@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate rc.4 release pointers and the canonical Skill tree hash."""
+"""Validate rc.7 release pointers and the canonical Skill tree hash."""
 
 import argparse
 import hashlib
@@ -7,8 +7,8 @@ import json
 from pathlib import Path
 
 
-VERSION = "3.1.0-rc.4"
-TAG = "ecommerce-poster-design-v3.1.0-rc.4"
+VERSION = "3.1.0-rc.7"
+TAG = "ecommerce-poster-design-v3.1.0-rc.7"
 SKILL_DIRECTORY = "skills/ecommerce-poster-design-3.1.0"
 TEST_DIRECTORY = "tests/ecommerce-poster-design-3.1.0"
 
@@ -66,7 +66,7 @@ def main():
         "INSTALL.md",
         "PROJECT_STATUS.md",
         "VERSIONS.md",
-        "RELEASE_NOTES_3.1.0-rc.4.md",
+        "RELEASE_NOTES_3.1.0-rc.7.md",
     ]
     for name in pointer_files:
         text = (root / name).read_text(encoding="utf-8")
