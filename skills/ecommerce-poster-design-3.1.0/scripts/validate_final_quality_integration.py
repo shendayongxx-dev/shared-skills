@@ -28,7 +28,7 @@ def main():
     router = (root / "scripts/route_final_quality.py").read_text(encoding="utf-8")
     defect_codes = set(schema["properties"]["defects"]["items"]["properties"]["code"]["enum"])
     checks = {
-        "skill_version": version.get("skill_version") == "3.1.0-rc.3",
+        "skill_version": version.get("skill_version") == "3.1.0-rc.4",
         "workflow_version": version.get("workflow_version") == "3.1",
         "baseline": version.get("baseline_version") == "3.0.0",
         "stable_release_channel": version.get("production_ready") is True and version.get("release_channel") == "stable",

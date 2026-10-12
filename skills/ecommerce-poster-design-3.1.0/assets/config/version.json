@@ -1,5 +1,5 @@
 {
-  "skill_version": "3.1.0-rc.3",
+  "skill_version": "3.1.0-rc.4",
   "release_channel": "stable",
   "production_ready": true,
   "baseline_version": "3.0.0",
@@ -52,6 +52,18 @@
   "generation_edit_contract_version": "aesthetic-edit-lock/1.0",
   "final_quality_edit_contract_version": "final-quality-edit-lock/1.0",
   "consumer_lock_enforcement": "pre_generation_contract_and_post_generation_regression_rejection",
+  "canvas_normalization": {
+    "required_normalized_fields": ["aspect_ratio", "orientation", "format"],
+    "derive_orientation_from_aspect_ratio": true,
+    "exact_pixel_dimensions_optional": true,
+    "default_short_edge": 1080,
+    "default_4_5_vertical": {
+      "width": 1080,
+      "height": 1350
+    },
+    "platform_requirements_override_defaults": true,
+    "notify_user_before_generation": true
+  },
   "feature_flags": {
     "consumer_agent": true,
     "aesthetic_agent": true,

@@ -51,38 +51,15 @@
     },
     {
       "id": 5,
-      "prompt": "当前候选已通过硬检查、消费者和美学。消费者98分且五维均为19分，美学95分，普通最终质量扫描暂未发现中度问题。请决定下一步。",
-      "expected_output": "不得直接输出；命中可疑高分条件，对同一候选执行一次无分数反向复核，不生成且不增加重画次数。",
+      "prompt": "品牌只提供了一个 SVG Logo，最终需要用于 1600×1600 电商主视觉。请说明生成与应用流程，确保 Logo 不被 ImageGen 重画、变形或改色。",
+      "expected_output": "保留 SVG 为权威源，安全预检后栅格化为至少 2048px 长边 PNG；ImageGen 生成预留区底图，再用确定性合成脚本贴放 Logo，最终合成图进入 HC-05 和完整门禁。",
       "files": [],
       "expectations": [
-        "动作是 invoke_adversarial_final_review",
-        "反向复核绑定同一 request、version 和 poster_image",
-        "不生成新候选且全局计数不增加",
-        "高分本身不被改写为失败"
-      ]
-    },
-    {
-      "id": 6,
-      "prompt": "两个 Agent 均通过，但最终质量门在左下卖点区发现 moderate 级文字密度问题，并给出360px缩图不可读的具体证据。当前全局累计重画3次。请路由。",
-      "expected_output": "生成 final-quality-edit-lock/1.0，只开放左下卖点区，下一次计数为4，新候选重跑完整流程。",
-      "files": [],
-      "expectations": [
-        "动作是 regenerate_then_full_pipeline，下一次全局计数为4",
-        "合同模式为 local_edit_only",
-        "八组保护内容和五个消费者维度保持冻结",
-        "新候选重新执行硬检查、消费者、美学和最终质量门"
-      ]
-    },
-    {
-      "id": 7,
-      "prompt": "消费者和美学都给出高分，但最终质量审计发现美学证据只有“配色协调、层级清晰”，没有具体对象或画面位置。请路由。",
-      "expected_output": "判定上游证据不足，重新评价当前候选；不得把裁判问题当作图片问题，不生成且不增加重画次数。",
-      "files": [],
-      "expectations": [
-        "动作是 reevaluate_current_candidate",
-        "不触发ImageGen",
-        "全局重画计数不增加",
-        "不会把证据失败直接转换为海报失败"
+        "SVG 原件与派生 PNG 均记录 SHA-256、尺寸和纵横比",
+        "危险 SVG 或外部资源会被阻断",
+        "ImageGen 不负责重画 Logo，只生成预留 Logo 区的底图",
+        "贴放禁止裁切、旋转、改色和比例变化",
+        "只有合成后的最终图进入 HC-01～HC-12"
       ]
     },
     {
@@ -90,14 +67,36 @@
       "prompt": "海报信息完全正确，消费者和美学都给了 Pass，但主标题两个字的边缘发生明显覆盖。问题只需调字距即可修复。最终质量门应如何处理？",
       "expected_output": "登记 TEXT_OVERLAP，严重度至少 moderate，生成 local_edit_only 合同修复标题区域，并让新候选重跑完整流程；不得因容易修复或仍可猜读而 Pass。",
       "files": [],
-      "expectations": ["TEXT_OVERLAP 至少 moderate", "局部编辑", "完整复检"]
+      "expectations": [
+        "缺陷代码为 TEXT_OVERLAP",
+        "严重度不得低于 moderate",
+        "只开放标题文字及必要间距",
+        "成功返图后重跑硬合规、消费者、美学和最终质量门"
+      ]
     },
     {
       "id": 7,
       "prompt": "Logo 本身清晰且比例正确，但悬在标题上方，与标题之间有异常大空隙，没有对齐或容器关系。其余内容均通过。请路由。",
       "expected_output": "登记 LOGO_FLOATING，严重度至少 moderate，生成 local_edit_only 合同，只调整 Logo 尺寸、位置和必要留白；允许1至2次局部重绘并完整复检。",
       "files": [],
-      "expectations": ["LOGO_FLOATING 至少 moderate", "保护 Logo 形状比例", "完整复检"]
+      "expectations": [
+        "缺陷代码为 LOGO_FLOATING",
+        "不得因为 Logo 清晰或修改简单降为 minor",
+        "保护 Logo 形状、颜色、比例及其他已通过内容",
+        "局部重绘后重新执行完整门禁"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "其他必填商品与营销信息已经齐全，用户只指定画布比例为 4:5 和输出格式 PNG，没有提供绝对像素，也没有单独写‘竖版’。请处理画布并说明下一步。",
+      "expected_output": "从有序比例派生 vertical，按确定性默认规则得到 1080×1350 px，在生成前告知用户采用该尺寸并继续，不因缺少绝对像素或可派生方向而 blocked。",
+      "files": [],
+      "expectations": [
+        "画布解析结果为 1080×1350 px",
+        "方向从 4:5 派生为 vertical，不追问",
+        "生成前明确告知用户实际采用的像素尺寸",
+        "进入下游的 canvas 仍包含正整数 width 和 height"
+      ]
     }
   ]
 }

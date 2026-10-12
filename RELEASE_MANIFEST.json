@@ -1,16 +1,16 @@
 {
   "repository": "shendayongxx-dev/shared-skills",
   "skill": "ecommerce-poster-design",
-  "latest_version": "3.1.0-rc.3",
+  "latest_version": "3.1.0-rc.4",
   "main_policy": "current-version-only",
   "current": {
-    "version": "3.1.0-rc.3",
+    "version": "3.1.0-rc.4",
     "status": "stable",
     "directory": "skills/ecommerce-poster-design-3.1.0",
     "tests": "tests/ecommerce-poster-design-3.1.0",
-    "tag": "ecommerce-poster-design-v3.1.0-rc.3",
+    "tag": "ecommerce-poster-design-v3.1.0-rc.4",
     "based_on": "3.0.0-rebuilt-rc4",
-    "workflow": "input validation -> classification/style guide -> SVG logo preflight -> ImageGen reserved-logo base -> deterministic logo application -> hard compliance -> consumer agent -> aesthetic agent -> score-free final quality gate",
+    "workflow": "input validation -> deterministic canvas normalization -> classification/style guide -> SVG logo preflight -> ImageGen reserved-logo base -> deterministic logo application -> hard compliance -> consumer agent -> aesthetic agent -> score-free final quality gate",
     "generation_backend": "Codex imagegen/image_gen at overall skill layer",
     "consumer_agent_boundary": "evaluation, scoring, evidence, and routing only",
     "aesthetic_agent": {
@@ -21,21 +21,15 @@
     "final_quality_schema": "FINAL-QUALITY-3.1",
     "generation_edit_contracts": ["aesthetic-edit-lock/1.0", "final-quality-edit-lock/1.0"],
     "mandatory_moderate_defects": ["TEXT_OVERLAP", "LOGO_FLOATING"],
+    "canvas_normalization": {
+      "exact_pixels_optional": true,
+      "default_short_edge": 1080,
+      "preserve_exact_ratio": true,
+      "platform_requirements_override_defaults": true,
+      "notify_before_generation": true
+    },
     "max_generation_rounds": 8
   },
-  "experiments": [
-    {
-      "id": "3.1.0-rc.3-ablation-no-consumer",
-      "status": "ablation-experiment-not-for-release",
-      "base_version": "3.1.0-rc.3",
-      "branch": "experiment/ecommerce-poster-design-3.1.0-rc.3-ablation-no-consumer",
-      "directory_on_experiment_branch": "skills/ecommerce-poster-design-3.1.0-rc.3-ablation-no-consumer",
-      "present_on_main": false,
-      "single_removed_component": "consumer_agent_and_all_consumer_artifacts",
-      "changes_latest_version": false,
-      "creates_release_tag": false
-    }
-  ],
   "historical_releases": [
     {
       "version": "1.0.0",
@@ -56,6 +50,10 @@
     {
       "version": "3.0.0-rebuilt-rc4",
       "tag": "ecommerce-poster-design-v3.0.0-rebuilt-rc4"
+    },
+    {
+      "version": "3.1.0-rc.3",
+      "tag": "ecommerce-poster-design-v3.1.0-rc.3"
     }
   ],
   "tag_policy": "immutable",

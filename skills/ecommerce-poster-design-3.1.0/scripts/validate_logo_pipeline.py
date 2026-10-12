@@ -24,7 +24,7 @@ def main() -> int:
     imagegen_text = (root / "references/imagegen-integration.md").read_text(encoding="utf-8")
     hard_text = (root / "references/hard-compliance.md").read_text(encoding="utf-8")
     checks = {
-        "skill_version": version.get("skill_version") == "3.1.0-rc.3",
+        "skill_version": version.get("skill_version") == "3.1.0-rc.4",
         "pipeline_enabled": pipeline.get("enabled") is True,
         "source_preserved": pipeline.get("authoritative_source_preserved") is True,
         "preflight_schema": pipeline.get("preflight_schema") == "logo-asset-preflight/1.0",

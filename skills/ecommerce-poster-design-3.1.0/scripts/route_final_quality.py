@@ -197,7 +197,7 @@ def route_result(review, consumer, consumer_details, aesthetic, aesthetic_detail
     require(type(redraw_attempts) is int and redraw_attempts >= 0, "redraw_attempts must be a nonnegative integer")
     candidate = validate_upstream(consumer, consumer_details, aesthetic, aesthetic_details, workflow)
     validate_review(review, candidate)
-    require(version.get("skill_version") == "3.1.0-rc.3" and version.get("workflow_version") == "3.1", "final quality gate requires Skill 3.1.0-rc.3")
+    require(version.get("skill_version") == "3.1.0-rc.4" and version.get("workflow_version") == "3.1", "final quality gate requires Skill 3.1.0-rc.4")
     require(version.get("feature_flags", {}).get("final_quality_gate") is True, "final quality gate feature flag is disabled")
     gate = version.get("final_quality_gate") or {}
     require(gate.get("schema_version") == "FINAL-QUALITY-3.1" and gate.get("mode") == "defect_based_no_score", "invalid final quality configuration")

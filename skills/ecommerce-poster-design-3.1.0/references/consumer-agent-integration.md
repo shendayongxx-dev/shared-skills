@@ -2,7 +2,7 @@
 
 ## 版本与边界
 
-- 主流程版本：3.1.0-rc.3（消费者接口继续使用 A-D-2.0）；
+- 主流程版本：3.0.0（消费者接口继续使用 A-D-2.0）；
 - 消费者模块：`modules/consumer-agent`，版本 1.5.3；
 - 正式接口：A-D-2.0；
 - 消费者开关和美学开关均开启；消费者正式通过且五维全锁后进入美学 Agent；
@@ -44,7 +44,7 @@ python modules/consumer-agent/scripts/score_evaluation.py <model-draft.json> \
 
 ## 路由表
 
-| 消费者结果 | 3.1.0-rc.3 主流程动作 |
+| 消费者结果 | 3.0 主流程动作 |
 |---|---|
 | `pass=true` 且 `next_route=aesthetic_agent` | 保留当前候选为最后消费者通过基线，携带五个锁进入美学 Agent |
 | `next_route=poster_generation_skill` | 携带配对问题与建议、八组保护内容和锁定维度定向重画；随后全量硬检查并复评 |

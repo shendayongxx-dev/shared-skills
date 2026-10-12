@@ -2,7 +2,31 @@
 
 ## 输入契约
 
-接受自然语言或等价结构化输入，但执行前必须规范化为：
+接受自然语言或等价结构化输入。画布请求先规范化为：
+
+```json
+{
+  "aspect_ratio": "4:5",
+  "orientation": "vertical",
+  "format": "png",
+  "width": null,
+  "height": null,
+  "language": "zh-CN",
+  "platform_size": null
+}
+```
+
+比例、方向和输出格式在规范化结果中必填；当用户没有单独说明方向时，按有序的宽高比自动派生，不追问。精确 `width`、`height` 可选但必须成对出现。没有精确像素时，以 1080px 为最小短边，将最简宽高比乘以满足该短边的最小整数倍：`1:1 → 1080×1080`、`4:5 → 1080×1350`、`3:4 → 1080×1440`、`9:16 → 1080×1920`、`16:9 → 1920×1080`。`platform_size` 仅在投放平台已有明确宽高要求时填写，并优先于比例默认值；采用平台尺寸或默认尺寸后，必须在调用 ImageGen 前把实际像素尺寸告知用户，不要求用户再次确认。不得仅因缺少绝对像素或可从比例派生的方向而返回 `blocked`。
+
+运行：
+
+```text
+python scripts/resolve_canvas.py --input <request.json> --output <normalized-request.json>
+```
+
+脚本把原始 `canvas` 替换为下游兼容的精确 `width`、`height`、`format`、`language`，并在根对象增加 `canvas_resolution`，记录原始要求、解析方法、平台覆盖状态和用户提示。显式方向与比例冲突、只提供一个像素边长、精确像素与比例冲突或缺少格式时才返回输入错误。
+
+画布解析完成后，执行前的标准输入为：
 
 ```json
 {
@@ -34,14 +58,14 @@
   },
   "canvas": {
     "width": 1080,
-    "height": 1440,
+    "height": 1350,
     "format": "png",
     "language": "zh-CN"
   }
 }
 ```
 
-`quantity` 不明确时可为 null，但生成不得自行增加商品数量。Logo 不存在时 `logo_ref` 可为空；不得自行绘制假 Logo。
+`quantity` 不明确时可为 null，但生成不得自行增加商品数量。Logo 不存在时 `logo_ref` 可为空；不得自行绘制假 Logo。进入消费者 Agent 的 `canvas` 始终已经包含正整数宽高，因此不放宽 A-D-2.0 的下游 Schema。
 
 ## protected content
 
