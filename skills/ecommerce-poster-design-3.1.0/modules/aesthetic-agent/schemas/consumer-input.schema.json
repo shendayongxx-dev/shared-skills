@@ -1,0 +1,383 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "A-D-2.0"
+    },
+    "request_id": {
+      "type": "string"
+    },
+    "poster_image": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_input": {
+      "type": "object",
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "product": {
+          "type": "object",
+          "properties": {
+            "image_refs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            },
+            "name": {
+              "type": "string"
+            },
+            "category": {
+              "type": "string"
+            },
+            "selling_points": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            },
+            "quantity": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1
+            }
+          },
+          "required": [
+            "image_refs",
+            "name",
+            "category",
+            "selling_points",
+            "quantity"
+          ],
+          "additionalProperties": false
+        },
+        "brand": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "logo_ref": {
+              "type": "string"
+            },
+            "required_elements": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "forbidden_elements": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "name",
+            "logo_ref",
+            "required_elements",
+            "forbidden_elements"
+          ],
+          "additionalProperties": false
+        },
+        "commerce": {
+          "type": "object",
+          "properties": {
+            "price_text": {
+              "type": "string"
+            },
+            "promotion_text": {
+              "type": "string"
+            },
+            "promotion_period": {
+              "type": "string"
+            },
+            "legal_text": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "price_text",
+            "promotion_text",
+            "promotion_period",
+            "legal_text"
+          ],
+          "additionalProperties": false
+        },
+        "marketing": {
+          "type": "object",
+          "properties": {
+            "goal": {
+              "type": "string",
+              "minLength": 1
+            },
+            "channel": {
+              "type": "string"
+            },
+            "usage_context": {
+              "type": "string"
+            },
+            "cta": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "goal",
+            "channel",
+            "usage_context",
+            "cta"
+          ],
+          "additionalProperties": false
+        },
+        "canvas": {
+          "type": "object",
+          "properties": {
+            "width": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "height": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "format": {
+              "type": "string"
+            },
+            "language": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "width",
+            "height",
+            "format",
+            "language"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "request_id",
+        "product",
+        "brand",
+        "commerce",
+        "marketing",
+        "canvas"
+      ],
+      "additionalProperties": true
+    },
+    "style_guide": {
+      "type": "object",
+      "properties": {
+        "tags": {
+          "type": "object",
+          "properties": {
+            "audience_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "motivation_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "scenario_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "audience_id",
+            "motivation_id",
+            "scenario_id"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "tags"
+      ],
+      "additionalProperties": true
+    },
+    "protected_content": {
+      "type": "object",
+      "properties": {
+        "product_identity": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "product_quantity": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "brand_and_logo": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "price_and_unit": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "promotion_and_period": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "selling_points": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cta": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "legal_text": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "product_identity",
+        "product_quantity",
+        "brand_and_logo",
+        "price_and_unit",
+        "promotion_and_period",
+        "selling_points",
+        "cta",
+        "legal_text"
+      ],
+      "additionalProperties": false
+    },
+    "evaluation_context": {
+      "type": "object",
+      "properties": {
+        "product_img": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scene_tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "theme": {
+          "type": "string"
+        },
+        "required_information": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "brand_requirements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "aspect_ratio": {
+          "type": "string"
+        },
+        "orientation": {
+          "enum": [
+            "vertical",
+            "horizontal",
+            "square"
+          ]
+        }
+      },
+      "required": [
+        "product_img",
+        "scene_tags",
+        "theme",
+        "required_information",
+        "brand_requirements",
+        "aspect_ratio",
+        "orientation"
+      ],
+      "additionalProperties": false
+    },
+    "loop_state": {
+      "type": "object",
+      "properties": {
+        "iteration": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "version_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "locked_dimensions": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "product_recognition",
+              "benefit_clarity",
+              "offer_visibility",
+              "population_scene_fit",
+              "purchase_drive"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "previous_result": {
+          "type": [
+            "object",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "iteration",
+        "version_id",
+        "locked_dimensions",
+        "previous_result"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "request_id",
+    "poster_image",
+    "source_input",
+    "style_guide",
+    "protected_content",
+    "evaluation_context",
+    "loop_state"
+  ],
+  "additionalProperties": false
+}

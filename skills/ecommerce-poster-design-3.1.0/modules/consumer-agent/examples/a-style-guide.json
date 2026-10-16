@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "taxonomy_version": "demo-1.0",
+  "asset_version": "demo-1.0",
+  "request_id": "TEST-VALID-001",
+  "tags": {
+    "audience_id": "P01",
+    "motivation_id": "M01",
+    "scenario_id": "S01"
+  },
+  "classification_evidence": [
+    "输入指定年轻人日常通勤场景",
+    "79 元大众价格与轻量、防漏、保温卖点体现实用价值"
+  ],
+  "confidence": {
+    "audience": 0.84,
+    "motivation": 0.88,
+    "scenario": 0.95
+  },
+  "source_rule_ids": ["R-001"],
+  "source_case_ids": ["C-DEMO-001"],
+  "fallback_level": "exact",
+  "palette": [
+    {"role": "background", "name": "浅灰白", "hex": "#F5F6F8"},
+    {"role": "accent", "name": "明黄", "hex": "#FFC928"},
+    {"role": "text", "name": "深灰", "hex": "#222222"}
+  ],
+  "typography": {
+    "headline_character": "直接醒目",
+    "body_character": "简洁易读"
+  },
+  "layout": {
+    "composition": "商品居中，价格与卖点分层排列",
+    "product_ratio": 0.6,
+    "information_hierarchy": ["商品", "核心卖点", "价格", "行动提示"]
+  },
+  "info_density": 3,
+  "promotion_intensity": 4,
+  "cta_guidance": "行动提示清晰但不过度夸张",
+  "prohibited_styles": ["文字密集堆叠", "低对比度价格", "装饰遮挡商品"],
+  "warnings": ["当前 C 分类资产为 demo-only，不得作为市场证据"]
+}

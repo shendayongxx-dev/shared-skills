@@ -1,0 +1,67 @@
+{
+  "schema_version": "2.0.0",
+  "taxonomy_version": "1.0",
+  "case_id": "C-077",
+  "title": "官方血压血糖评估心电健康智能手环通话老人高精度监测睡眠血脂氧脏三高心率手表父母亲妈妈礼物",
+  "tags": {
+    "audience_id": "P06",
+    "motivation_id": "M06",
+    "scenario_id": "S06"
+  },
+  "rule_ids": [],
+  "is_seed": false,
+  "asset": {
+    "storage_type": "external_research_reference",
+    "local_path": null,
+    "internal_asset_uri": null,
+    "external_image_url": "https://img.alicdn.com/imgextra/i2/2215206600638/O1CN01t9Bucx1GaFpQkAqef_!!2215206600638-0-alimamacc.jpg",
+    "mime_type": null,
+    "format": null,
+    "width": null,
+    "height": null,
+    "bytes": null,
+    "checksum": null,
+    "public_repository_allowed": false
+  },
+  "source": {
+    "platform": "天猫",
+    "publisher_or_shop": null,
+    "url": "https://detail.tmall.com/item.htm?id=817833383597&skuId=5521278169229",
+    "collected_at": "2026-10-02",
+    "usage_status": "research_reference_only"
+  },
+  "rights": {
+    "rights_status": "third_party_unverified",
+    "rights_proof_ref": null,
+    "redistribution_status": "prohibited_public_redistribution",
+    "scope": "仅限研究参考；不得作为正式种子或公开再分发。",
+    "expires_at": null
+  },
+  "style_analysis": {
+    "text_signals": "老人智能手环、血压血糖评估、心电健康、睡眠监测、蓝牙通话、父母礼物",
+    "primary_information_focus": "核心功能",
+    "palette_sets_text": "色板A：背景#8CC8F3、辅助#DCEEFF、强调#E3212B、正文#202735、材质#252A30；色板B：背景#F3F6F8、辅助#B9D4E8、强调#D94235、正文#26313A、材质#4A4F55",
+    "typography": "高识别粗黑体，健康指标与关键功能使用大字；辅助说明保持短句",
+    "composition": "手环大角度居中，功能大字作为背景层；价格和赠品形成底部促销区，颜色款式沿底部排列",
+    "product_ratio": 0.55,
+    "info_density": 5,
+    "promotion_intensity": 5,
+    "visual_tags": "健康监测、银发关怀、智能穿戴、强功能、礼赠促销",
+    "why_effective": "大主体和高对比功能词能快速传达适老健康用途，底部价格与赠品信息形成明确转化入口。",
+    "prohibited_styles": "禁止宣称医疗诊断或治疗效果、伪造监测精度、血压血糖大字压过商品、信息无分组和低对比小字"
+  },
+  "why_effective": "大主体和高对比功能词能快速传达适老健康用途，底部价格与赠品信息形成明确转化入口。",
+  "content_review": {
+    "content_review_status": "reviewed",
+    "reviewer_role": "C组内容标注复核",
+    "reviewed_at": "2026-10-02T12:00:00+08:00",
+    "note": "仅确认分类标签与视觉分析字段已复核，不代表生产授权或资产门禁通过。",
+    "evidence_ref": "cases/case-index.csv"
+  },
+  "review": {
+    "review_status": "draft",
+    "reviewer": null,
+    "reviewed_at": null,
+    "note": "等待项目负责人完成权利、资产可读性与checksum生产审核。"
+  }
+}

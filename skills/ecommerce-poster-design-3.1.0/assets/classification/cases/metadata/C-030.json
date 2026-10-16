@@ -1,0 +1,84 @@
+{
+  "schema_version": "2.0.0",
+  "taxonomy_version": "1.0",
+  "case_id": "C-030",
+  "title": "膳魔师JNL-403保温杯",
+  "tags": {
+    "audience_id": "P02",
+    "motivation_id": "M03",
+    "scenario_id": "S03"
+  },
+  "rule_ids": [
+    "R-001",
+    "R-101",
+    "R-203"
+  ],
+  "is_seed": true,
+  "asset": {
+    "storage_type": "external_reference_pinned",
+    "local_path": null,
+    "internal_asset_uri": "seedref://ecommerce-poster-design/1.0/C-030.jpg",
+    "external_image_url": "https://img13.360buyimg.com/n1/jfs/t1/523217/23/7647/46122/6aab979eF7ad6bd01/0083320320d93d4a.jpg",
+    "mime_type": "image/jpeg",
+    "format": "jpg",
+    "width": 350,
+    "height": 350,
+    "bytes": 31241,
+    "checksum": "sha256:911f44bcff2bf10e7a05042622c3888a26e3637a7f1cf25b4a592ca5944a52c4",
+    "public_repository_allowed": false
+  },
+  "source": {
+    "platform": "京东",
+    "publisher_or_shop": null,
+    "url": "https://item.jd.com/product/hxeEvUBCkL80TvdlNB9SPg.html",
+    "collected_at": "2026-10-02",
+    "usage_status": "internal_reference_seed"
+  },
+  "rights": {
+    "rights_status": "internal_reference_authorized",
+    "rights_proof_ref": "AUTH-SEED-1.0-001",
+    "redistribution_status": "prohibited_public_redistribution",
+    "scope": "仅限本项目内部分类、检索、风格分析、生成参考与测试；不得公开再分发，不代表项目取得图片版权。",
+    "expires_at": null
+  },
+  "style_analysis": {
+    "text_signals": "膳魔师JNL-403保温杯；职场通勤人群；品质信任；通勤车载",
+    "primary_information_focus": "品质证据",
+    "palette_sets_text": "背景#F7F7F5/#FFFFFF；辅助#D9E2E8；强调#2F6B5F/#1E6FB8；正文#222222；材质#B8A58A",
+    "typography": "稳健无衬线；证据与参数高可读",
+    "composition": "商品完整展示，材质或品质证据邻近主体；补充便携或车内使用线索",
+    "product_ratio": 0.52,
+    "info_density": 3,
+    "promotion_intensity": 3,
+    "visual_tags": "职场通勤人群、品质信任、通勤车载、商品主体清晰、信息分层",
+    "why_effective": "商品、核心利益点与场景线索层级明确，便于快速识别并支持对应购买决策。",
+    "prohibited_styles": "避免伪造认证、夸大证据、材质失真和说明小字不可读。"
+  },
+  "why_effective": "商品、核心利益点与场景线索层级明确，便于快速识别并支持对应购买决策。",
+  "content_review": {
+    "content_review_status": "reviewed",
+    "reviewer_role": "C组内容标注复核",
+    "reviewed_at": "2026-10-02T12:00:00+08:00",
+    "note": "仅确认分类标签与视觉分析字段已复核，不代表生产授权或资产门禁通过。",
+    "evidence_ref": "cases/case-index.csv"
+  },
+  "review": {
+    "review_status": "approved",
+    "reviewer": "C_group + project_owner + A_group",
+    "reviewed_at": "2026-10-04T00:00:00+08:00",
+    "note": "C 已完成内容复核；项目负责人批准第三方照片作为内部种子参考；A 已下载核验文件并记录 SHA-256。"
+  },
+  "rights_review": {
+    "status": "approved_for_internal_reference",
+    "reviewer_role": "project_owner",
+    "reviewed_at": "2026-10-04T00:00:00+08:00",
+    "evidence_ref": "AUTH-SEED-1.0-001"
+  },
+  "technical_review": {
+    "status": "approved",
+    "reviewer_role": "A_group",
+    "reviewed_at": "2026-10-04T00:00:00+08:00",
+    "checksum": "sha256:911f44bcff2bf10e7a05042622c3888a26e3637a7f1cf25b4a592ca5944a52c4",
+    "asset_verification": "downloaded_and_visually_checked"
+  }
+}

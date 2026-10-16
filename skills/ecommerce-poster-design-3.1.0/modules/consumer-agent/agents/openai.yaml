@@ -1,0 +1,4 @@
+interface:
+  display_name: "02消费者Agent-skill"
+  short_description: "按锁定P-M-S视角评估海报并返回统一JSON"
+  default_prompt: "Use $02-consumer-agent-skill to evaluate this e-commerce poster and return the fixed A-D JSON only."
