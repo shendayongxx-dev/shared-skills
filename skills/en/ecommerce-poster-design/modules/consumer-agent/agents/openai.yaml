@@ -1,0 +1,4 @@
+interface:
+  display_name: "02 Consumer Agent Skill"
+  short_description: "Evaluate posters through locked P-M-S lenses and return the fixed JSON"
+  default_prompt: "Use $02-consumer-agent-skill to evaluate this ecommerce poster and return the fixed A-D JSON only."

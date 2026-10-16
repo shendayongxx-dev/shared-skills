@@ -1,44 +1,47 @@
-# shared-skills
+# ecommerce-poster-design 3.1.0-rc.7 Chinese/English editions
 
-用于共享、版本迭代和协作维护 Codex Skills。
+This repository contains the frozen Chinese and English operational-instruction editions of `ecommerce-poster-design` 3.1.0-rc.7.
 
-## 当前主线
+The two editions implement the same poster-generation workflow, contracts, modules, thresholds, gates, redraw budget, and stopping conditions. The language of a Skill's operating instructions does not determine the poster-copy language. Poster language continues to be selected by `canvas.language` and the user-approved protected copy.
 
-`main` 只保留当前版本 `ecommerce-poster-design 3.1.0-rc.7`：
+“Chinese/English editions” refers only to the language of the Skill operating instructions. It does not add a bilingual-poster mode and does not restrict the English-instruction edition to English posters. The frozen rc.7 contract supports one selected poster language per request: Chinese or English.
 
-- Skill：`skills/ecommerce-poster-design-3.1.0/`
-- 测试：`tests/ecommerce-poster-design-3.1.0/`
-- 固定发布：`ecommerce-poster-design-v3.1.0-rc.7`
+## Repository layout
 
-3.1.0-rc.7 的流程为：`输入校验与画布归一化 → 分类与 Style Guide → Logo 预检 → 商品、场景与文字布局联合生成/编辑 → 确定性贴放独立 Logo → Logo 合成验证 → 硬性合规 → 消费者 Agent → 美学 Agent → 最终质量仲裁 → 完成或统一预算内迭代`。ImageGen 仅由整体 Skill 调用，消费者和美学 Agent 都不直接生成图片。
+```text
+skills/
+  zh/ecommerce-poster-design/   Frozen Chinese operational instructions
+  en/ecommerce-poster-design/   Frozen English operational instructions
+docs/                           Freeze records and equivalence audit
+tools/                          Deterministic validation entry points
+dist/
+  zh/                           Packaged Chinese Skill
+  en/                           Packaged English Skill
+RELEASE-MANIFEST.json           Release identity and package checksums
+```
 
-本版完整继承 rc.5 的画布、Logo、消费者、美学、最终质量门和统一预算，只新增一项制作约束：无 Logo 底图必须是除独立 Logo 外已经完成的海报，禁止先生成空背景再机械后贴商品和整套文字；最终质量门用 `PRODUCT_SCENE_COMPOSITE_ARTIFACT` 拦截商品与场景的可见融合断层。
+## Release identity
 
-## 历史版本
+- Skill: `ecommerce-poster-design`
+- Version: `3.1.0-rc.7`
+- Upstream frozen commit: `c6e3eb80ee2b55ce887ff47b8d03a7766c4a9a05`
+- Upstream tag: `ecommerce-poster-design-v3.1.0-rc.7`
+- Consumer Agent: `1.5.3`
+- Aesthetic Agent: `3.0.0-rc.5`
+- C-library assets: `2.0.1-a.1`
 
-历史版本不继续堆放在 `main`，通过不可变 Tag 获取：
+## Validate
 
-| 版本 | Tag |
-|---|---|
-| 1.0.0 | `ecommerce-poster-design-v1.0.0` |
-| 1.0.0-imagegen.1 | `ecommerce-poster-design-v1.0.0-imagegen.1` |
-| 2.0.1 | `ecommerce-poster-design-v2.0.1` |
-| 3.0.0 | `ecommerce-poster-design-v3.0.0` |
-| 3.0.0 rebuilt rc4 | `ecommerce-poster-design-v3.0.0-rebuilt-rc4` |
-| 3.1.0-rc.3 | `ecommerce-poster-design-v3.1.0-rc.3` |
-| 3.1.0-rc.4 | `ecommerce-poster-design-v3.1.0-rc.4` |
-| 3.1.0-rc.5 | `ecommerce-poster-design-v3.1.0-rc.5` |
+From the repository root on Windows PowerShell:
 
-已有历史分支和 Tag 保持原指向，不重写、不移动。安装和迭代规则见 [INSTALL.md](INSTALL.md) 与 [VERSIONS.md](VERSIONS.md)。
+```powershell
+./tools/validate_release.ps1
+```
 
-## 版本迭代规则
+The validation entry point checks both inventories, JSON and Python syntax, Markdown links, Chinese/English poster-language flow equivalence, classification assets, routing, scoring, final-quality contracts, and the rc.7 Logo pipeline.
 
-1. 从最新 `main` 创建 `feature/<version>` 或 `fix/<version>-<topic>` 分支。
-2. 在分支完成实现、测试和版本文档。
-3. 通过 Pull Request 合并回 `main`；`main` 只保留最新完整版本目录。
-4. 合并后创建新的带注释 Tag；已发布 Tag 永不移动。
-5. 旧版本从对应 Tag 安装和回退，不在 `main` 复制保存。
+## Frozen-release policy
 
-第三方参考图片、用户商品图、Logo、生成结果和凭据不得提交到仓库。
+Do not edit either directory under `skills/` in place. Create a new candidate or version for future changes. Translation-only differences are documented in [docs/EDITION-EQUIVALENCE-AUDIT.md](docs/EDITION-EQUIVALENCE-AUDIT.md).
 
-发布前运行 `python scripts/validate_release_lock.py .`。该检查同时验证当前版本指针和 Skill 目录树哈希，防止文档、安装包与实际代码发生版本漂移。
+The repository intentionally retains multilingual JSON/CSV fixtures and classification records in both editions. They are test/reference data, not untranslated operating instructions.

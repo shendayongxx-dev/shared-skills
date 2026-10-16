@@ -1,0 +1,25 @@
+{
+  "skill": "ecommerce-poster-design",
+  "version": "3.1.0-rc.7",
+  "upstream_commit": "c6e3eb80ee2b55ce887ff47b8d03a7766c4a9a05",
+  "upstream_tag": "ecommerce-poster-design-v3.1.0-rc.7",
+  "freeze_date": "2026-10-16",
+  "editions": {
+    "zh": {
+      "path": "skills/zh/ecommerce-poster-design",
+      "instruction_language": "zh-CN",
+      "file_count": 188,
+      "package": "dist/zh/ecommerce-poster-design.skill",
+      "package_sha256": "6D31B57CECA96A461EBD5DDBCB6FAD6E2314F7796FE803D5770C2ED6AAECA86F"
+    },
+    "en": {
+      "path": "skills/en/ecommerce-poster-design",
+      "instruction_language": "en",
+      "file_count": 188,
+      "package": "dist/en/ecommerce-poster-design.skill",
+      "package_sha256": "53FD1F87EC54374C1D0A8D5B1E1C0FCAE00563293430F60E8A02614A856EAEC0"
+    }
+  },
+  "poster_language_contract": "Instruction language is independent of poster language. Each request selects one poster language through canvas.language: Chinese or English; bilingual poster output is not supported by frozen rc.7.",
+  "equivalence_audit": "docs/EDITION-EQUIVALENCE-AUDIT.md"
+}

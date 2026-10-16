@@ -1,0 +1,7 @@
+# Five-Dimension 100-Point Rubric
+
+Version 1.5.3: the model supplies levels/evidence for the 25 IDs in `assets/rubric.json`; deterministic code calculates scores. Read `subcriteria-anchors.md` and `candidate-boundaries.md`. General levels are 0 missing/wrong, 1 clear obstacle, 2 partial, 3 clearly satisfies, 4 strong with the specified visible enhancement. Contribution is `weight × level / 4`; round each dimension with ROUND_HALF_UP and sum five dimensions.
+
+D1 product/brand recognition: clarity 5, salience 5, brand 4, key features 3, category/use 3. D2 benefit persuasion: required selling points 4, comprehension 4, benefit translation 5, supported facts 4, M/S relevance 3. D3 offer: price accuracy 5, discoverability 5, period/conditions 4, CTA 3, transaction reading order 3. D4 P-M-S fit: P reception 5, M response 5, S real relation 5, overall consistency 3, no mismatch 2. D5 trust/action: no overclaim 5, understandable evidence 4, brand reliability 3, concern response 4, authentic action reason 4.
+
+P changes observable reception thresholds, M changes evidence priority, and S changes use relation; never stereotype. Assign one primary dimension per defect to avoid duplicate deductions. For non-promotional tasks, mark eligible D3 items N/A only when corresponding fields are empty and the brief explicitly does not require them; renormalize applicable D3 weights to 20. Do not reward absent price or penalize price not requested. Thresholds 80/14 are engineering defaults requiring human calibration; unlabelled cases do not establish pass ranges.

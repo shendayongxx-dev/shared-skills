@@ -1,0 +1,3 @@
+# 02 Consumer Agent Skill
+
+Read `SKILL.md` and execute A-D-2.0 consumer evaluation. Read the complete brief from `source_input`; inherit P-M-S from `style_guide`, allowing null values. Return all eight `protected_content` groups unchanged. Each of five dimensions is worth 20 points for a total of 100. Approval requires total ≥80, every dimension ≥14, no `hard_fail`, and no locked-dimension regression. A manages iteration and agent switches; D returns one JSON object only. Treat `assets/schemas` and `references/integration.md` as the contract. Do not use the legacy seven-field or 0–10 scoring format.

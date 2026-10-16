@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "source_schema_version": "2.0.0",
+  "taxonomy_version": "1.0",
+  "asset_version": "2.0.1",
+  "tags": {
+    "audience_id": "P02",
+    "motivation_id": "M03",
+    "scenario_id": "S03"
+  },
+  "classification_evidence": [
+    "沿用测试包标签；原Brief同时允许短途出行，评估不能仅凭户外背景判违规"
+  ],
+  "source_case_ids": [],
+  "needs_human_review": false
+}

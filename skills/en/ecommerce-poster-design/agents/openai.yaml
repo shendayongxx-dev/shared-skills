@@ -1,0 +1,7 @@
+interface:
+  display_name: "Ecommerce Marketing Key Visual Design"
+  short_description: "Generate ecommerce key visuals with hard-compliance, consumer, and aesthetic gates"
+  default_prompt: "Use $ecommerce-poster-design to generate an ecommerce marketing poster, then run hard-compliance, consumer, deterministic aesthetic, and final-quality gates with bounded full-pipeline iteration."
+
+policy:
+  allow_implicit_invocation: true

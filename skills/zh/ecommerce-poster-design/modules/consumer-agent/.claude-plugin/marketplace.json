@@ -1,0 +1,5 @@
+{
+  "name": "02-consumer-agent-skill",
+  "owner": {"name": "xyu"},
+  "plugins": [{"name": "02-consumer-agent-skill", "source": "./", "description": "Consumer-facing poster evaluation with 25 subcriteria, deterministic 0–100 scoring and the A-D-2.0 JSON contract."}]
+}
