@@ -38,13 +38,13 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: "22"
       - name: Install pinned logo pipeline dependency
@@ -63,17 +63,20 @@ jobs:
           node "$root/scripts/test_logo_asset_pipeline.mjs" "$GITHUB_WORKSPACE/node_modules/sharp"
 
   validate_v3_1_0_rc_3:
+    # The experiment branch has its own validator above. Running the canonical
+    # release job against an intentionally modified ablation tree is invalid.
+    if: github.ref_name != 'experiment/ecommerce-poster-design-3.1.0-rc.3-ablation-no-aesthetic'
     # Pin the runner so native image dependencies do not drift with ubuntu-latest.
     runs-on: ubuntu-24.04
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: "22"
       - name: Install pinned logo pipeline dependency
