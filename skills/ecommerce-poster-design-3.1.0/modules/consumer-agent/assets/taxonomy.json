@@ -1,0 +1,29 @@
+{
+  "version": "1.1.0",
+  "tag_order": ["population", "motivation", "usage_scene"],
+  "populations": [
+    {"id": "P01", "name": "青年学生与潮流新人", "focus": "新鲜感、颜值、价格可接受、社交表达"},
+    {"id": "P02", "name": "职场通勤人群", "focus": "效率、便捷、品质、体面、可靠"},
+    {"id": "P03", "name": "家庭育儿人群", "focus": "安全、健康、耐用、省心、适合全家"},
+    {"id": "P04", "name": "成熟品质人群", "focus": "材质、工艺、品牌可信度、体验、服务与耐久性"},
+    {"id": "P05", "name": "大众务实人群", "focus": "价格、实用功能、耐用程度、优惠是否清楚"},
+    {"id": "P06", "name": "银发健康人群", "focus": "安全、健康、舒适、可信、售后和易用性"}
+  ],
+  "motivations": [
+    {"id": "M01", "name": "价格收益", "focus": "价格优惠与获得的数量或权益"},
+    {"id": "M02", "name": "功能效率", "focus": "核心功能与使用结果"},
+    {"id": "M03", "name": "品质信任", "focus": "商品主体与可信证据"},
+    {"id": "M04", "name": "专业性能", "focus": "关键性能参数与专业使用场景"},
+    {"id": "M05", "name": "审美悦己", "focus": "商品外观与整体氛围"},
+    {"id": "M06", "name": "情感礼赠", "focus": "礼赠对象、情感主题与商品价值"}
+  ],
+  "usage_scenes": [
+    {"id": "S01", "name": "居家生活", "focus": "商品与家庭内部实际使用位置和动作的联系"},
+    {"id": "S02", "name": "工作学习", "focus": "效率、专业和任务型环境中的商品关系"},
+    {"id": "S03", "name": "通勤车载", "focus": "移动过程、便携尺寸和即时使用"},
+    {"id": "S04", "name": "户外运动旅行", "focus": "主动型户外体验、轻便、耐用和环境适应"},
+    {"id": "S05", "name": "休闲社交", "focus": "情绪、分享感和商品的社交存在"},
+    {"id": "S06", "name": "节庆礼赠", "focus": "节庆或正式赠礼语境、对象和礼赠价值"}
+  ],
+  "rule": "The upstream P-M-S labels are locked. The consumer agent validates and applies them but never reclassifies them."
+}

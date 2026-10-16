@@ -1,0 +1,5 @@
+{
+  "name": "02-consumer-agent-skill",
+  "version": "1.5.3",
+  "description": "Evaluate e-commerce posters with locked P-M-S tags using 25 evidence-based subcriteria and deterministic 0–100 scoring; return A-D-2.0 JSON with eight-group protected content and regression locks."
+}

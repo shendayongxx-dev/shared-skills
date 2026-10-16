@@ -1,0 +1,7 @@
+interface:
+  display_name: "电商营销主视觉设计"
+  short_description: "生成电商主视觉，并执行硬合规、消费者和美学三重门禁"
+  default_prompt: "Use $ecommerce-poster-design to generate an ecommerce marketing poster, then run hard-compliance, consumer, and deterministic aesthetic gates with bounded full-pipeline iteration."
+
+policy:
+  allow_implicit_invocation: true
