@@ -71,7 +71,7 @@ export async function prepareLogoAsset({ input, output, manifest, longEdge = 204
   }
 
   const sharp = loadSharp(sharpModule);
-  const sharpPkg = require(path.join(sharpModule || process.env.SHARP_MODULE_PATH || "sharp", "package.json"));
+  const sharpVersion = sharp.versions?.sharp ?? "unknown";
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
   fs.mkdirSync(path.dirname(manifestPath), { recursive: true });
 
@@ -125,7 +125,7 @@ export async function prepareLogoAsset({ input, output, manifest, longEdge = 204
       recolor: false,
       crop: false,
       renderer: "sharp",
-      renderer_version: sharpPkg.version
+      renderer_version: sharpVersion
     },
     safety_checks: {
       active_content_absent: true,

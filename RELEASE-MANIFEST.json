@@ -10,14 +10,14 @@
       "instruction_language": "zh-CN",
       "file_count": 188,
       "package": "dist/zh/ecommerce-poster-design.skill",
-      "package_sha256": "6D31B57CECA96A461EBD5DDBCB6FAD6E2314F7796FE803D5770C2ED6AAECA86F"
+      "package_sha256": "26C4FA3F1220C8976EE26158F5CFEFFF236E61054CBF1CCE2CFFC8CDBBFD7DC2"
     },
     "en": {
       "path": "skills/en/ecommerce-poster-design",
       "instruction_language": "en",
       "file_count": 188,
       "package": "dist/en/ecommerce-poster-design.skill",
-      "package_sha256": "53FD1F87EC54374C1D0A8D5B1E1C0FCAE00563293430F60E8A02614A856EAEC0"
+      "package_sha256": "D7149BC6D3E37FF12271AA986E83BB2BEB659F39EC52D7F4497F9CC41E02F98A"
     }
   },
   "poster_language_contract": "Instruction language is independent of poster language. Each request selects one poster language through canvas.language: Chinese or English; bilingual poster output is not supported by frozen rc.7.",

@@ -1,0 +1,110 @@
+name: Validate ecommerce poster skill
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "skills/**"
+      - "tools/**"
+      - "dist/**"
+      - "docs/**"
+      - "README.md"
+      - "RELEASE-MANIFEST.json"
+      - ".github/workflows/validate-ecommerce-poster.yml"
+  pull_request:
+    paths:
+      - "skills/**"
+      - "tools/**"
+      - "dist/**"
+      - "docs/**"
+      - "README.md"
+      - "RELEASE-MANIFEST.json"
+      - ".github/workflows/validate-ecommerce-poster.yml"
+  workflow_dispatch:
+
+jobs:
+  validate_zh_en_rc_7:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+
+      - name: Install pinned logo pipeline dependency
+        run: npm install --no-save --ignore-scripts=false sharp@0.35.5
+
+      - name: Validate edition structure and equivalence
+        run: |
+          python tools/validate_english_release.py
+          python tools/validate_edition_equivalence.py
+
+      - name: Validate both Skill editions
+        shell: bash
+        run: |
+          set -euo pipefail
+          for edition in zh en; do
+            root="$GITHUB_WORKSPACE/skills/$edition/ecommerce-poster-design"
+            (
+              cd "$root"
+              python scripts/validate_classification.py assets/classification
+              python scripts/test_canvas_normalization.py
+              python scripts/test_consumer_routing.py
+              python scripts/test_aesthetic_integration.py
+              python scripts/test_final_quality_routing.py
+              python scripts/test_logo_verification.py
+              python scripts/validate_consumer_integration.py
+              python scripts/validate_aesthetic_integration.py
+              python scripts/validate_final_quality_integration.py
+              python scripts/validate_logo_pipeline.py
+              python modules/aesthetic-agent/tests/test_score_evaluation.py
+              python modules/consumer-agent/scripts/run_evals.py
+              node --test scripts/test_logo_asset_pipeline.mjs
+            )
+          done
+
+      - name: Verify packaged Skill checksums
+        shell: python
+        run: |
+          import hashlib
+          import json
+          from pathlib import Path
+
+          repo = Path.cwd()
+          manifest = json.loads((repo / "RELEASE-MANIFEST.json").read_text(encoding="utf-8"))
+          for edition in ("zh", "en"):
+              entry = manifest["editions"][edition]
+              package = repo / entry["package"]
+              actual = hashlib.sha256(package.read_bytes()).hexdigest().upper()
+              assert actual == entry["package_sha256"], (edition, actual, entry["package_sha256"])
+
+      - name: Enforce ImageGen ownership boundary
+        shell: python
+        run: |
+          from pathlib import Path
+
+          hits = []
+          for edition in ("zh", "en"):
+              root = Path("skills") / edition / "ecommerce-poster-design"
+              runtime_roots = [
+                  root / "modules" / "consumer-agent",
+                  root / "modules" / "aesthetic-agent" / "scripts",
+                  root / "modules" / "aesthetic-agent" / "agents",
+              ]
+              for runtime_root in runtime_roots:
+                  for path in runtime_root.rglob("*"):
+                      if path.is_file():
+                          text = path.read_text(encoding="utf-8", errors="ignore").lower()
+                          if "imagegen" in text or "image_gen" in text:
+                              hits.append(str(path))
+              skill_text = (root / "SKILL.md").read_text(encoding="utf-8").lower()
+              assert "imagegen" in skill_text and "image_gen" in skill_text
+          assert not hits, "Agents must not call ImageGen directly: " + ", ".join(hits)
