@@ -177,6 +177,25 @@ class FinalQualityRoutingTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "LOGO_BACKGROUND_ARTIFACT must be moderate or higher"):
             self.route(review(self.candidate, defects=[item]))
 
+    def test_product_scene_composite_artifact_requires_moderate_or_higher(self):
+        item = defect("minor", code="PRODUCT_SCENE_COMPOSITE_ARTIFACT", region="商品底部与台面接触区")
+        item["category"] = "finish"
+        item["observation"] = "商品底部没有接触阴影，边缘色温与背景相反，呈现可定位的后贴断层"
+        item["required_action"] = "以原商品图为参考局部重建接触阴影、环境色和边缘融合"
+        item["editable_objects"] = ["商品边缘融合", "接触阴影", "局部环境反射"]
+        with self.assertRaisesRegex(ValueError, "PRODUCT_SCENE_COMPOSITE_ARTIFACT must be moderate or higher"):
+            self.route(review(self.candidate, defects=[item]))
+
+    def test_product_scene_composite_artifact_creates_local_edit_contract(self):
+        item = defect("moderate", code="PRODUCT_SCENE_COMPOSITE_ARTIFACT", region="商品底部与台面接触区")
+        item["category"] = "finish"
+        item["observation"] = "商品底部没有接触阴影，边缘色温与背景相反，呈现可定位的后贴断层"
+        item["required_action"] = "以原商品图为参考局部重建接触阴影、环境色和边缘融合"
+        item["editable_objects"] = ["商品边缘融合", "接触阴影", "局部环境反射"]
+        routed = self.route(review(self.candidate, defects=[item]), attempts=1)
+        self.assertEqual(routed["action"], "regenerate_then_full_pipeline")
+        self.assertEqual(routed["generation_edit_contract"]["editable_regions"], ["商品底部与台面接触区"])
+
     def test_missing_logo_must_be_critical(self):
         item = defect("severe", code="LOGO_MISSING", region="顶部品牌区")
         item["category"] = "brand"

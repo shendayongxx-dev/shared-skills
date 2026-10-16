@@ -26,13 +26,14 @@ ALLOWED_CODES = {
     "COMPETING_FOCAL_POINTS", "PRODUCT_TOO_SMALL", "PRODUCT_OCCLUDED", "PRODUCT_FLOATING",
     "PRODUCT_DISTORTED", "QUANTITY_AMBIGUOUS", "TEXT_DENSITY_HIGH", "ALIGNMENT_INCONSISTENT",
     "TEXT_OVERLAP", "LOGO_MISSING", "LOGO_INCORRECT", "LOGO_BACKGROUND_ARTIFACT",
-    "LOGO_EDGE_HALO", "LOGO_CONTRAST_LOW", "LOGO_FLOATING",
+    "LOGO_EDGE_HALO", "LOGO_CONTRAST_LOW", "LOGO_FLOATING", "PRODUCT_SCENE_COMPOSITE_ARTIFACT",
     "TYPE_STYLE_CONFLICT", "PRICE_HIERARCHY_WEAK", "CTA_HIERARCHY_WEAK", "SAFE_MARGIN_WEAK",
     "COLOR_CONTRAST_LOW", "DECORATION_OVERLOAD", "SCENE_PRODUCT_MISMATCH", "GENERIC_TEMPLATE_LOOK",
     "LIGHTING_CONFLICT", "MATERIAL_ARTIFICIAL", "AI_ARTIFACT", "OTHER_VISIBLE_DEFECT",
 }
 ALLOWED_CATEGORIES = {"product", "brand", "hierarchy", "typography", "color_scene", "finish"}
 LOGO_MODERATE_CODES = {"LOGO_BACKGROUND_ARTIFACT", "LOGO_EDGE_HALO", "LOGO_CONTRAST_LOW", "LOGO_FLOATING"}
+INTEGRATION_MODERATE_CODES = {"PRODUCT_SCENE_COMPOSITE_ARTIFACT"}
 LOGO_CRITICAL_CODES = {"LOGO_MISSING", "LOGO_INCORRECT"}
 
 
@@ -133,6 +134,8 @@ def validate_review(review, candidate):
                 "TEXT_OVERLAP must be moderate or higher")
         require(defect["code"] not in LOGO_MODERATE_CODES or defect["severity"] in MAJOR_SEVERITIES,
                 f'{defect["code"]} must be moderate or higher')
+        require(defect["code"] not in INTEGRATION_MODERATE_CODES or defect["severity"] in MAJOR_SEVERITIES,
+                f'{defect["code"]} must be moderate or higher')
         require(defect["code"] not in LOGO_CRITICAL_CODES or defect["severity"] == "critical",
                 f'{defect["code"]} must be critical')
         require(all(nonempty(defect[key]) for key in ("region", "observation", "required_action")), "defect needs region, observation and required action")
@@ -202,7 +205,7 @@ def route_result(review, consumer, consumer_details, aesthetic, aesthetic_detail
     require(type(redraw_attempts) is int and redraw_attempts >= 0, "redraw_attempts must be a nonnegative integer")
     candidate = validate_upstream(consumer, consumer_details, aesthetic, aesthetic_details, workflow)
     validate_review(review, candidate)
-    require(version.get("skill_version") == "3.1.0-rc.5" and version.get("workflow_version") == "3.1", "final quality gate requires Skill 3.1.0-rc.5")
+    require(version.get("skill_version") == "3.1.0-rc.6" and version.get("workflow_version") == "3.1", "final quality gate requires Skill 3.1.0-rc.6")
     require(version.get("feature_flags", {}).get("final_quality_gate") is True, "final quality gate feature flag is disabled")
     gate = version.get("final_quality_gate") or {}
     require(gate.get("schema_version") == "FINAL-QUALITY-3.2" and gate.get("mode") == "defect_based_no_score", "invalid final quality configuration")

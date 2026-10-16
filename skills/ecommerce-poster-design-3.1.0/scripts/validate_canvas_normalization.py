@@ -34,7 +34,7 @@ def main():
         },
     })
     checks = {
-        "skill_version": version.get("skill_version") == "3.1.0-rc.5",
+        "skill_version": version.get("skill_version") == "3.1.0-rc.6",
         "pixels_optional": config.get("exact_pixel_dimensions_optional") is True,
         "short_edge": config.get("default_short_edge") == 1080,
         "derive_orientation": config.get("derive_orientation_from_aspect_ratio") is True,

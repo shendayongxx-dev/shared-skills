@@ -4,15 +4,15 @@
 
 ## 当前主线
 
-`main` 只保留当前版本 `ecommerce-poster-design 3.1.0-rc.5`：
+`main` 只保留当前版本 `ecommerce-poster-design 3.1.0-rc.6`：
 
 - Skill：`skills/ecommerce-poster-design-3.1.0/`
 - 测试：`tests/ecommerce-poster-design-3.1.0/`
-- 固定发布：`ecommerce-poster-design-v3.1.0-rc.5`
+- 固定发布：`ecommerce-poster-design-v3.1.0-rc.6`
 
-3.1.0-rc.5 的流程为：`输入校验与画布归一化 → 分类与 Style Guide → Logo 预检 → 生成无 Logo 底图 → 确定性贴放 → Logo 合成验证 → 硬性合规 → 消费者 Agent → 美学 Agent → 最终质量仲裁 → 完成或统一预算内迭代`。ImageGen 仅由整体 Skill 调用，消费者和美学 Agent 都不直接生成图片。
+3.1.0-rc.6 的流程为：`输入校验与画布归一化 → 分类与 Style Guide → Logo 预检 → 商品、场景与文字布局联合生成/编辑 → 确定性贴放独立 Logo → Logo 合成验证 → 硬性合规 → 消费者 Agent → 美学 Agent → 最终质量仲裁 → 完成或统一预算内迭代`。ImageGen 仅由整体 Skill 调用，消费者和美学 Agent 都不直接生成图片。
 
-本版继承 rc.4 的确定性画布归一化，并把 Logo 贴放改为不可绕过的候选状态门：底图不能进入评价或交付，最终候选必须绑定合成输出哈希；最终质量门新增 Logo 缺失、错误、矩形底色、边缘光晕、低对比和悬浮检查。美学模块升级为 3.0.0-rc.5，仅补强 Logo 视觉整合观察，不改变六维权重。
+本版完整继承 rc.5 的画布、Logo、消费者、美学、最终质量门和统一预算，只新增一项制作约束：无 Logo 底图必须是除独立 Logo 外已经完成的海报，禁止先生成空背景再机械后贴商品和整套文字；最终质量门用 `PRODUCT_SCENE_COMPOSITE_ARTIFACT` 拦截商品与场景的可见融合断层。
 
 ## 历史版本
 
@@ -27,6 +27,7 @@
 | 3.0.0 rebuilt rc4 | `ecommerce-poster-design-v3.0.0-rebuilt-rc4` |
 | 3.1.0-rc.3 | `ecommerce-poster-design-v3.1.0-rc.3` |
 | 3.1.0-rc.4 | `ecommerce-poster-design-v3.1.0-rc.4` |
+| 3.1.0-rc.5 | `ecommerce-poster-design-v3.1.0-rc.5` |
 
 已有历史分支和 Tag 保持原指向，不重写、不移动。安装和迭代规则见 [INSTALL.md](INSTALL.md) 与 [VERSIONS.md](VERSIONS.md)。
 

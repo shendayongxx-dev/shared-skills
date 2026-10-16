@@ -1,16 +1,16 @@
 {
   "repository": "shendayongxx-dev/shared-skills",
   "skill": "ecommerce-poster-design",
-  "latest_version": "3.1.0-rc.5",
+  "latest_version": "3.1.0-rc.6",
   "main_policy": "current-version-only",
   "current": {
-    "version": "3.1.0-rc.5",
+    "version": "3.1.0-rc.6",
     "status": "stable",
     "directory": "skills/ecommerce-poster-design-3.1.0",
     "tests": "tests/ecommerce-poster-design-3.1.0",
-    "tag": "ecommerce-poster-design-v3.1.0-rc.5",
-    "based_on": "3.0.0-rebuilt-rc4",
-    "workflow": "input validation -> deterministic canvas normalization -> classification/style guide -> logo preflight -> ImageGen logo-free reserved base -> deterministic logo application -> logo application verification -> hard compliance -> consumer agent -> aesthetic agent -> score-free final quality gate",
+    "tag": "ecommerce-poster-design-v3.1.0-rc.6",
+    "based_on": "3.1.0-rc.5",
+    "workflow": "input validation -> deterministic canvas normalization -> classification/style guide -> logo preflight -> integrated product-scene-copy generation/edit with logo reserved -> deterministic logo application -> logo application verification -> hard compliance -> consumer agent -> aesthetic agent -> score-free final quality gate",
     "generation_backend": "Codex imagegen/image_gen at overall skill layer",
     "consumer_agent_boundary": "evaluation, scoring, evidence, and routing only",
     "aesthetic_agent": {
@@ -21,7 +21,7 @@
     "final_quality_schema": "FINAL-QUALITY-3.2",
     "generation_edit_contracts": ["aesthetic-edit-lock/1.0", "final-quality-edit-lock/1.0"],
     "mandatory_critical_defects": ["LOGO_MISSING", "LOGO_INCORRECT"],
-    "mandatory_moderate_defects": ["TEXT_OVERLAP", "LOGO_BACKGROUND_ARTIFACT", "LOGO_EDGE_HALO", "LOGO_CONTRAST_LOW", "LOGO_FLOATING"],
+    "mandatory_moderate_defects": ["TEXT_OVERLAP", "LOGO_BACKGROUND_ARTIFACT", "LOGO_EDGE_HALO", "LOGO_CONTRAST_LOW", "LOGO_FLOATING", "PRODUCT_SCENE_COMPOSITE_ARTIFACT"],
     "logo_contracts": ["logo-asset-preflight/1.1", "logo-application/1.0", "logo-verification/1.0"],
     "canvas_normalization": {
       "exact_pixels_optional": true,
@@ -60,6 +60,10 @@
     {
       "version": "3.1.0-rc.4",
       "tag": "ecommerce-poster-design-v3.1.0-rc.4"
+    },
+    {
+      "version": "3.1.0-rc.5",
+      "tag": "ecommerce-poster-design-v3.1.0-rc.5"
     }
   ],
   "tag_policy": "immutable",

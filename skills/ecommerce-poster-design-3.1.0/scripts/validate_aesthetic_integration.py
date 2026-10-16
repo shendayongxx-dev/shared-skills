@@ -23,7 +23,7 @@ def main():
         raise SystemExit("missing integration files: " + ", ".join(missing))
     version = json.loads((root / "assets/config/version.json").read_text(encoding="utf-8"))
     checks = {
-        "skill_version": version.get("skill_version") == "3.1.0-rc.5",
+        "skill_version": version.get("skill_version") == "3.1.0-rc.6",
         "baseline": version.get("baseline_version") in {"2.0.1", "3.0.0"},
         "aesthetic_version": version.get("aesthetic_agent_module", {}).get("version") == "3.0.0-rc.5",
         "interface": version.get("aesthetic_agent_module", {}).get("interface_version") == "A-D-AESTHETIC-3.0",

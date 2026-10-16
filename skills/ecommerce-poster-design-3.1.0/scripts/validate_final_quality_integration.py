@@ -28,7 +28,7 @@ def main():
     router = (root / "scripts/route_final_quality.py").read_text(encoding="utf-8")
     defect_codes = set(schema["properties"]["defects"]["items"]["properties"]["code"]["enum"])
     checks = {
-        "skill_version": version.get("skill_version") == "3.1.0-rc.5",
+        "skill_version": version.get("skill_version") == "3.1.0-rc.6",
         "workflow_version": version.get("workflow_version") == "3.1",
         "baseline": version.get("baseline_version") == "3.0.0",
         "stable_release_channel": version.get("production_ready") is True and version.get("release_channel") == "stable",
@@ -42,12 +42,14 @@ def main():
         "skill_forbids_abstract_redraw": "抽象审美意见触发重画" in skill,
         "mandatory_defect_codes": {
             "TEXT_OVERLAP", "LOGO_MISSING", "LOGO_INCORRECT", "LOGO_BACKGROUND_ARTIFACT",
-            "LOGO_EDGE_HALO", "LOGO_CONTRAST_LOW", "LOGO_FLOATING",
+            "LOGO_EDGE_HALO", "LOGO_CONTRAST_LOW", "LOGO_FLOATING", "PRODUCT_SCENE_COMPOSITE_ARTIFACT",
         } <= defect_codes,
         "skill_requires_logo_output_gate": all(value in skill for value in ("Logo 专项验收", "logo-verification/1.0", "LOGO_MISSING", "LOGO_BACKGROUND_ARTIFACT")),
         "gate_documents_mandatory_severity": all(value in gate_spec for value in ("LOGO_MISSING", "LOGO_INCORRECT", "强制严重 Logo 缺陷", "强制中度缺陷")),
         "router_rejects_minor_downgrade": "must be moderate or higher" in router,
         "router_requires_critical_logo_facts": "must be critical" in router,
+        "integrated_product_scene_generation": all(value in skill for value in ("同一次完整海报生成或编辑", "禁止先生成不含商品的独立背景", "无 Logo 底图")),
+        "product_scene_artifact_is_moderate": all(value in gate_spec for value in ("PRODUCT_SCENE_COMPOSITE_ARTIFACT", "至少记为 `moderate`")),
     }
     failed = [name for name, passed in checks.items() if not passed]
     print(json.dumps({"valid": not failed, "checks": checks, "missing": missing}, ensure_ascii=False, indent=2))
